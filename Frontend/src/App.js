@@ -8,11 +8,11 @@ import React, { useEffect, useState } from "react";
 import Booking from "./Booking";
 import SeatSelection from "./SeattSelection";
 
-const userIsGuess = false;
+//const userIsGuess = true;
 
 function App() {
   const [backendData, setBackendData] = useState([{}]);
-
+  const [userIsGuess, setUserIsGuess] = useState(false);
   useEffect(() => {
     fetch("/")
       .then((response) => response.json())
@@ -26,8 +26,24 @@ function App() {
       <Navbar />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login />}></Route>
-          <Route path="/home" element={<HomeScreen />}></Route>
+          <Route
+            path="/"
+            element={
+              <Login
+                setUserIsGuess={setUserIsGuess}
+                userIsGuess={userIsGuess}
+              />
+            }
+          ></Route>
+          <Route
+            path="/home"
+            element={
+              <HomeScreen
+                setUserIsGuess={setUserIsGuess}
+                userIsGuess={userIsGuess}
+              />
+            }
+          ></Route>
           <Route
             path="/register"
             element={<Register isGuess={userIsGuess} />}

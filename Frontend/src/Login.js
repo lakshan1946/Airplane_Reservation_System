@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import validation from "./LoginValidation";
 
-function Login() {
+function Login({ setUserIsGuess, userIsGuess }) {
   const [values, setValues] = useState({
     username: "",
     password: "",
   });
 
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const handleInput = (event) => {
     setValues((prev) => ({
@@ -97,6 +98,11 @@ function Login() {
           <Link
             to="/Booking"
             className="btn btn-default border w-100 bg-light text-decoration-none"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/Booking");
+              setUserIsGuess(true);
+            }}
           >
             Visit as a guest
           </Link>

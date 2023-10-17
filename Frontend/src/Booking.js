@@ -1,11 +1,21 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 const Booking = () => {
+  //const history = useHistory;
+
   // State to manage input values
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
+  const navigate = useNavigate();
 
   // State to store search results
   const [searchResults, setSearchResults] = useState([]);
+
+  const handleClick = (e) => {
+    // Navigate to another page
+    e.preventDefault();
+  };
 
   // Function to handle form submission
   const handleSubmit = (e) => {
@@ -42,7 +52,13 @@ const Booking = () => {
       <div className="d-flex justify-content-center align-items-center ">
         <div className="container-fluid">
           <h1 className="text-center">Find a Flight</h1>
-          <form id="flight-search-form" onSubmit={handleSubmit}>
+          <form
+            id="flight-search-form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              navigate("/register");
+            }}
+          >
             <div className="row allrow col-sm-12">
               <div className="col-sm-12 col-md-4">
                 <div className="form-groupHome">
