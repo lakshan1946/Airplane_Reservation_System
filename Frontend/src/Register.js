@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Register = (props) => {
+  const navigate = useNavigate();
+
   const [name, setName] = useState({ firstName: "", lastName: "" });
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [gender, setGender] = useState("");
@@ -80,6 +83,11 @@ const Register = (props) => {
     }
 
     // If no errors, you can proceed to submit the form to your backend
+  };
+
+  const navigateToBooking = () => {
+    // 👇️ navigate to /contacts
+    navigate("/Booking");
   };
 
   return (
@@ -371,7 +379,11 @@ const Register = (props) => {
                 </label>
               </div>
               <div className="col">
-                <button type="submit" className="btn btn-dark btn-lg submitBtn">
+                <button
+                  onClick={navigateToBooking}
+                  type="submit"
+                  className="btn btn-dark btn-lg submitBtn"
+                >
                   Submit
                 </button>
               </div>

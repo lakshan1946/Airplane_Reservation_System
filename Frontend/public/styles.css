@@ -54,7 +54,7 @@
 }
 .information{
     padding: 5% 10%;
-    background-color: #AED2FF;
+    background-color: #F1EFEF;
     border-radius: 10px;
 }
 .subInfo{
@@ -95,7 +95,7 @@
 }
 .allrow{
     margin-bottom: 50px;
-    background-color:#AED2FF ;
+    background-color:#F1EFEF ;
     border-radius: 10px;
     padding: 10%;
 }
@@ -119,16 +119,3 @@
     background-color: white;
 }
 
-/*seatSelection*/
-
-.allTable{
-    padding: 7% 12%;
-}
-.seatHeading{
-    padding-bottom: 30px;
-    color:#1F4172;
-}
-
-.seatTable{
-    
-}

@@ -7,6 +7,7 @@ import Register from "./Register";
 import React, { useEffect, useState } from "react";
 import Booking from "./Booking";
 import SeatSelection from "./SeattSelection";
+import Payment from "./Payment";
 
 //const userIsGuess = true;
 
@@ -50,6 +51,7 @@ function App() {
           ></Route>
           <Route path="/Booking" element={<Booking />}></Route>
           <Route path="/Seatselection" element={<SeatSelection />}></Route>
+          <Route path="/Payment" element={<Payment />}></Route>
         </Routes>
       </BrowserRouter>
       <Footer />

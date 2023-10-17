@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Booking = () => {
-  //const history = useHistory;
-
   // State to manage input values
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
@@ -11,11 +9,6 @@ const Booking = () => {
 
   // State to store search results
   const [searchResults, setSearchResults] = useState([]);
-
-  const handleClick = (e) => {
-    // Navigate to another page
-    e.preventDefault();
-  };
 
   // Function to handle form submission
   const handleSubmit = (e) => {
