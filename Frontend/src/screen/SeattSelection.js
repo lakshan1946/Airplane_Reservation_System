@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 const airplaneModels = [
   {
@@ -55,6 +56,21 @@ function generateSeats(numRows, seatsPerRow, type) {
 function SeatSelection() {
   const [selectedModel, setSelectedModel] = useState(airplaneModels[0].name);
   const [selectedClass, setSelectedClass] = useState("Platinum");
+  const [error, setError] = useState(""); // Add error state
+  const [selectedNumber, setSelectedNumber] = useState("");
+  const navigate = useNavigate();
+  const numberInputRef = useRef(null); // Ref for the number of passengers dropdown
+
+  useEffect(() => {
+    if (error) {
+      // Set focus to the number of passengers dropdown when an error occurs
+      numberInputRef.current.focus();
+    }
+  }, [error]);
+
+  const handleNumberChange = (e) => {
+    setSelectedNumber(e.target.value);
+  };
 
   const handleModelChange = (event) => {
     setSelectedModel(event.target.value);
@@ -67,10 +83,23 @@ function SeatSelection() {
   const selectedAirplane = airplaneModels.find(
     (model) => model.name === selectedModel
   );
+  const handleNextClick = () => {
+    // Check if both number of passengers and class are selected
+    if (selectedNumber && selectedClass) {
+      if (parseInt(selectedNumber) > 1) {
+        navigate("/register");
+      } else {
+        navigate("/payment");
+      }
+    } else {
+      setError(true); // Set error state to true if number of passengers or class is not selected
+    }
+  };
+
   const selectedSeats = selectedAirplane.classes[selectedClass];
 
   return (
-    <div className="seatSelectionContainer">
+    <div className="seatSelectionContainer background p-3">
       <h1 className="seatHeading">Seat Selection</h1>
       <div className="selectionControls">
         <label className="subP">
@@ -94,6 +123,23 @@ function SeatSelection() {
             ))}
           </select>
         </label>
+        <br></br>
+        <label className="subP">Number of passengers</label>
+        <select
+          value={selectedNumber}
+          onChange={handleNumberChange}
+          ref={numberInputRef} // Assign the ref to the number of passengers dropdown
+        >
+          <option value="">Select a number</option>
+          {[1, 2, 3, 4, 5].map((number) => (
+            <option key={number} value={number}>
+              {number}
+            </option>
+          ))}
+        </select>
+        {error && (
+          <p className="text-danger">Please select number of passengers</p>
+        )}
       </div>
       <div className="airplane">
         <h2 className="seatHeadingSub">{selectedModel}</h2>
@@ -105,8 +151,12 @@ function SeatSelection() {
         )}
       </div>
       <div>
-        <button type="button" class="btn btn-secondary btn-lg">
-          Continue
+        <button
+          type="button"
+          class="btn btn-secondary btn-lg btnContinue"
+          onClick={handleNextClick} // Handle click event for the Next button
+        >
+          Next
         </button>
       </div>
     </div>

@@ -1,13 +1,14 @@
-import Login from "./Login";
+import Login from "./screen/Login/Login";
 import Navbar from "./component/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomeScreen from "./screen/HomeScreen";
 import Footer from "./component/Footer";
-import Register from "./Register";
+import Register from "./screen/RegisterUser/Register";
 import React, { useEffect, useState } from "react";
-import Booking from "./Booking";
-import SeatSelection from "./SeattSelection";
-import Payment from "./Payment";
+import Booking from "./screen/Booking";
+import SeatSelection from "./screen/SeattSelection";
+import Payment from "./screen/Payment";
+import FlightCard from "./component/FlightCard";
 
 //const userIsGuess = true;
 
@@ -36,15 +37,7 @@ function App() {
               />
             }
           ></Route>
-          <Route
-            path="/home"
-            element={
-              <HomeScreen
-                setUserIsGuess={setUserIsGuess}
-                userIsGuess={userIsGuess}
-              />
-            }
-          ></Route>
+          <Route path="/HomeScreen" element={<HomeScreen />}></Route>
           <Route
             path="/register"
             element={<Register isGuess={userIsGuess} />}
@@ -52,6 +45,7 @@ function App() {
           <Route path="/Booking" element={<Booking />}></Route>
           <Route path="/Seatselection" element={<SeatSelection />}></Route>
           <Route path="/Payment" element={<Payment />}></Route>
+          <Route path="/FlightCard" element={<FlightCard />}></Route>
         </Routes>
       </BrowserRouter>
       <Footer />

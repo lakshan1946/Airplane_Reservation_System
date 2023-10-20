@@ -41,15 +41,15 @@ const Booking = () => {
   };
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid background p-3">
       <div className="d-flex justify-content-center align-items-center ">
         <div className="container-fluid">
-          <h1 className="text-center">Find a Flight</h1>
+          <h1 className="text-center searchHead">Find a Flight</h1>
           <form
             id="flight-search-form"
             onSubmit={(e) => {
               e.preventDefault();
-              navigate("/register");
+              navigate("/Register");
             }}
           >
             <div className="row allrow col-sm-12">
@@ -122,11 +122,7 @@ const Booking = () => {
                 </div>
               </div>
             </div>
-
-            <button
-              type="submit"
-              className="btn btn-primary btn-lg submitBtn mx-auto"
-            >
+            <button type="submit" className="btn btn-primary btn-lg submitBtn">
               Let's go!
             </button>
           </form>

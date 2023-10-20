@@ -6,7 +6,7 @@
     margin: 50px auto;
     padding-bottom: 50px;
     max-width: 30%;
-    background-color:#F1EFEF;
+    background-color:rgba(255, 255, 255, 0.5);
     border-radius: 50px;
     
    
@@ -16,13 +16,14 @@
     text-align: center;
     margin: 30px;
     font-size: 3.5rem;
+    color: white;
     
 }
 
 .selectionControls{
    text-align: center;
    padding: 20px;
-   background-color: #F1EFEF;
+   background-color:rgba(255, 255, 255, 0.5);
    margin: 0 35%;
    border-radius: 50px;
 }

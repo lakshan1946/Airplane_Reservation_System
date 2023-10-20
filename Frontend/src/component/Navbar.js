@@ -3,7 +3,11 @@ import React from "react";
 function Navbar(props) {
   // bg-body-tertiary
   return (
-    <nav className="blackNavbar navbar navbar-expand-lg ">
+    <nav
+      className="blackNavbar navbar navbar-expand-lg "
+      data-bs-theme="dark"
+      style={{ backgroundColor: "#001524" }}
+    >
       <div className="container-fluid">
         <a className="navfont navbar-brand" href="">
           B Airline

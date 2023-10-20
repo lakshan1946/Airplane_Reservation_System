@@ -1,121 +1,125 @@
 .background {
-    font-family: sans-serif;
-    margin: 0;
-    background-image: url('images/plane4.jpeg'); /* Replace 'your-image-file.jpg' with the actual file name and path */
-    background-size: cover; /* Ensures the image covers the entire background */
-    background-repeat: no-repeat; /* Prevents image repetition */
-    background-attachment: fixed; /* Fixes the background image, so it doesn't scroll with the content */
-    background-position: center center; /* Centers the image horizontally and vertically */
+  font-family: sans-serif;
+  margin: 0;
+  background-image: url("images/plane4.jpeg"); /* Replace 'your-image-file.jpg' with the actual file name and path */
+  background-size: cover; /* Ensures the image covers the entire background */
+  background-repeat: no-repeat; /* Prevents image repetition */
+  background-attachment: fixed; /* Fixes the background image, so it doesn't scroll with the content */
+  background-position: center center; /* Centers the image horizontally and vertically */
 }
 
-.signup{
-    background-color:rgba(255, 255, 255, 0.5);
+.signup {
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 .input-icons i {
-    position: absolute;
+  position: absolute;
 }
 
-.mr-auto{
-    margin-left: auto;
+.mr-auto {
+  margin-left: auto;
 }
 
-.search{
-    background-color: rgb(3, 69, 148);
+.search {
+  background-color: rgb(3, 69, 148);
 }
 
-.gray-background{
-    background-color: rgb(239, 239, 239);
+.gray-background {
+  background-color: rgb(239, 239, 239);
 }
 
 /* Footer */
 
-.py-5{
-    padding: 30%;
-    background-color: #001524;
-    color: white;
+.py-5 {
+  padding: 30%;
+  background-color: #001524;
+  color: white;
 }
-.nav-item{
-    color: #D0D4CA;
-    font-size: 14px;
+.nav-item {
+  color: #d0d4ca;
+  font-size: 14px;
 }
-.nav-item:hover{
-    color: #80B3FF;
+.nav-item:hover {
+  color: #80b3ff;
 }
-.owner{
-    background-color: #001524;
+.owner {
+  background-color: #001524;
 }
 
 /* Register */
 
-#regAll{
-    margin: 5% 20%;
-    
+.information {
+  background-color: rgba(255, 255, 255, 0.5);
 }
-.information{
-    padding: 5% 10%;
-    background-color: #F1EFEF;
-    border-radius: 10px;
+#regAll {
+  margin: 5% 30%;
 }
-.subInfo{
-    margin-bottom: 50px;
+.information {
+  padding: 5% 10%;
+  border-radius: 10px;
 }
-.col{
-    padding-bottom: 20px;
-}
-.nameInfo{
-    padding-bottom: 10px;
-}
-.submitBtn{
-    float: right;
+.subInfo {
+  margin-bottom: 50px;
+  font-family: 'Roboto', sans-serif;
 }
 
-/* search */ 
-
-.Search{
-    color: white;
+.regHeading {
+  font-weight: bold;
+  padding-bottom: 15px;
 }
-.heading{
-    padding-bottom: 5%;
+.col {
+  padding-bottom: 20px;
 }
-.form-group{
-    padding-bottom: 15px;
+.nameInfo {
+  padding-bottom: 10px;
+  font-weight: bold;
+  font-family: 'Montserrat', sans-serif;
 }
-.flighHeading{
-    padding-top: 5%;
-}
-
-/* Home screen */
-.headingFlight{
-    padding: 7%;
+.submitBtn1 {
+  float: right;
+  margin-top: 20px;
 }
 
-#flight-search-form{
-    padding: 0 20% 5%;
-}
-.allrow{
-    margin-bottom: 50px;
-    background-color:#F1EFEF ;
-    border-radius: 10px;
-    padding: 10%;
-}
-.availableFlight{
-    position: relative;
-    left: 17%;
+.HeadReg {
+  color: white;
+  text-align: center;
 }
 
-/*navBar */
+/* Booking */
 
-.container-fluid{
-    /* background-color: white; */
-    
+.searchHead {
+  color: white;
+}
+.text-center {
+  margin: 50px;
 }
 
-.nav-link{
-    color: red;
+#flight-search-form {
+  padding: 0 20% 5%;
+}
+.allrow {
+  margin-bottom: 50px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  padding: 7%;
+}
+.availableFlight {
+  text-align: center;
+  color: #fff6dc;
 }
 
-.blackNavbar{
-    background-color: white;
+.submitBtn {
+ position: relative;
+ left: 380px;
+  
+}
+
+/*payment*/
+
+.paymentText {
+  margin: 50px;
+}
+.card{
+  background-color: rgba(255, 255, 255, 0.5) !important;
 }
 

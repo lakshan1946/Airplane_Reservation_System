@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import validation from "./LoginValidation";
+import LoginValidation from "./LoginValidation";
 
 function Login({ setUserIsGuess, userIsGuess }) {
   const [values, setValues] = useState({
@@ -10,6 +10,7 @@ function Login({ setUserIsGuess, userIsGuess }) {
 
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
+
   const handleInput = (event) => {
     setValues((prev) => ({
       ...prev,
@@ -19,27 +20,13 @@ function Login({ setUserIsGuess, userIsGuess }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    let data = {
-      values: values,
-    };
-    fetch("/login", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      });
-    setErrors(validation(values));
+    setErrors(LoginValidation(values));
   };
   return (
     <div className="background d-flex justify-content-center align-items-center vh-100 rounded-2">
       <div className="signup p-3 rounded w-25">
         <h2>Sign-in</h2>
-        <form action="" onSubmit={handleSubmit}>
+        <form action="post" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="username" className="form-label">
               <strong>username</strong>
