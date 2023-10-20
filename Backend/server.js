@@ -8,22 +8,27 @@ import {
   getFlightSchedule,
 } from "./database.js";
 
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
+// const app = express();
+// app.use(cors());
+// app.use(bodyParser.json());
 
-app.get("/ip", async function (req, res) {
-  const result = await getFlightSchedule();
-  res.json(result);
-});
+// app.get("/ip", async function (req, res) {
+//   const result = await getFlightSchedule();
+//   res.json(result);
+// });
 
-app.post("/login", (req, res) => {
-  console.log(req.body);
-  let { username, password } = req.body;
+// app.get("/airplanes", async function (req, res) {
+//   const result = await getAirplanes();
+//   res.json(result);
+// });
 
-  res.json({ message: "submitted" });
-});
+// app.post("/login", (req, res) => {
+//   console.log(req.body);
+//   let { username, password } = req.body;
 
-app.listen(5000, function () {
-  console.log("Server is running on port 5000");
-});
+//   res.json({ message: "submitted" });
+// });
+
+// app.listen(5000, function () {
+//   console.log("Server is running on port 5000");
+// });
