@@ -4,10 +4,10 @@ import Navbar from "./component/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomeScreen from "./screen/HomeScreen";
 import Footer from "./component/Footer";
-import Register from ".RegisterUser/Register";
+import Register from "./screen/RegisterUser/Register";
 import React, { useEffect, useState } from "react";
 import Booking from "./screen/Booking";
-import SeatSelection from "./SeattSelection";
+import SeatSelection from "./screen/SeattSelection";
 
 
 //const userIsGuess = true;
