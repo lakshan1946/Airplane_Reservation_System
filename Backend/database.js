@@ -58,13 +58,6 @@ export async function getFlightSchedule() {
 const flightData = await getFlightSchedule();
 console.log(flightData);
 
-export async function getAirplanes() {
-  const [row] = await db.query("select * from airplane");
-  return row;
-}
-
-const result = await getAirplanes();
-
 export async function getAirplane(plane_ID) {
   const [row] = await db.query(
     `
