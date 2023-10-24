@@ -1,12 +1,12 @@
 import axios from 'axios';
-import Login from "./Login";
+import Login from "./Login/Login";
 import Navbar from "./component/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomeScreen from "./screen/HomeScreen";
 import Footer from "./component/Footer";
-import Register from "./Register";
+import Register from ".RegisterUser/Register";
 import React, { useEffect, useState } from "react";
-import Booking from "./Booking";
+import Booking from "./screen/Booking";
 import SeatSelection from "./SeattSelection";
 
 
