@@ -1,14 +1,14 @@
-import Login from "./screen/Login/Login";
+import axios from 'axios';
+import Login from "./Login";
 import Navbar from "./component/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomeScreen from "./screen/HomeScreen";
 import Footer from "./component/Footer";
-import Register from "./screen/RegisterUser/Register";
+import Register from "./Register";
 import React, { useEffect, useState } from "react";
-import Booking from "./screen/Booking";
-import SeatSelection from "./screen/SeattSelection";
-import Payment from "./screen/Payment";
-import FlightCard from "./component/FlightCard";
+import Booking from "./Booking";
+import SeatSelection from "./SeattSelection";
+
 
 //const userIsGuess = true;
 
@@ -16,12 +16,26 @@ function App() {
   const [backendData, setBackendData] = useState([{}]);
   const [userIsGuess, setUserIsGuess] = useState(false);
   useEffect(() => {
-    fetch("/")
-      .then((response) => response.json())
-      .then((data) => {
-        setBackendData(data);
+    // Define the API endpoint you want to fetch
+    const apiUrl = '/'; // Replace with the actual API endpoint URL
+  
+    // Use Axios to make the GET request
+    axios.get(apiUrl)
+      .then((response) => {
+        // Check if the response status is OK (200)
+        if (response.status === 200) {
+          // Assuming that your API response is in JSON format, you can access the data like this
+          const data = response.data;
+          setBackendData(data);
+        } else {
+          console.error('Error: Unable to fetch data');
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
       });
   }, []);
+  
 
   return (
     <div>
@@ -37,20 +51,26 @@ function App() {
               />
             }
           ></Route>
-          <Route path="/HomeScreen" element={<HomeScreen />}></Route>
+          <Route
+            path="/home"
+            element={
+              <HomeScreen
+                setUserIsGuess={setUserIsGuess}
+                userIsGuess={userIsGuess}
+              />
+            }
+          ></Route>
           <Route
             path="/register"
             element={<Register isGuess={userIsGuess} />}
           ></Route>
           <Route path="/Booking" element={<Booking />}></Route>
           <Route path="/Seatselection" element={<SeatSelection />}></Route>
-          <Route path="/Payment" element={<Payment />}></Route>
-          <Route path="/FlightCard" element={<FlightCard />}></Route>
         </Routes>
       </BrowserRouter>
       <Footer />
     </div>
   );
 }
-//i am batman
+
 export default App;
