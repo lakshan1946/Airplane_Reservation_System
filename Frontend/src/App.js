@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Login from "./Login/Login";
+import Login from "./screen/Login/Login";
 import Navbar from "./component/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomeScreen from "./screen/HomeScreen";
