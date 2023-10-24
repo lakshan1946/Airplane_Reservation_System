@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import LoginValidation from "./LoginValidation";
+import validation from "./LoginValidation";
+import axios from 'axios';
 
 function Login({ setUserIsGuess, userIsGuess }) {
   const [values, setValues] = useState({
@@ -17,16 +18,29 @@ function Login({ setUserIsGuess, userIsGuess }) {
       [event.target.name]: [event.target.value],
     }));
   };
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    setErrors(LoginValidation(values));
+  
+    axios
+      .post('/login', { values })
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((error) => {
+        console.error('Error:', error.message);
+        window.alert("Authentication failed. Check username, password.");
+        // Display the error message to the user
+        setErrors('An error occurred. Please try again later.');
+      });
+  
+    setErrors(validation(values));
   };
+
   return (
     <div className="background d-flex justify-content-center align-items-center vh-100 rounded-2">
       <div className="signup p-3 rounded w-25">
         <h2>Sign-in</h2>
-        <form action="post" onSubmit={handleSubmit}>
+        <form action="" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="username" className="form-label">
               <strong>username</strong>
@@ -100,3 +114,4 @@ function Login({ setUserIsGuess, userIsGuess }) {
 }
 
 export default Login;
+
