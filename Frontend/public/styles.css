@@ -114,12 +114,95 @@
   
 }
 
+.FlightCardMap{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 50px;
+}
+#con{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 /*payment*/
 
 .paymentText {
   margin: 50px;
 }
 .card{
-  background-color: rgba(255, 255, 255, 0.5) !important;
+  background-color: rgba(255, 255, 255, 0.7) !important;
 }
 
+/* cards */
+
+.cards{
+  padding-top: 50px;
+  padding-bottom: 50px;
+  margin-bottom: auto;
+}
+
+.card-img-top{
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.flightCardTable{
+  margin: 20px ;
+  background-color: #EBF3E8;
+  border-radius: 10px;
+}
+.flightCardTable tr th{
+  padding: 5px 30px 0px 10px;
+}
+.flightCardTable tr td{
+  padding-right: 10px;
+}
+
+/*Report*/
+
+#reportHome{
+  display: flex;
+  padding: 50px;
+  justify-content: center;
+}
+
+#reportProfile{
+  background-color: rgba(255, 255, 255, 0.7) ;
+  margin: 0px 20px;
+  padding: 30px;
+  border-radius: 20px;
+  
+}
+
+#reportButton{
+  background-color: rgba(255, 255, 255, 0.7) ;
+  margin: 10px 20px;
+  padding: 30px;
+  border-radius: 20px;
+
+}
+
+.btnAdmin{
+  padding: 10px !important;
+  margin: 10px !important;
+}
+
+#imgAdmin{
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit:cover;
+  margin-top: 50px;
+  
+}
+
+.admincomp{
+  
+  justify-content: center !important;
+  width: 50%;
+  padding: 70px;
+  background-color: rgba(255, 255, 255, 0.7) ;
+}

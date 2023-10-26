@@ -9,7 +9,12 @@ import Booking from "./screen/Booking";
 import SeatSelection from "./screen/SeattSelection";
 import Payment from "./screen/Payment";
 import FlightCard from "./component/FlightCard";
-
+import Report from "./screen/Admin/Report";
+import AllPassenger from "./screen/Admin/AllPassengers";
+import DateDestination from "./screen/Admin/DateDestination";
+import DateType from "./screen/Admin/DateType";
+import PastFlight from "./screen/Admin/PastFlight";
+import Revenue from "./screen/Admin/Revenue";
 //const userIsGuess = true;
 
 function App() {
@@ -46,6 +51,12 @@ function App() {
           <Route path="/Seatselection" element={<SeatSelection />}></Route>
           <Route path="/Payment" element={<Payment />}></Route>
           <Route path="/FlightCard" element={<FlightCard />}></Route>
+          <Route path="/Report" element={<Report />}></Route>
+          <Route path="/AllPassengers" element={<AllPassenger />} />
+          <Route path="/DateDestination" element={<DateDestination />} />
+          <Route path="/DateType" element={<DateType />} />
+          <Route path="/PastFlight" element={<PastFlight />} />
+          <Route path="/Revenue" element={<Revenue />} />
         </Routes>
       </BrowserRouter>
       <Footer />

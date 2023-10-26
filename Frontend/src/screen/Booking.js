@@ -1,11 +1,33 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import FlightCard from "../component/FlightCard";
 
+const flight = [
+  {
+    image: "/images/Boeing-737.jpg",
+    model: "Airbus-A380",
+    Dtime: "08:00",
+    Atime: "10.00",
+  },
+  {
+    image: "/images/plane.jpeg",
+    model: "Boeing-737",
+    Dtime: "13:00",
+    Atime: "15.00",
+  },
+  {
+    image: "/images/Airbus-A380.jpg",
+    model: "Boeing-737",
+    Dtime: "17:00",
+    Atime: "20.00",
+  },
+];
 const Booking = () => {
   // State to manage input values
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const navigate = useNavigate();
+  const [active, setActive] = useState(false);
 
   // State to store search results
   const [searchResults, setSearchResults] = useState([]);
@@ -45,13 +67,7 @@ const Booking = () => {
       <div className="d-flex justify-content-center align-items-center ">
         <div className="container-fluid">
           <h1 className="text-center searchHead">Find a Flight</h1>
-          <form
-            id="flight-search-form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              navigate("/Register");
-            }}
-          >
+          <form id="flight-search-form">
             <div className="row allrow col-sm-12">
               <div className="col-sm-12 col-md-4">
                 <div className="form-groupHome">
@@ -122,7 +138,11 @@ const Booking = () => {
                 </div>
               </div>
             </div>
-            <button type="submit" className="btn btn-primary btn-lg submitBtn">
+            <button
+              type="submit"
+              className="btn btn-primary btn-lg submitBtn"
+              onClick={() => setActive(true)}
+            >
               Let's go!
             </button>
           </form>
@@ -130,10 +150,24 @@ const Booking = () => {
       </div>
       <div className="row next-line text-center">
         <h2 className="availableFlight">Available Flights</h2>
-        <ul id="flight-results">
-          {/* Flight search results will be displayed here */}
-        </ul>
+        <ul id="flight-results"></ul>
       </div>
+
+      {/* Flight search results will be displayed here */}
+      {active && (
+        <div id="con">
+          <div className="cards FlightCardMap">
+            {flight.map((flight) => (
+              <FlightCard
+                image={flight.image}
+                model={flight.model}
+                Dtime={flight.Dtime}
+                Atime={flight.Atime}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

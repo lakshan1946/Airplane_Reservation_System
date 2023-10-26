@@ -110,7 +110,7 @@ function Payment() {
   };
 
   return (
-    <div className="container ">
+    <div className="container background" id="scon">
       <div className="paymentText">
         <h2>Confirm Booking and pay</h2>
         <span>
@@ -188,7 +188,10 @@ function Payment() {
           </div>
         </div>
         <div className="row">
-          <div className="col-md-8">
+          <div
+            className="col-md-8"
+            style={{ display: "flex", width: "100%", justifyContent: "center" }}
+          >
             <div className="card p-3">
               <h6 className="text-uppercase">Payment details</h6>
               <form onSubmit={handleSubmit}>

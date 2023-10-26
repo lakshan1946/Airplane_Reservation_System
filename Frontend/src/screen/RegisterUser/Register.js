@@ -137,6 +137,7 @@ const Register = (props) => {
       return;
     }
 
+    console.log(e.username);
     // If no errors, you can proceed to submit the form to your backend
     navigateToBooking();
   };
