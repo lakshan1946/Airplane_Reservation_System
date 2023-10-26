@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const Register = (props) => {
   const navigate = useNavigate();
@@ -52,95 +53,122 @@ const Register = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     // Reset errors
     setErrors({});
-
-    // Check for errors
+  
+    // Validation logic
     const newErrors = {};
-
-    // validation logic
-
+  
+    // Validation for name
     if (!name.firstName || !name.lastName) {
       newErrors.name = "Please provide both first and last names.";
     }
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
+  
+    // Validation for date of birth
     if (!dateOfBirth) {
       newErrors.dateOfBirth = "Please enter your date of birth.";
     }
-
+  
+    // Validation for gender
     if (!gender) {
       newErrors.gender = "Please select your gender.";
     }
-
+  
+    // Validation for address
     if (!address.country) {
       newErrors.country = "Please enter your country.";
     }
-
+  
     if (!props.isGuess && !address.city) {
       newErrors.city = "Please enter your city.";
     }
-
+  
     if (!address.line1) {
       newErrors.line1 = "Please enter your address line 1.";
     }
-
+  
     if (!props.isGuess && !address.line2) {
       newErrors.line2 = "Please enter your address line 2.";
     }
-
+  
+    // Validation for email
     if (!email.email) {
       newErrors.email = "Please enter your email.";
     } else if (!/\S+@\S+\.\S+/.test(email.email)) {
       newErrors.email = "Please enter a valid email address.";
     }
-
+  
     if (!email.confirmEmail) {
       newErrors.confirmEmail = "Please confirm your email.";
     }
     if (email.email !== email.confirmEmail) {
       newErrors.confirmEmail = "Email addresses do not match.";
     }
-
+  
+    // Validation for phone
     if (!phone) {
       newErrors.phone = "Please enter your mobile number.";
     }
-
+  
+    // Validation for account
     if (!account.username) {
       newErrors.username = "Please enter your username.";
     }
-
+  
     if (!account.passportID && !props.isGuess) {
       newErrors.passportID = "Please enter your passport ID.";
     }
-
+  
     if (!account.password) {
       newErrors.password = "Please enter your password.";
     } else if (account.password.length < 8) {
       newErrors.password = "Password must be at least 8 characters long.";
     }
-
+  
     if (account.password !== account.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match.";
     }
-
+  
     if (!acceptTerms) {
       newErrors.acceptTerms = "Please accept the terms and conditions.";
     }
+  
+    
+      // If no errors, you can proceed to submit the form to your backend using Axios
+      console.log(name.firstName)
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
-    // If no errors, you can proceed to submit the form to your backend
-    navigateToBooking();
+      const userData = {
+        firstName: name.firstName,
+        lastName: name.lastName,
+        dateOfBirth,
+        gender,
+        country: address.country,
+        city: address.city,
+        line1: address.line1,
+        line2: address.line2,
+        email: email.email,
+        phone,
+        passportID: account.passportID,
+        username: account.username,
+        password: account.password,
+      };
+  
+      // Send a POST request to your backend API for user registration
+      axios.post('/register', userData)
+        .then((response) => {
+          console.log(response.data);
+          console.log("faaaaaaaa")
+          navigateToBooking();
+        })
+        .catch((error) => {
+          console.error(error);
+          // Handle registration error here
+        });
+    
   };
-
+  
+  
   const navigateToBooking = () => {
     navigate("/Booking");
   };

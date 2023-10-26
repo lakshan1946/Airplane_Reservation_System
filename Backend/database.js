@@ -2,7 +2,6 @@ import mysql from 'mysql2';
 import dotenv from "dotenv";
 dotenv.config();
 
-
 const db = mysql.createConnection({
     host: process.env.MYSQL_HOST, //local host name
     user: process.env.MYSQL_USER, //username
@@ -41,10 +40,45 @@ export const loginUser = (req, res) => {
         res.status(401).json({ message: 'Username and password do not match' });
       } else {
         const passportID = results[0].Passport_ID;
-        res.status(200).json({ Passport_ID: passportID });
         console.log(passportID)
+        return res.json({ success: true, message: 'User registered successfully' });
       }
     }); 
   };
-  
 
+  
+  export const registerUser = async (userData, callback) => {
+    const data = userData.body;
+    console.log(data);
+  
+    try {
+      await db.execute('CALL User_Register(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+        data.passportID,
+        data.username,
+        data.password,
+        data.firstName,
+        data.lastName,
+        data.phone,
+        data.gender,
+        data.email,
+        data.dateOfBirth,
+        data.line1,
+        data.line2,
+        data.city,
+        data.country
+      ]);
+      
+      // Registration was successful, so return a success response
+      return callback.json({ success: true, message: 'User registered successfully' });
+  
+    } catch (err) {
+      console.error('Error registering user:', err);
+      // Check if the callback is a function before calling it
+      if (typeof callback === 'function') {
+        callback(err, null);
+      } else {
+        console.error('Callback is not a function.');
+      }
+    }
+  };
+  

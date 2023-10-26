@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 
 import { loginUser } from './database.js'; // Adjust the path as needed
+import { registerUser } from './database.js'; // Adjust the path as needed
 
 const app = express();
 app.use(cors());
@@ -14,9 +15,14 @@ app.use(bodyParser.json());
 
 
 // Define your routes and handlers here
-app.post('/login', (req, res) => {
+app.post('/login', (req, res, next) => {
   loginUser(req, res);
 });
+
+app.post('/register', (req, res) => {
+  registerUser(req, res);
+});
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {

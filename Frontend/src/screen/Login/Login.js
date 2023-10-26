@@ -25,6 +25,8 @@ function Login({ setUserIsGuess, userIsGuess }) {
       .post('/login', { values })
       .then((response) => {
         console.log(response)
+        console.log("aefffffffffff")
+        navigate("/Booking");
       })
       .catch((error) => {
         console.error('Error:', error.message);
@@ -35,6 +37,8 @@ function Login({ setUserIsGuess, userIsGuess }) {
   
     setErrors(validation(values));
   };
+
+ 
 
   return (
     <div className="background d-flex justify-content-center align-items-center vh-100 rounded-2">
