@@ -11,8 +11,8 @@ class Flight {
         return result
     }
 
-    static async getFlights(Departure_Date, Origin, Destination) {
-        const Date1 = ymd(new Date(dDate))
+    static async getFlights(Origin, Destination, Departure_Date) {
+        const Date1 = ymd(new Date(Departure_Date))
         const [flights] = await pool.query(`
         call get_flights(?,?,?)`,
             [Date1, Origin, Destination]

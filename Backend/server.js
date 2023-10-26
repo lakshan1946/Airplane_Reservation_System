@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
+import UserService from "./services/UserService.js";
 
 const app = express();
 app.use(cors());
@@ -15,6 +16,10 @@ app.use(bodyParser.json());
 //   const result = await getAirplanes();
 //   res.json(result);
 // });
+
+app.post("/register", (req, res) => {
+  UserService.register(req, res);
+});
 
 app
   .route("/login")
