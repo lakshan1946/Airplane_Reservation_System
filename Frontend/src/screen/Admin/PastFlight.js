@@ -1,12 +1,53 @@
 import React from "react";
 import { useState } from "react";
 
+const data = [
+  {
+    PID: "123",
+    Fname: "Lakshan",
+    Lname: "Madhusanka",
+    Age: "5",
+  },
+  {
+    PID: "456",
+    Fname: "dulitha",
+    Lname: "herath",
+    Age: "7",
+  },
+];
+
+function PastFlightCard({ data }) {
+  return (
+    <div className="card-body">
+      <table className="">
+        <tbody>
+          <tr>
+            <th>Passport ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Age</th>
+          </tr>
+          {data.map((p) => (
+            <tr>
+              <td>{p.PID}</td>
+              <td>{p.Fname}</td>
+              <td>{p.Lname}</td>
+              <td>{p.Age}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 function PastFlight() {
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
+  const [active, setActive] = useState(false);
 
   const handleFlightDataSubmit = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     // const flightData = await getFlightDataByRoute(origin, destination);
     // console.log("Flight data for", origin, "to", destination, ":", flightData);
   };
@@ -34,10 +75,17 @@ function PastFlight() {
               onChange={(e) => setDestination(e.target.value)}
             />
           </div>
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary" onClick={setActive}>
             Get Flight Data by Route
           </button>
         </form>
+        {active && (
+          <div>
+            <div className="cards FlightCardMap">
+              {<PastFlightCard data={data} />}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

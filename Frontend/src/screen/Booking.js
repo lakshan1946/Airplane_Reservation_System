@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FlightCard from "../component/FlightCard";
 
 const flight = [
@@ -28,7 +28,8 @@ const Booking = () => {
   const [destination, setDestination] = useState("");
   const navigate = useNavigate();
   const [active, setActive] = useState(false);
-
+  const params = useParams();
+  console.log(params.username);
   // State to store search results
   const [searchResults, setSearchResults] = useState([]);
 

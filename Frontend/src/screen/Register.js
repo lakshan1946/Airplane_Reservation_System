@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Register = (props) => {
+function Register() {
+  const [registerSuccess, setRegisterSuccess] = useState(false);
   const navigate = useNavigate();
 
   const [name, setName] = useState({ firstName: "", lastName: "" });
@@ -61,66 +62,11 @@ const Register = (props) => {
 
     // validation logic
 
-    if (!name.firstName || !name.lastName) {
-      newErrors.name = "Please provide both first and last names.";
-    }
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-    if (!dateOfBirth) {
-      newErrors.dateOfBirth = "Please enter your date of birth.";
-    }
-
-    if (!gender) {
-      newErrors.gender = "Please select your gender.";
-    }
-
-    if (!address.country) {
-      newErrors.country = "Please enter your country.";
-    }
-
-    if (!props.isGuess && !address.city) {
-      newErrors.city = "Please enter your city.";
-    }
-
-    if (!address.line1) {
-      newErrors.line1 = "Please enter your address line 1.";
-    }
-
-    if (!props.isGuess && !address.line2) {
-      newErrors.line2 = "Please enter your address line 2.";
-    }
-
-    if (!email.email) {
-      newErrors.email = "Please enter your email.";
-    } else if (!/\S+@\S+\.\S+/.test(email.email)) {
-      newErrors.email = "Please enter a valid email address.";
-    }
-
-    if (!email.confirmEmail) {
-      newErrors.confirmEmail = "Please confirm your email.";
-    }
     if (email.email !== email.confirmEmail) {
       newErrors.confirmEmail = "Email addresses do not match.";
     }
 
-    if (!phone) {
-      newErrors.phone = "Please enter your mobile number.";
-    }
-
-    if (!account.username) {
-      newErrors.username = "Please enter your username.";
-    }
-
-    if (!account.passportID && !props.isGuess) {
-      newErrors.passportID = "Please enter your passport ID.";
-    }
-
-    if (!account.password) {
-      newErrors.password = "Please enter your password.";
-    } else if (account.password.length < 8) {
+    if (account.password.length < 8) {
       newErrors.password = "Password must be at least 8 characters long.";
     }
 
@@ -128,22 +74,20 @@ const Register = (props) => {
       newErrors.confirmPassword = "Passwords do not match.";
     }
 
-    if (!acceptTerms) {
-      newErrors.acceptTerms = "Please accept the terms and conditions.";
-    }
-
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      return;
+    } else {
+      setTimeout(() => {
+        setRegisterSuccess(true);
+      }, 1000);
     }
 
-    console.log(e.username);
     // If no errors, you can proceed to submit the form to your backend
-    navigateToBooking();
+    //navigateToBooking();
   };
 
-  const navigateToBooking = () => {
-    navigate("/Booking");
+  const navigateToLogin = () => {
+    navigate("/");
   };
 
   var InputField = ({ label, placeholder, value, onChange, type = "text" }) => (
@@ -177,23 +121,18 @@ const Register = (props) => {
   );
 
   return (
-    <div className="background d-flex justify-content-center align-items-center vh-200 rounded-2">
+    <div className="background d-flex justify-content-center align-items-center vh-150 rounded-2">
       <section id="regAll">
         <div>
           <h1 className="HeadReg">Your Information</h1>
-          {props.isGuess ? (
-            <p className="HeadReg">
-              Please fill the above information to continue.
-            </p>
-          ) : (
-            <p className="HeadReg">
-              Become a member and enjoy exclusive promotions and endless
-              opportunities to earn miles both in flight and on the ground doing
-              everyday things. You can use your miles for flights to nearly
-              1,000 destinations worldwide, upgrades, vacations, car rentals,
-              hotel stays, and more.
-            </p>
-          )}
+
+          <p className="HeadReg">
+            Become a member and enjoy exclusive promotions and endless
+            opportunities to earn miles both in flight and on the ground doing
+            everyday things. You can use your miles for flights to nearly 1,000
+            destinations worldwide, upgrades, vacations, car rentals, hotel
+            stays, and more.
+          </p>
         </div>
 
         <div className="information p-5">
@@ -255,9 +194,6 @@ const Register = (props) => {
                     <option value="Other">Other</option>
                   </select>
                 </div>
-                {errors.gender && (
-                  <span className="text-danger">{errors.gender}</span>
-                )}
               </div>
             </div>
 
@@ -280,36 +216,28 @@ const Register = (props) => {
                   />
                 </div>
 
-                {!props.isGuess && (
-                  <div className="col">
-                    <label className="nameInfo">City</label>
-                    <input
-                      placeholder="Enter your city"
-                      type="text"
-                      className="form-control"
-                      required
-                      value={name.city}
-                      onChange={(value) => {
-                        handleInputChange("address", {
-                          city: value.target.value,
-                        });
-                      }}
-                    />
-                  </div>
-                )}
+                <div className="col">
+                  <label className="nameInfo">City</label>
+                  <input
+                    placeholder="Enter your city"
+                    type="text"
+                    className="form-control"
+                    required
+                    value={name.city}
+                    onChange={(value) => {
+                      handleInputChange("address", {
+                        city: value.target.value,
+                      });
+                    }}
+                  />
+                </div>
               </div>
 
               <div className="row g-3">
                 <div className="col">
-                  <label className="nameInfo">
-                    {props.isGuess ? "Address" : "Address line 1"}
-                  </label>
+                  <label className="nameInfo">Address line 1</label>
                   <input
-                    placeholder={
-                      props.isGuess
-                        ? "Enter your address"
-                        : "Enter Address line 1"
-                    }
+                    placeholder="Enter Address line 1"
                     type="text"
                     className="form-control"
                     required
@@ -322,23 +250,20 @@ const Register = (props) => {
                   />
                 </div>
 
-                {!props.isGuess && (
-                  <div className="col">
-                    <label className="nameInfo">Address line 2</label>
-                    <input
-                      placeholder="Enter your address line 2"
-                      type="text"
-                      className="form-control"
-                      required
-                      value={address.line2}
-                      onChange={(value) => {
-                        handleInputChange("address", {
-                          line2: value.target.value,
-                        });
-                      }}
-                    />
-                  </div>
-                )}
+                <div className="col">
+                  <label className="nameInfo">Address line 2</label>
+                  <input
+                    placeholder="Enter your address line 2"
+                    type="text"
+                    className="form-control"
+                    value={address.line2}
+                    onChange={(value) => {
+                      handleInputChange("address", {
+                        line2: value.target.value,
+                      });
+                    }}
+                  />
+                </div>
               </div>
             </div>
 
@@ -399,7 +324,7 @@ const Register = (props) => {
 
             <div className="subInfo">
               <h4 className="regHeading">Your account</h4>
-              {props.isGuess ? (
+              <div>
                 <div className="row g-3">
                   <div className="col">
                     <label className="nameInfo">Passport ID</label>
@@ -432,83 +357,48 @@ const Register = (props) => {
                     />
                   </div>
                 </div>
-              ) : (
-                <div>
-                  <div className="row g-3">
-                    <div className="col">
-                      <label className="nameInfo">Passport ID</label>
-                      <input
-                        placeholder="Enter your passport ID"
-                        type="text"
-                        className="form-control"
-                        required
-                        value={account.passportID}
-                        onChange={(value) => {
-                          handleInputChange("account", {
-                            passportID: value.target.value,
-                          });
-                        }}
-                      />
-                    </div>
-                    <div className="col">
-                      <label className="nameInfo">Username</label>
-                      <input
-                        placeholder="Enter your username"
-                        type="text"
-                        className="form-control"
-                        required
-                        value={account.username}
-                        onChange={(value) => {
-                          handleInputChange("account", {
-                            username: value.target.value,
-                          });
-                        }}
-                      />
-                    </div>
+                <div className="row g-3">
+                  <div className="col">
+                    <label className="nameInfo">Password</label>
+                    <input
+                      placeholder="Enter strong password"
+                      type="password"
+                      className="form-control"
+                      required
+                      value={account.password}
+                      onChange={(value) => {
+                        handleInputChange("account", {
+                          password: value.target.value,
+                        });
+                      }}
+                    />
                   </div>
-                  <div className="row g-3">
-                    <div className="col">
-                      <label className="nameInfo">Password</label>
-                      <input
-                        placeholder="Enter strong password"
-                        type="password"
-                        className="form-control"
-                        required
-                        value={account.password}
-                        onChange={(value) => {
-                          handleInputChange("account", {
-                            password: value.target.value,
-                          });
-                        }}
-                      />
-                    </div>
-                    {errors.password && (
-                      <span className="text-danger">{errors.password}</span>
-                    )}
+                  {errors.password && (
+                    <span className="text-danger">{errors.password}</span>
+                  )}
 
-                    <div className="col">
-                      <label className="nameInfo">Confirm Password</label>
-                      <input
-                        placeholder="Re-enter password"
-                        type="password"
-                        className="form-control"
-                        required
-                        value={account.confirmPassword}
-                        onChange={(value) => {
-                          handleInputChange("account", {
-                            confirmPassword: value.target.value,
-                          });
-                        }}
-                      />
-                    </div>
-                    {errors.confirmPassword && (
-                      <span className="text-danger">
-                        {errors.confirmPassword}
-                      </span>
-                    )}
+                  <div className="col">
+                    <label className="nameInfo">Confirm Password</label>
+                    <input
+                      placeholder="Re-enter password"
+                      type="password"
+                      className="form-control"
+                      required
+                      value={account.confirmPassword}
+                      onChange={(value) => {
+                        handleInputChange("account", {
+                          confirmPassword: value.target.value,
+                        });
+                      }}
+                    />
                   </div>
+                  {errors.confirmPassword && (
+                    <span className="text-danger">
+                      {errors.confirmPassword}
+                    </span>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
 
             <div className="subInfo">
@@ -518,13 +408,28 @@ const Register = (props) => {
                 onChange={(value) => setAcceptTerms(value)}
               />
 
-              <div className="col">
-                <button
-                  type="submit"
-                  className="btn btn-success btn-lg submitBtn1"
-                >
+              <div className="col submitBtn1">
+                <button type="submit" className="btn btn-dark btn-lg ">
                   Submit
                 </button>
+              </div>
+              <div className="col">
+                {registerSuccess && (
+                  <div className="successCont">
+                    <div className="success-message">
+                      <h3>Your registration was successful!</h3>
+                      <h1>Please login to continue.</h1>
+                    </div>
+                    <div className="submitBtn1">
+                      <button
+                        className="btn btn-dark btn-lg "
+                        onClick={navigateToLogin}
+                      >
+                        click here
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </form>
@@ -532,6 +437,6 @@ const Register = (props) => {
       </section>
     </div>
   );
-};
+}
 
 export default Register;

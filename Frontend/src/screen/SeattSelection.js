@@ -1,4 +1,3 @@
-import { Collapse } from "bootstrap";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -29,7 +28,15 @@ const airplaneModels = [
   },
 ];
 
-function generateSeats(numRows, seatsPerRow, type, handle) {
+function generateSeats(
+  numRows,
+  seatsPerRow,
+  type,
+  handle,
+  navigate,
+  setError,
+  setSeatSelectionError // Add setSeatSelectionError to the function parameters
+) {
   let seatNumber = 1;
   const seats = [];
   const selectedSeats = [];
@@ -57,12 +64,19 @@ function generateSeats(numRows, seatsPerRow, type, handle) {
   }
 
   seats.push(
-    <div>
+    <div className="btnContinue">
       <button
         type="button"
-        class="btn btn-secondary btn-lg btnContinue"
+        class="btn btn-dark btn-lg "
         onClick={() => {
           handle(selectedSeats);
+          if (selectedSeats.length === 1) {
+            navigate("/payment");
+            setError(""); // Clear any existing errors
+            setSeatSelectionError(""); // Clear seat selection error
+          } else {
+            setSeatSelectionError("Please select only one seat."); // Set seat selection error
+          }
         }}
       >
         Next
@@ -78,20 +92,10 @@ function SeatSelection() {
   const [selectedModel, setSelectedModel] = useState(airplaneModels[0].name);
   const [selectedClass, setSelectedClass] = useState("Platinum");
   const [error, setError] = useState(""); // Add error state
-  const [selectedNumber, setSelectedNumber] = useState("");
+  const [seatSelectionError, setSeatSelectionError] = useState(""); // New error state
   const navigate = useNavigate();
-  const numberInputRef = useRef(null); // Ref for the number of passengers dropdown
 
-  useEffect(() => {
-    if (error) {
-      // Set focus to the number of passengers dropdown when an error occurs
-      numberInputRef.current.focus();
-    }
-  }, [error]);
-
-  const handleNumberChange = (e) => {
-    setSelectedNumber(e.target.value);
-  };
+  // useEffect to handle seatSelectionError changes
 
   const handleModelChange = (event) => {
     setSelectedModel(event.target.value);
@@ -143,9 +147,29 @@ function SeatSelection() {
           selectedClass,
           (seats) => {
             setSelectedSeats(seats);
+
             console.log(seats);
-          }
+          },
+          navigate,
+          setError,
+          setSeatSelectionError
         )}
+        <div>
+          {seatSelectionError && (
+            <p
+              className="error"
+              style={{
+                color: "#C70039",
+                display: "flex",
+                justifyContent: "center",
+                width: "100%",
+                fontWeight: "bold",
+              }}
+            >
+              {seatSelectionError}
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );

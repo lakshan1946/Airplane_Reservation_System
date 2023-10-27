@@ -1,29 +1,23 @@
+// Import required modules
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import {
-  getAirplane,
-  getAirplanes,
-  createUser,
-  getFlightSchedule,
-} from "./database.js";
+import { getFlightSchedule } from "./database.js"; // Importing a function from another file
 
+// Create an Express application
 const app = express();
-app.use(cors());
-app.use(bodyParser.json());
+app.use(cors()); // Enable CORS (Cross-Origin Resource Sharing) for all routes
+app.use(bodyParser.json()); // Parse incoming JSON requests
 
-app.get("/ip", async function (req, res) {
+// Define a route for the root endpoint "/"
+app.get("/", async function (req, res) {
+  // Call the getFlightSchedule function asynchronously and wait for the result
   const result = await getFlightSchedule();
+  // Send the result as a JSON response
   res.json(result);
 });
 
-app.post("/login", (req, res) => {
-  console.log(req.body);
-  let { username, password } = req.body;
-
-  res.json({ message: "submitted" });
-});
-
+// Start the server and listen on port 5000
 app.listen(5000, function () {
-  console.log("Server is running on port 5000");
+  console.log("Server is running on port 5000"); // Log a message when the server starts
 });

@@ -15,7 +15,7 @@ const data = [
     booking: "7",
   },
 ];
-function DateDestinationCard(props) {
+function DateTypeCard({ data }) {
   return (
     <div className="card-body">
       <table className="">
@@ -26,12 +26,14 @@ function DateDestinationCard(props) {
             <th>Last Name</th>
             <th>No of bookings</th>
           </tr>
-          <tr>
-            <td>{props.PID}</td>
-            <td>{props.Fname}</td>
-            <td>{props.Lname}</td>
-            <td>{props.booking}</td>
-          </tr>
+          {data.map((p) => (
+            <tr>
+              <td>{p.PID}</td>
+              <td>{p.Fname}</td>
+              <td>{p.Lname}</td>
+              <td>{p.booking}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
@@ -44,6 +46,7 @@ function DateDestination() {
 
   const handleBookingsSubmit = async (e) => {
     e.preventDefault();
+    console.log(startDate, endDate);
     // const bookings = await getBookingsByPassengerType(startDate, endDate);
     // console.log("Bookings by passenger type:", bookings);
   };
@@ -81,14 +84,7 @@ function DateDestination() {
       {active && (
         <div>
           <div className="cards FlightCardMap">
-            {data.map((flight) => (
-              <DateDestinationCard
-                PID={flight.PID}
-                Fname={flight.Fname}
-                Lname={flight.Lname}
-                booking={flight.booking}
-              />
-            ))}
+            {<DateTypeCard data={data} />}
           </div>
         </div>
       )}

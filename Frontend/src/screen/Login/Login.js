@@ -35,7 +35,8 @@ function Login({ setUserIsGuess, userIsGuess }) {
     // Check if the provided username and password are correct
     if (authenticateUser(username, password)) {
       // If correct, navigate to the Booking page
-      navigateToBooking();
+      navigateToRegUserProfile(username);
+      console.log(event.target.values);
     } else if (adminUSer(username, password)) {
       navigateToReport();
     } else {
@@ -45,8 +46,8 @@ function Login({ setUserIsGuess, userIsGuess }) {
     }
   };
 
-  const navigateToBooking = () => {
-    navigate("/Booking");
+  const navigateToRegUserProfile = (username) => {
+    navigate(`/RegUserProfile/${username}`);
   };
 
   const navigateToReport = () => {
@@ -113,13 +114,8 @@ function Login({ setUserIsGuess, userIsGuess }) {
             <strong>OR</strong>
           </p>
           <Link
-            to="/Booking"
+            to="/Guest"
             className="btn btn-default border w-100 bg-light text-decoration-none"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate("/Booking");
-              setUserIsGuess(true);
-            }}
           >
             Visit as a guest
           </Link>

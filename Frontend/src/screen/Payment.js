@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
 function Payment() {
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+
   const [formData, setFormData] = useState({
     name: "",
     cardNumber: "",
@@ -72,12 +74,15 @@ function Payment() {
     let formErrors = {};
 
     // Validation logic
+
     if (!formData.name.trim()) {
       formErrors.name = "Name on card is required";
     }
-    if (!/^\d{16}$/.test(formData.cardNumber.trim())) {
+    const cardNumberWithoutSpaces = formData.cardNumber.replace(/\s/g, ""); // Remove spaces
+    if (!/^\d{16}$/.test(cardNumberWithoutSpaces)) {
       formErrors.cardNumber = "Invalid card number (16 digits required)";
     }
+
     if (!/^\d{3,4}$/.test(formData.cvv.trim())) {
       formErrors.cvv = "Invalid CVV (3 or 4 digits required)";
     }
@@ -88,24 +93,25 @@ function Payment() {
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
     } else {
-      // If no errors, proceed with payment processing logic
-      // For example, you can make an API call to process the payment
-      // Replace YOUR_API_ENDPOINT with the actual endpoint for payment processing
-      fetch("YOUR_API_ENDPOINT", {
-        method: "POST",
-        body: JSON.stringify(formData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          // Handle the response from the payment processing API
-          console.log("Payment successful!", data);
-        })
-        .catch((error) => {
-          console.error("Error occurred while processing payment:", error);
+      // Simulate payment processing (replace this with your actual payment processing logic)
+      setTimeout(() => {
+        // Display payment success message
+        setPaymentSuccess(true);
+
+        // Reset form data and errors after successful payment
+        setFormData({
+          name: "",
+          cardNumber: "",
+          expiry: "",
+          cvv: "",
         });
+        setErrors({
+          name: "",
+          cardNumber: "",
+          expiry: "",
+          cvv: "",
+        });
+      }, 1000); // Simulating a delay of 1 second for payment processing (remove this line in real implementation)
     }
   };
 
@@ -262,7 +268,13 @@ function Payment() {
               </form>
             </div>
           </div>
-          <div className="col"></div>
+          <div className="col">
+            {paymentSuccess && (
+              <div className="success-message">
+                Payment Successful! Thank you for your purchase.
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
