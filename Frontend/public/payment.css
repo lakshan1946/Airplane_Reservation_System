@@ -5,10 +5,14 @@ body{
 
 .container{
 
-    height: 100vh;
+    height: auto;
+    
 
 }
 
+#scon{
+    max-width: 100%!important;
+}
 
 .card{
     border:none;
@@ -111,4 +115,13 @@ input::-webkit-inner-spin-button {
 
     text-decoration: none;
     color: #fdcc49; 
+}
+
+.x{
+    margin: 0px;
+}
+
+.paymentText{
+    margin:0 !important;
+    padding: 10px;
 }

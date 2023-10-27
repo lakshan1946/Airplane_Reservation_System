@@ -1,11 +1,16 @@
 .background {
   font-family: sans-serif;
   margin: 0;
-  background-image: url("images/plane4.jpeg"); /* Replace 'your-image-file.jpg' with the actual file name and path */
-  background-size: cover; /* Ensures the image covers the entire background */
-  background-repeat: no-repeat; /* Prevents image repetition */
-  background-attachment: fixed; /* Fixes the background image, so it doesn't scroll with the content */
-  background-position: center center; /* Centers the image horizontally and vertically */
+  background-image: url("images/plane4.jpeg");
+  /* Replace 'your-image-file.jpg' with the actual file name and path */
+  background-size: cover;
+  /* Ensures the image covers the entire background */
+  background-repeat: no-repeat;
+  /* Prevents image repetition */
+  background-attachment: fixed;
+  /* Fixes the background image, so it doesn't scroll with the content */
+  background-position: center center;
+  /* Centers the image horizontally and vertically */
 }
 
 .signup {
@@ -35,13 +40,16 @@
   background-color: #001524;
   color: white;
 }
+
 .nav-item {
   color: #d0d4ca;
   font-size: 14px;
 }
+
 .nav-item:hover {
   color: #80b3ff;
 }
+
 .owner {
   background-color: #001524;
 }
@@ -51,13 +59,16 @@
 .information {
   background-color: rgba(255, 255, 255, 0.5);
 }
+
 #regAll {
   margin: 5% 30%;
 }
+
 .information {
-  padding: 5% 10%;
+  margin-bottom: 50px;
   border-radius: 10px;
 }
+
 .subInfo {
   margin-bottom: 50px;
   font-family: 'Roboto', sans-serif;
@@ -67,29 +78,58 @@
   font-weight: bold;
   padding-bottom: 15px;
 }
+
 .col {
   padding-bottom: 20px;
 }
+
 .nameInfo {
   padding-bottom: 10px;
   font-weight: bold;
   font-family: 'Montserrat', sans-serif;
 }
+
 .submitBtn1 {
-  float: right;
-  margin-top: 20px;
+  justify-content: center;
+  display: flex;
+  padding-top: 10px;
 }
 
 .HeadReg {
   color: white;
   text-align: center;
+  padding: 20px;
+  font-weight: bold;
 }
+
+p.HeadReg {
+  color: #F8DE22;
+  font-family: 'Playpen Sans', cursive;
+}
+
+.success-message {
+  color: #900C3F;
+  font-size: 20px;
+  text-align: center;
+}
+
+.successCont {
+  padding: 20px;
+}
+
+.submitBtn2 {
+  position: relative;
+  left: 190px;
+  margin-top: 20px;
+}
+
 
 /* Booking */
 
 .searchHead {
   color: white;
 }
+
 .text-center {
   margin: 50px;
 }
@@ -97,21 +137,36 @@
 #flight-search-form {
   padding: 0 20% 5%;
 }
+
 .allrow {
   margin-bottom: 50px;
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 10px;
   padding: 7%;
 }
+
 .availableFlight {
   text-align: center;
   color: #fff6dc;
 }
 
 .submitBtn {
- position: relative;
- left: 380px;
-  
+  position: relative;
+  left: 380px;
+
+}
+
+.FlightCardMap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 50px;
+}
+
+#con {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 /*payment*/
@@ -119,7 +174,134 @@
 .paymentText {
   margin: 50px;
 }
-.card{
-  background-color: rgba(255, 255, 255, 0.5) !important;
+
+.card {
+  background-color: rgba(255, 255, 255, 0.7) !important;
 }
 
+/* cards */
+
+.cards {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  margin-bottom: auto;
+}
+
+.card-img-top {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.flightCardTable {
+  margin: 20px;
+  background-color: #EBF3E8;
+  border-radius: 10px;
+}
+
+.flightCardTable tr th {
+  padding: 5px 30px 0px 10px;
+}
+
+.flightCardTable tr td {
+  padding-right: 10px;
+}
+
+/*Report*/
+
+#reportHome {
+  display: flex;
+  padding: 50px;
+  justify-content: center;
+}
+
+#reportProfile {
+  background-color: rgba(255, 255, 255, 0.7);
+  margin: 0px 20px;
+  padding: 30px;
+  border-radius: 20px;
+
+}
+
+#reportButton {
+  background-color: rgba(255, 255, 255, 0.7);
+  margin: 10px 20px;
+  padding: 30px;
+  border-radius: 20px;
+
+}
+
+.btnAdmin {
+  padding: 10px !important;
+  margin: 10px !important;
+}
+
+#imgAdmin {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: 50px;
+
+}
+
+.admincomp {
+
+  justify-content: center !important;
+  width: 50%;
+  padding: 70px;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+/*Register user profile */
+
+.RegUserHead {
+  color: white;
+  text-align: center;
+  padding: 20px;
+  font-weight: bold;
+}
+
+.RegUserContent {
+  background-color: rgba(255, 255, 255, 0.7);
+  justify-content: center;
+  padding: 10px;
+  width: fit-content;
+  border-radius: 20px;
+  margin: 50px;
+}
+
+h3.RegUserSubHead {
+  color: #352F44;
+  text-align: center;
+  padding: 30px 0;
+  font-weight: bold;
+
+}
+
+.RegUserData {
+  padding: 7px 20px;
+}
+
+.RegUserTable {
+  justify-content: center;
+}
+
+.selected {
+  background-color: yellow;
+  /* Change the background color to your desired color */
+  /* Add more styles as needed */
+}
+
+.cont {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+}
+
+.btnCont {
+  justify-content: center;
+  display: flex;
+  padding: 20px;
+}

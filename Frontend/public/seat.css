@@ -1,38 +1,38 @@
-*{
+* {
     box-sizing: border-box;
 }
 
-.airplane{
+.airplane {
     margin: 50px auto;
     padding-bottom: 50px;
     max-width: 30%;
-    background-color:rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.5);
     border-radius: 50px;
-    
-   
+
+
 }
 
-.seatHeading{
+.seatHeading {
     text-align: center;
     margin: 30px;
     font-size: 3.5rem;
     color: white;
-    
+
 }
 
-.selectionControls{
-   text-align: center;
-   padding: 20px;
-   background-color:rgba(255, 255, 255, 0.5);
-   margin: 0 35%;
-   border-radius: 50px;
+.selectionControls {
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.5);
+    margin: 0 35%;
+    border-radius: 50px;
 }
 
-.subP{
-padding: 10px;
+.subP {
+    padding: 10px;
 }
 
-.seatHeadingSub{
+.seatHeadingSub {
     height: 50px;
     position: relative;
     overflow: hidden;
@@ -41,8 +41,8 @@ padding: 10px;
     color: #192655;
     font-family: 'Permanent Marker', cursive;
 }
-  
-.seats{
+
+.seats {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -52,16 +52,16 @@ padding: 10px;
 .Platinum_seat,
 .Business_seat,
 .Economy_seat {
-  display: flex;
-  flex: 0 0 14.28%;
-  padding: 3px;
-  position: relative;
-  /* Add other styles as needed */
+    display: flex;
+    flex: 0 0 14.28%;
+    padding: 3px;
+    position: relative;
+    /* Add other styles as needed */
 }
 
 
 
-.classType{
+.classType {
     text-align: center;
     margin: 100px auto 50px auto;
 }
@@ -75,14 +75,14 @@ padding: 10px;
 
 
 /* Style for checked checkboxes in the selected airplane model and class */
-.airplane .seats input[type=checkbox]:checked + label {
+.airplane .seats input[type=checkbox]:checked+label {
     background: #656e65;
 }
 
 
 /* Platinum seat */
 
-.Platinum_seat label{
+.Platinum_seat label {
     display: block;
     position: relative;
     width: 80px;
@@ -90,25 +90,25 @@ padding: 10px;
     font-size: 14px;
     font-weight: bolder;
     line-height: 1.5rem;
-    padding: 4px 0 ;
+    padding: 4px 0;
     background: #5bfc60;
     border-radius: 10px;
     color: black;
 }
 
-.Platinum_seat label:hover{
+.Platinum_seat label:hover {
     cursor: pointer;
     box-shadow: 0 0 0px 2px green;
 }
 
 
-.Platinum_seat:nth-child(2){
+.Platinum_seat:nth-child(2) {
     margin-right: 10%;
 }
 
 /* Business seat */
 
-.Business_seat label{
+.Business_seat label {
     display: block;
     position: relative;
     width: 70px;
@@ -116,24 +116,24 @@ padding: 10px;
     font-size: 14px;
     font-weight: bolder;
     line-height: 1.5rem;
-    padding: 4px 0 ;
+    padding: 4px 0;
     background: #FF7676;
     border-radius: 10px;
     color: black;
 }
 
-.Business_seat label:hover{
+.Business_seat label:hover {
     cursor: pointer;
     box-shadow: 0 0 0px 2px #FF4B91;
 }
 
-.Business_seat:nth-child(2){
+.Business_seat:nth-child(2) {
     margin-right: 10%;
 }
 
 /* Economy seat */
 
-.Economy_seat label{
+.Economy_seat label {
     display: block;
     position: relative;
     width: 50px;
@@ -141,26 +141,26 @@ padding: 10px;
     font-size: 14px;
     font-weight: bolder;
     line-height: 1.5rem;
-    padding: 4px 0 ;
+    padding: 4px 0;
     background: #64CCC5;
     border-radius: 10px;
     color: black;
 }
 
-.Economy_seat label:hover{
+.Economy_seat label:hover {
     cursor: pointer;
     box-shadow: 0 0 0px 2px #176B87;
 }
 
-.Economy_seat:nth-child(3){
+.Economy_seat:nth-child(3) {
     margin-right: 10%;
 }
 
 /*Button */
 
-.btnContinue{
-    position: relative;
-    left: 58%;
-    margin-bottom: 30px;
-    
+.btnContinue {
+    justify-content: center;
+    display: flex;
+    padding: 20px;
+
 }
