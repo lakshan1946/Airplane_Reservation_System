@@ -1,7 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import validation from "./LoginValidation";
+import LoginValidation from "./LoginValidation";
 import axios from 'axios';
+
+
+const authenticateUser = (username, password) => {
+  // Check if the provided username and password are '123' and '456' respectively
+  
+  return username === "123" && password === "456";
+};
+const adminUSer = (username, password) => {
+  // Check if the provided username and password are '123' and '456' respectively
+  return username === "Lakshan" && password === "123456";
+};
 
 function Login({ setUserIsGuess, userIsGuess }) {
   const [values, setValues] = useState({
@@ -9,24 +20,31 @@ function Login({ setUserIsGuess, userIsGuess }) {
     password: "",
   });
 
-  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
 
+  const navigate = useNavigate();
   const handleInput = (event) => {
     setValues((prev) => ({
       ...prev,
-      [event.target.name]: [event.target.value],
+      [event.target.name]: event.target.value,
     }));
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
+    //setErrors(LoginValidation(values));
+    const { username, password } = values;
+
+
+    // Check if the provided username and password are correct
   
-    axios
+    if (adminUSer(username, password)) {
+      navigateToReport();
+    } else {
+      axios
       .post('/login', { values })
       .then((response) => {
-        console.log(response)
-        console.log("aefffffffffff")
-        navigate("/Booking");
+        navigateToRegUserProfile(username)
       })
       .catch((error) => {
         console.error('Error:', error.message);
@@ -35,16 +53,22 @@ function Login({ setUserIsGuess, userIsGuess }) {
         setErrors('An error occurred. Please try again later.');
       });
   
-    setErrors(validation(values));
+    setErrors(LoginValidation(values));
+    }
   };
 
- 
+  const navigateToRegUserProfile = (username) => {
+    navigate(`/RegUserProfile/${username}`);
+  };
 
+  const navigateToReport = () => {
+    navigate("/Report");
+  };
   return (
     <div className="background d-flex justify-content-center align-items-center vh-100 rounded-2">
       <div className="signup p-3 rounded w-25">
         <h2>Sign-in</h2>
-        <form action="" onSubmit={handleSubmit}>
+        <form action="post" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="username" className="form-label">
               <strong>username</strong>
@@ -101,13 +125,8 @@ function Login({ setUserIsGuess, userIsGuess }) {
             <strong>OR</strong>
           </p>
           <Link
-            to="/Booking"
+            to="/Guest"
             className="btn btn-default border w-100 bg-light text-decoration-none"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate("/Booking");
-              setUserIsGuess(true);
-            }}
           >
             Visit as a guest
           </Link>
@@ -118,4 +137,3 @@ function Login({ setUserIsGuess, userIsGuess }) {
 }
 
 export default Login;
-

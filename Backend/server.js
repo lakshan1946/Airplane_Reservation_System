@@ -4,12 +4,14 @@ import cors from 'cors';
 
 import { loginUser } from './database.js'; // Adjust the path as needed
 import { registerUser } from './database.js'; // Adjust the path as needed
+import { regprofileuser } from './database.js';
+import { guestUser } from './database.js';
+import { age_constr } from './database.js';
 
 const app = express();
 app.use(cors());
 
 const port = process.env.PORT || 5000;
-
 
 app.use(bodyParser.json());
 
@@ -23,6 +25,21 @@ app.post('/register', (req, res) => {
   registerUser(req, res);
 });
 
+app.post('/booking', (req, res) => {
+  registerUser(req, res);
+});
+
+app.post('/reguserprofile', (req, res) => {
+  regprofileuser(req, res);
+});
+
+app.post('/age_constraint', (req, res) => {
+  age_constr(req, res);
+});
+
+app.post('/guest', (req, res) => {
+  guestUser(req, res);
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {

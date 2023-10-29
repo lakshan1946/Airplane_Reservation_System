@@ -157,7 +157,7 @@ const Register = (props) => {
       // Send a POST request to your backend API for user registration
       axios.post('/register', userData)
         .then((response) => {
-          navigate("/Booking");
+          navigate("/");
         })
         .catch((error) => {
           console.error(error);

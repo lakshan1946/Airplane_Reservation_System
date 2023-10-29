@@ -16,7 +16,7 @@ db.connect((err) => {
     console.log('Connected to MySQL database');
   }
 });
-
+let temp="";
 export const loginUser = (req, res) => {
     // API endpoint to check username and password and get Passport_ID
     const { values } = req.body; // Destructure the "values" object
@@ -37,22 +37,76 @@ export const loginUser = (req, res) => {
       } else if (results.length === 0) {
         // Alert when username and password do not match
         console.log("username and password do not match")
-        res.status(401).json({ message: 'Username and password do not match' });
       } else {
         const passportID = results[0].Passport_ID;
-        console.log(passportID)
+        temp=passportID;
         return res.json({ success: true, message: 'User registered successfully' });
       }
     }); 
   };
 
+  export const regprofileuser = (req, res) => {
+
+    
+    console.log("Has")
+    const sql = "SELECT `Passport_ID`, `UserName`, `First_Name`, `Last_Name`, `Phone_No`, `email`, `gender`, `Address_Line_01`, `Address_Line_02`, `City`, `Country`, `No_of_bookings`, `Membership_status` FROM `registered_user` WHERE `Passport_ID` = ?";
+    const val=[temp]
+    console.log(temp)
+    db.query(sql, val, (err, results) => {
+      if (err) {
+        console.error('Error querying the database:', err);
+        res.status(500).json({ message: 'Error querying the database' });
+      } else if (results.length === 0) {
+        // Alert when username and password do not match
+        console.log("username and password do not match")
+        res.status(401).json({ message: 'Username and password do not match' });
+      } else {
+        console.log(results[0])
+        return res.json({ message: results[0]});
+      }
+    }); 
+    
+    
+  };
+
+  export const guestUser = (userData, callback) => {
+    const data = userData.body;
+    console.log(data)
   
-  export const registerUser = async (userData, callback) => {
+    try {
+            db.execute('CALL Add_Visiting_User(?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+            data.passportID,
+            data.firstName,
+            data.lastName,
+            data.phone,
+            data.dateOfBirth,
+            data.line,
+            data.country,
+            data.email,
+            data.gender
+        ]);
+
+        // Registration was successful, so return a success response
+        return callback.json({ success: true, message: 'User registered successfully' });
+
+    } catch (err) {
+        console.error('Error registering user:', err);
+        // Check if the callback is a function before calling it
+        if (typeof callback === 'function') {
+            callback(err, null);
+        } else {
+            console.error('Callback is not a function.');
+        }
+    }
+};
+
+
+  export const registerUser =  (userData, callback) => {
     const data = userData.body;
     console.log(data);
   
     try {
-      await db.execute('CALL User_Register(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+       db.execute('CALL User_Register(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
         data.passportID,
         data.username,
         data.password,
@@ -81,4 +135,38 @@ export const loginUser = (req, res) => {
       }
     }
   };
+
+  export const age_constr = (userData, callback) => {
+    const data = userData.body;
+  
+    // Assign below_18 based on the condition
+
+    let below_18;
+
+    if (data.age === 'below') {
+      below_18 = 1;
+    } else {
+      below_18 = 0;
+    }
+
+
+
+  
+    const sql = 'CALL FUNCTION_1(?, ?)';
+    const val = [data.flightNo, below_18];
+ // Corrected variable name
+    db.query(sql, val, (err, results) => {
+      if (err) {
+        console.error('Error querying the database:', err);
+        res.status(500).json({ message: 'Error querying the database' });
+      } else if (results.length === 0) {
+        // Alert when username and password do not match
+        console.log("username and password do not match");
+        res.status(401).json({ message: 'Username and password do not match' });
+      } else {
+        console.log(results[0]);
+        return callback.json({ message: results[0] });
+      }
+    });
+  }
   
