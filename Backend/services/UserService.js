@@ -1,4 +1,4 @@
-import RegisteredUser from "../models/User";
+import RegisteredUser from "../models/User.js";
 
 class UserService {
     static async register(userData, callback) {
@@ -9,8 +9,8 @@ class UserService {
                 data.passportID,
                 data.username,
                 data.password,
-                data.firstname,
-                data.lastname,
+                data.firstName,
+                data.lastName,
                 data.phone,
                 data.gender,
                 data.email,

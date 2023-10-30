@@ -1,5 +1,5 @@
-import pool from '../config/db';
-import ymd from '../helpers/dateTimeFormat'
+import pool from '../config/db.js';
+import {ymd} from '../helpers/dateTimeFormat.js'
 
 class RegisteredUser {
     static async userRegister(Passport_ID, UserName, Password, First_Name, Last_Name, 

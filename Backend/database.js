@@ -1,13 +1,12 @@
 import pool from "./config/db.js";
 import {ymd, ymdhms} from "./helpers/dateTimeFormat.js";
+import Flight from "./models/Flight.js";
+
 
 export async function getAirplanes() {
   const [row] = await pool.query("select * from airplane");
   return row;
 }
-
-// const result = await getAirplanes();
-// console.log(result);
 
 export async function getAirplane(plane_ID) {
   const [row] = await pool.query(
@@ -30,7 +29,5 @@ export async function createUser(Passport_ID, User_type) {
   return result;
 }
 
-//const result = await createUser("PassportID5", "Guest");
-//console.log(result);
-//const airplane = await getAirplane(100);
-//console.log(airplane);
+// const result = await Flight.getPlane(10);
+// console.log(result);

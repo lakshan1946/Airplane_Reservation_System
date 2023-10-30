@@ -1,35 +1,86 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
+import axios from 'axios';
+
+const flight = [];
+
+function BookingCard({ flight }) {
+  const navigate = useNavigate();
+
+  const navigatetoseatselection = (FlightID) => {
+    navigate(`/seatselection/${FlightID}`)
+  }
+
+  return (
+    <div id="con" className="card-body">
+      <table className="FlightCardT">
+        <tbody>
+          <tr>
+            <th className="FlightCardTh">Flight No</th>
+            <th className="FlightCardTh">Model</th>
+            <th className="FlightCardTh">Departure date and time</th>
+            <th className="FlightCardTh">Arrival date and time</th>
+            <th className="FlightCardTh">Booking</th>
+          </tr>
+          {flight.map((p) => (
+            <tr>
+              <td className="FlightCardTd">{p.Flight_Name}</td>
+              <td className="FlightCardTd">{p.Model}</td>
+              <td className="FlightCardTd">{p.Departure_Date_Time}</td>
+              <td className="FlightCardTd">{p.Arrival_Date_Time}</td>
+              <td className="FlightCardTd">
+                <div>
+                  <button 
+                    className="btn btn-primary"
+                    onClick={() => navigatetoseatselection(p.Flight_ID)}                  
+                  >Book</button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
 
 const Booking = () => {
   // State to manage input values
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
-  const navigate = useNavigate();
+  const [departureDate, setDepartureDate] = useState("");
+  const [active, setActive] = useState(false);
 
   // State to store search results
   const [searchResults, setSearchResults] = useState([]);
 
   // Function to handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    await setActive(false)
+    await flight.splice(0, flight.length)
     // Perform flight search logic here
     // You can make API calls to retrieve flight data
     // For this example, let's assume we have a predefined list of flights
 
-    const flights = [
-      { origin: "CGK", destination: "BKK", flightNumber: "BA101" },
-      { origin: "BIA", destination: "DEL", flightNumber: "BA202" },
-      // Add more flight data here
-    ];
+    const flightdata = {
+      origin,
+      destination,
+      dDate: departureDate
+    }
 
-    const filteredFlights = flights.filter(
-      (flight) => flight.origin === origin && flight.destination === destination
-    );
-
-    setSearchResults(filteredFlights);
+    await axios.post('/booking', flightdata)
+      .then(res => {
+        flight.push(res.data);
+      })
+      .catch(err => {
+        console.error(err)
+      })
+    
+    setActive(true);
+    setSearchResults(flight);
   };
-
+  
   // Function to handle origin selection
   const handleOriginChange = (e) => {
     setOrigin(e.target.value);
@@ -40,18 +91,17 @@ const Booking = () => {
     setDestination(e.target.value);
   };
 
+  // Function to handle departure date selection
+  const handleDepartureDateChange = (e) => {
+    setDepartureDate(e.target.value);
+  }
+
   return (
     <div className="container-fluid background p-3">
       <div className="d-flex justify-content-center align-items-center ">
         <div className="container-fluid">
           <h1 className="text-center searchHead">Find a Flight</h1>
-          <form
-            id="flight-search-form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              navigate("/Register");
-            }}
-          >
+          <form id="flight-search-form">
             <div className="row allrow col-sm-12">
               <div className="col-sm-12 col-md-4">
                 <div className="form-groupHome">
@@ -118,11 +168,19 @@ const Booking = () => {
                     id="departure-date"
                     name="departure-date"
                     required
+                    value={departureDate}
+                    onChange={handleDepartureDateChange}
                   />
                 </div>
               </div>
             </div>
-            <button type="submit" className="btn btn-primary btn-lg submitBtn">
+            <button
+              type="submit"
+              className="btn btn-primary btn-lg submitBtn"
+              onClick={ handleSubmit
+                // () => setActive(true)
+              }
+            >
               Let's go!
             </button>
           </form>
@@ -130,10 +188,17 @@ const Booking = () => {
       </div>
       <div className="row next-line text-center">
         <h2 className="availableFlight">Available Flights</h2>
-        <ul id="flight-results">
-          {/* Flight search results will be displayed here */}
-        </ul>
+        <ul id="flight-results"></ul>
       </div>
+
+      {/* Flight search results will be displayed here */}
+      {active && (
+        <div>
+          <div className="cards FlightCardMap">
+            {<BookingCard flight={flight} />}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

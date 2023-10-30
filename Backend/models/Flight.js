@@ -1,5 +1,5 @@
-import pool from "../config/db"
-import { ymdhms } from "../helpers/dateTimeFormat"
+import pool from "../config/db.js"
+import { ymdhms, ymd } from "../helpers/dateTimeFormat.js"
 
 class Flight {
     static async insertFlight(Origin, Destination, Departure_Date_Time, Arrival_Date_Time, plane_ID, Base_price) {
@@ -20,6 +20,7 @@ class Flight {
         
         flights[0].forEach(element => {
         element.Departure_Date_Time = ymdhms(new Date(element.Departure_Date_Time))
+        element.Arrival_Date_Time = ymdhms(new Date(element.Arrival_Date_Time))
         });
         return flights[0];
     }
@@ -39,15 +40,29 @@ class Flight {
 
     static async getFlightDetails(Flight_ID) {
         const [row] = await pool.query(
-        `
-        select
-        Flight_ID, origin as Origin, destination as Destination, Departure_Date_Time, Arrival_Date_Time 
-        from flight
-        where Flight_ID = ?`,
-            [Flight_ID]
+            `
+            select
+            Flight_ID, origin as Origin, destination as Destination, Departure_Date_Time, Arrival_Date_Time 
+            from flight
+            where Flight_ID = ?`,
+                [Flight_ID]
         );
         return row[0];
-      }
+    }
+
+    static async getPlane(Flight_ID) {
+        const [row] = await pool.query(
+            `
+            select 
+            Flight_ID, fl.Flight_Name, ap.Plane_ID, ap.model, Platinum_capacity, Business_capacity, Economy_capacity 
+	        from flight fl
+            inner join airplane ap on fl.Plane_ID = ap.Plane_ID
+            inner join airplane_model apm on ap.model = apm.model
+            where Flight_ID  = ?`,
+                [Flight_ID]
+        );
+        return row[0];
+    }
 }
 
 export default Flight;

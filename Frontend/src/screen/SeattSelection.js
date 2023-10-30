@@ -28,16 +28,29 @@ const airplaneModels = [
   },
 ];
 
-function generateSeats(numRows, seatsPerRow, type) {
+function generateSeats(
+  numRows,
+  seatsPerRow,
+  type,
+  handle,
+  navigate,
+  setError,
+  setSeatSelectionError // Add setSeatSelectionError to the function parameters
+) {
   let seatNumber = 1;
   const seats = [];
+  const selectedSeats = [];
 
   for (let i = 1; i <= numRows; i++) {
     const rowSeats = [];
     for (let j = 1; j <= seatsPerRow; j++) {
       rowSeats.push(
         <li key={`${i}${type.charAt(0)}${j}`} className={`${type}_seat`}>
-          <input type="checkbox" id={`${i}${type.charAt(0)}${j}`} />
+          <input
+            type="checkbox"
+            id={`${i}${type.charAt(0)}${j}`}
+            onClick={(event) => selectedSeats.push(event.target.id)}
+          />
           <label htmlFor={`${i}${type.charAt(0)}${j}`}>{seatNumber}</label>
         </li>
       );
@@ -50,27 +63,39 @@ function generateSeats(numRows, seatsPerRow, type) {
     );
   }
 
+  seats.push(
+    <div className="btnContinue">
+      <button
+        type="button"
+        class="btn btn-dark btn-lg "
+        onClick={() => {
+          handle(selectedSeats);
+          if (selectedSeats.length === 1) {
+            navigate("/payment");
+            setError(""); // Clear any existing errors
+            setSeatSelectionError(""); // Clear seat selection error
+          } else {
+            setSeatSelectionError("Please select only one seat."); // Set seat selection error
+          }
+        }}
+      >
+        Next
+      </button>
+    </div>
+  );
+
   return seats;
 }
 
 function SeatSelection() {
+  const [selectSeat, setSelectedSeats] = useState([]);
   const [selectedModel, setSelectedModel] = useState(airplaneModels[0].name);
   const [selectedClass, setSelectedClass] = useState("Platinum");
   const [error, setError] = useState(""); // Add error state
-  const [selectedNumber, setSelectedNumber] = useState("");
+  const [seatSelectionError, setSeatSelectionError] = useState(""); // New error state
   const navigate = useNavigate();
-  const numberInputRef = useRef(null); // Ref for the number of passengers dropdown
 
-  useEffect(() => {
-    if (error) {
-      // Set focus to the number of passengers dropdown when an error occurs
-      numberInputRef.current.focus();
-    }
-  }, [error]);
-
-  const handleNumberChange = (e) => {
-    setSelectedNumber(e.target.value);
-  };
+  // useEffect to handle seatSelectionError changes
 
   const handleModelChange = (event) => {
     setSelectedModel(event.target.value);
@@ -83,18 +108,6 @@ function SeatSelection() {
   const selectedAirplane = airplaneModels.find(
     (model) => model.name === selectedModel
   );
-  const handleNextClick = () => {
-    // Check if both number of passengers and class are selected
-    if (selectedNumber && selectedClass) {
-      if (parseInt(selectedNumber) > 1) {
-        navigate("/register");
-      } else {
-        navigate("/payment");
-      }
-    } else {
-      setError(true); // Set error state to true if number of passengers or class is not selected
-    }
-  };
 
   const selectedSeats = selectedAirplane.classes[selectedClass];
 
@@ -124,22 +137,6 @@ function SeatSelection() {
           </select>
         </label>
         <br></br>
-        <label className="subP">Number of passengers</label>
-        <select
-          value={selectedNumber}
-          onChange={handleNumberChange}
-          ref={numberInputRef} // Assign the ref to the number of passengers dropdown
-        >
-          <option value="">Select a number</option>
-          {[1, 2, 3, 4, 5].map((number) => (
-            <option key={number} value={number}>
-              {number}
-            </option>
-          ))}
-        </select>
-        {error && (
-          <p className="text-danger">Please select number of passengers</p>
-        )}
       </div>
       <div className="airplane">
         <h2 className="seatHeadingSub">{selectedModel}</h2>
@@ -147,17 +144,32 @@ function SeatSelection() {
         {generateSeats(
           selectedSeats / (selectedClass === "Economy" ? 6 : 4),
           selectedClass === "Economy" ? 6 : 4,
-          selectedClass
+          selectedClass,
+          (seats) => {
+            setSelectedSeats(seats);
+
+            console.log(seats);
+          },
+          navigate,
+          setError,
+          setSeatSelectionError
         )}
-      </div>
-      <div>
-        <button
-          type="button"
-          class="btn btn-secondary btn-lg btnContinue"
-          onClick={handleNextClick} // Handle click event for the Next button
-        >
-          Next
-        </button>
+        <div>
+          {seatSelectionError && (
+            <p
+              className="error"
+              style={{
+                color: "#C70039",
+                display: "flex",
+                justifyContent: "center",
+                width: "100%",
+                fontWeight: "bold",
+              }}
+            >
+              {seatSelectionError}
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
