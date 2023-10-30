@@ -15,7 +15,6 @@ function Guest() {
   const [phone, setPhone] = useState("");
   const [account, setAccount] = useState({
     passportID: "",
-    username: "",
   });
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [errors, setErrors] = useState({});
@@ -290,22 +289,6 @@ function Guest() {
                     }}
                   />
                 </div>
-
-                <div className="col">
-                  <label className="nameInfo">Username</label>
-                  <input
-                    placeholder="Enter your username"
-                    type="text"
-                    required
-                    className="form-control"
-                    value={account.username}
-                    onChange={(value) => {
-                      handleInputChange("account", {
-                        username: value.target.value,
-                      });
-                    }}
-                  />
-                </div>
               </div>
             </div>
 
@@ -326,7 +309,7 @@ function Guest() {
                 {guestEnterSuccess && (
                   <div className="successCont">
                     <div className="success-message">
-                      <h3>You enter details successfully</h3>
+                      <h3>Thanks you</h3>
                       <h1>click to continue</h1>
                     </div>
                     <div className="submitBtn1">
