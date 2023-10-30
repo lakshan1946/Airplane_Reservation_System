@@ -3,21 +3,10 @@ import { useState } from "react";
 import axios from "axios"; // Import Axios for making HTTP requests
 
 let datas
-const datass = [
-  {
-    Passport_ID: "123",
-    First_Name: "Lakshan",
-    Last_Name: "Madhusanka",
-    Age: "5",
-  },
-  {
-    Passport_ID: "456",
-    First_Name: "dulitha",
-    Last_Name: "herath",
-    Age: "7",
-  },
-];
+
 function AgePassengerCard({ data }) {
+ 
+
   return (
     <div className="card-body">
       <table className="">
@@ -28,7 +17,7 @@ function AgePassengerCard({ data }) {
             <th>Last Name</th>
             <th>Age</th>
           </tr>
-          {data.map((p) => (
+          {data && data.map((p) => (
             <tr>
               <td>{p.Passport_ID}</td>
               <td>{p.First_Name}</td>
@@ -111,8 +100,7 @@ function AllPasenger() {
           {active && (
             <div>
               <div className="cards FlightCardMap">
-                console.log(datas)
-                {<AgePassengerCard data={datass} />}
+                {<AgePassengerCard data={datas} />}
               </div>
             </div>
           )}
