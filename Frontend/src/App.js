@@ -7,7 +7,6 @@ import Register from "./screen/Register";
 import Booking from "./screen/Booking";
 import SeatSelection from "./screen/SeattSelection";
 import Payment from "./screen/Payment";
-import FlightCard from "./component/FlightCard";
 import Report from "./screen/Admin/Report";
 import AllPassenger from "./screen/Admin/AllPassengers";
 import DateDestination from "./screen/Admin/DateDestination";
@@ -29,7 +28,6 @@ function App() {
           <Route path="/Booking" element={<Booking />}></Route>
           <Route path="/Seatselection" element={<SeatSelection />}></Route>
           <Route path="/Payment" element={<Payment />}></Route>
-          <Route path="/FlightCard" element={<FlightCard />}></Route>
           <Route path="/Report" element={<Report />}></Route>
           <Route path="/AllPassengers" element={<AllPassenger />} />
           <Route path="/DateDestination" element={<DateDestination />} />

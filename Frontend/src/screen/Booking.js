@@ -1,27 +1,57 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import FlightCard from "../component/FlightCard";
 
 const flight = [
   {
-    image: "/images/Boeing-737.jpg",
+    FlightNo: "BA101",
     model: "Airbus-A380",
     Dtime: "08:00",
     Atime: "10.00",
   },
   {
-    image: "/images/plane.jpeg",
+    FlightNo: "BA101",
     model: "Boeing-737",
     Dtime: "13:00",
     Atime: "15.00",
   },
   {
-    image: "/images/Airbus-A380.jpg",
+    FlightNo: "BA101",
     model: "Boeing-737",
     Dtime: "17:00",
     Atime: "20.00",
   },
 ];
+
+function BookingCard({ flight }) {
+  return (
+    <div id="con" className="card-body">
+      <table className="FlightCardT">
+        <tbody>
+          <tr>
+            <th className="FlightCardTh">Flight No</th>
+            <th className="FlightCardTh">Model</th>
+            <th className="FlightCardTh">Departure time</th>
+            <th className="FlightCardTh">Arrival time</th>
+            <th className="FlightCardTh">Booking</th>
+          </tr>
+          {flight.map((p) => (
+            <tr>
+              <td className="FlightCardTd">{p.FlightNo}</td>
+              <td className="FlightCardTd">{p.model}</td>
+              <td className="FlightCardTd">{p.Dtime}</td>
+              <td className="FlightCardTd">{p.Atime}</td>
+              <td className="FlightCardTd">
+                <div>
+                  <button className="btn btn-primary">Book</button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
 const Booking = () => {
   // State to manage input values
   const [origin, setOrigin] = useState("");
@@ -156,16 +186,9 @@ const Booking = () => {
 
       {/* Flight search results will be displayed here */}
       {active && (
-        <div id="con">
+        <div>
           <div className="cards FlightCardMap">
-            {flight.map((flight) => (
-              <FlightCard
-                image={flight.image}
-                model={flight.model}
-                Dtime={flight.Dtime}
-                Atime={flight.Atime}
-              />
-            ))}
+            {<BookingCard flight={flight} />}
           </div>
         </div>
       )}

@@ -167,6 +167,11 @@ p.HeadReg {
   height: 100%;
   display: flex;
   justify-content: center;
+
+}
+
+.FlightCardT {
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 /*payment*/
@@ -177,34 +182,6 @@ p.HeadReg {
 
 .card {
   background-color: rgba(255, 255, 255, 0.7) !important;
-}
-
-/* cards */
-
-.cards {
-  padding-top: 50px;
-  padding-bottom: 50px;
-  margin-bottom: auto;
-}
-
-.card-img-top {
-  height: 200px;
-  width: 100%;
-  object-fit: cover;
-}
-
-.flightCardTable {
-  margin: 20px;
-  background-color: #EBF3E8;
-  border-radius: 10px;
-}
-
-.flightCardTable tr th {
-  padding: 5px 30px 0px 10px;
-}
-
-.flightCardTable tr td {
-  padding-right: 10px;
 }
 
 /*Report*/
