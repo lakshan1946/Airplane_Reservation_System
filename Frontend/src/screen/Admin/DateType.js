@@ -1,37 +1,26 @@
 import React from "react";
 import { useState } from "react";
+import axios from "axios";
 
-const data = [
-  {
-    PID: "123",
-    Fname: "Lakshan",
-    Lname: "Madhusanka",
-    booking: "5",
-  },
-  {
-    PID: "456",
-    Fname: "dulitha",
-    Lname: "herath",
-    booking: "7",
-  },
-];
+let datas
+
 function DateTypeCard({ data }) {
   return (
     <div className="card-body">
       <table className="">
         <tbody>
           <tr>
-            <th>Passport ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>No of bookings</th>
+            <th>Sum_Guest</th>
+            <th>Sum_Normal</th>
+            <th>Sum_Frequent</th>
+            <th>Sum_Gold</th>
           </tr>
-          {data.map((p) => (
+          {data && data.map((p) => (
             <tr>
-              <td>{p.PID}</td>
-              <td>{p.Fname}</td>
-              <td>{p.Lname}</td>
-              <td>{p.booking}</td>
+              <td>{p.sum_Guest}</td>
+              <td>{p.sum_Normal}</td>
+              <td>{p.sum_Frequent}</td>
+              <td>{p.sum_Gold}</td>
             </tr>
           ))}
         </tbody>
@@ -49,6 +38,22 @@ function DateDestination() {
     console.log(startDate, endDate);
     // const bookings = await getBookingsByPassengerType(startDate, endDate);
     // console.log("Bookings by passenger type:", bookings);
+    const data = {
+      startDate: startDate,
+      endDate: endDate,
+    };
+
+    // Make a POST request to your backend API with the data
+    try {
+      const response = await axios.post("/date_type", data);
+      // Handle the response from the backend as needed
+      datas=response.data.message
+      console.log(datas)
+      // Set active to true to display the result
+      setActive(true);
+    } catch (error) {
+      console.error("Error while making the request:", error);
+    }
   };
   return (
     <div className="admincomp ">
@@ -76,7 +81,7 @@ function DateDestination() {
         <button
           type="submit"
           className="btn btn-primary"
-          onClick={() => setActive(true)}
+          onClick={setActive}
         >
           Get Bookings by Passenger Type
         </button>
@@ -84,7 +89,7 @@ function DateDestination() {
       {active && (
         <div>
           <div className="cards FlightCardMap">
-            {<DateTypeCard data={data} />}
+            {<DateTypeCard data={datas} />}
           </div>
         </div>
       )}

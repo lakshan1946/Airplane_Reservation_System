@@ -1,20 +1,8 @@
 import React from "react";
 import { useState } from "react";
+import axios from "axios";
 
-const data = [
-  {
-    PID: "123",
-    Fname: "Lakshan",
-    Lname: "Madhusanka",
-    Age: "5",
-  },
-  {
-    PID: "456",
-    Fname: "dulitha",
-    Lname: "herath",
-    Age: "7",
-  },
-];
+let datas
 
 function PastFlightCard({ data }) {
   return (
@@ -22,17 +10,19 @@ function PastFlightCard({ data }) {
       <table className="">
         <tbody>
           <tr>
-            <th>Passport ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Age</th>
+            <th>Flight ID</th>
+            <th>Flight State</th>
+            <th>Platinum Count</th>
+            <th>Business Count</th>
+            <th>Economy Count</th>
           </tr>
-          {data.map((p) => (
+          {data && data.map((p) => (
             <tr>
-              <td>{p.PID}</td>
-              <td>{p.Fname}</td>
-              <td>{p.Lname}</td>
-              <td>{p.Age}</td>
+              <td>{p.Flight_ID}</td>
+              <td>{p.flight_state}</td>
+              <td>{p.Platinum_Count}</td>
+              <td>{p.Business_Count}</td>
+              <td>{p.Economy_Count}</td>
             </tr>
           ))}
         </tbody>
@@ -50,6 +40,20 @@ function PastFlight() {
     e.preventDefault();
     // const flightData = await getFlightDataByRoute(origin, destination);
     // console.log("Flight data for", origin, "to", destination, ":", flightData);
+    const data = {
+      origin: origin,
+      destination: destination,
+    };
+    try {
+      const response = await axios.post("/past_flight", data);
+      // Handle the response from the backend as needed
+      datas=response.data.message
+      console.log(datas)
+      // Set active to true to display the result
+      setActive(true);
+    } catch (error) {
+      console.error("Error while making the request:", error);
+    }
   };
   return (
     <div className="bg-info m-5 p-2">
@@ -82,7 +86,7 @@ function PastFlight() {
         {active && (
           <div>
             <div className="cards FlightCardMap">
-              {<PastFlightCard data={data} />}
+              {<PastFlightCard data={datas} />}
             </div>
           </div>
         )}

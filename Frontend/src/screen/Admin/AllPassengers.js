@@ -1,13 +1,12 @@
 import React from "react";
 import { useState } from "react";
-import axios from "axios"; // Import Axios for making HTTP requests
+import axios from "axios";
 
 let datas
 
 function AgePassengerCard({ data }) {
  
-
-  return (
+return (
     <div className="card-body">
       <table className="">
         <tbody>

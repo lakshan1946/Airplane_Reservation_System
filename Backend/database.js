@@ -148,10 +148,7 @@ export const loginUser = (req, res) => {
     } else {
       below_18 = 0;
     }
-
-
-
-  
+    
     const sql = 'CALL FUNCTION_1(?, ?)';
     const val = [data.flightNo, below_18];
  // Corrected variable name
@@ -169,4 +166,90 @@ export const loginUser = (req, res) => {
       }
     });
   }
+  
+  export const date_desti = (userData, callback) => {
+    const data = userData.body;
+  
+    // Assign below_18 based on the condition
+    const sql = 'CALL FUNCTION_2(?, ?, ?)';
+    const val = [data.startDate, data.endDate, data.destination];
+    // Corrected variable name
+    db.query(sql, val, (err, results) => {
+      if (err) {
+        console.error('Error querying the database:', err);
+        callback.status(500).json({ message: 'Error querying the database' });
+      } else if (results.length === 0) {
+        // Alert when username and password do not match
+        console.log("username and password do not match");
+        callback.status(401).json({ message: 'Username and password do not match' });
+      } else {
+        console.log(results[0]);
+        return callback.json({ count: results[0]});
+      }
+    });
+  }
+
+  export const dateType = (userData, callback) => {
+    const data = userData.body;
+    
+    const sql = 'CALL FUNCTION_3(?, ?)';
+    const val = [data.startDate, data.endDate];
+ // Corrected variable name
+    db.query(sql, val, (err, results) => {
+      if (err) {
+        console.error('Error querying the database:', err);
+        res.status(500).json({ message: 'Error querying the database' });
+      } else if (results.length === 0) {
+        // Alert when username and password do not match
+        console.log("username and password do not match");
+        res.status(401).json({ message: 'Username and password do not match' });
+      } else {
+        console.log(results[0]);
+        return callback.json({ message: results[0] });
+      }
+    });
+  }
+
+  export const pastFlight = (userData, callback) => {
+    const data = userData.body;
+    
+    const sql = 'CALL FUNCTION_4(?, ?)';
+    const val = [data.origin, data.destination];
+ // Corrected variable name
+    db.query(sql, val, (err, results) => {
+      if (err) {
+        console.error('Error querying the database:', err);
+        res.status(500).json({ message: 'Error querying the database' });
+      } else if (results.length === 0) {
+        // Alert when username and password do not match
+        console.log("username and password do not match");
+        res.status(401).json({ message: 'Username and password do not match' });
+      } else {
+        console.log(results[0]);
+        return callback.json({ message: results[0] });
+      }
+    });
+  }
+  
+  export const revenue_ = (userData, callback) => {
+    const data = userData.body;
+    
+    const sql = 'CALL FUNCTION_5(?)';
+    const val = [data.model];
+ // Corrected variable name
+    db.query(sql, val, (err, results) => {
+      if (err) {
+        console.error('Error querying the database:', err);
+        callback.status(500).json({ message: 'Error querying the database' });
+      } else if (results.length === 0) {
+        // Alert when username and password do not match
+        console.log("username and password do not match");
+        callback.status(401).json({ message: 'Username and password do not match' });
+      } else {
+        console.log(results[0]);
+        return callback.json({ message: results[0] });
+      }
+    });
+  }
+  
   

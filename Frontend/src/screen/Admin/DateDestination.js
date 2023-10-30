@@ -1,20 +1,9 @@
 import React from "react";
 import { useState } from "react";
+import axios from "axios"; 
+// Import Axios for making HTTP requests
 
-const data = [
-  {
-    PID: "123",
-    Fname: "Lakshan",
-    Lname: "Madhusanka",
-    Age: "5",
-  },
-  {
-    PID: "456",
-    Fname: "dulitha",
-    Lname: "herath",
-    Age: "7",
-  },
-];
+let datas
 
 function DateDestinationCard({ data }) {
   return (
@@ -22,17 +11,11 @@ function DateDestinationCard({ data }) {
       <table className="">
         <tbody>
           <tr>
-            <th>Passport ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Age</th>
+            <th>Count</th>
           </tr>
-          {data.map((p) => (
+          {data && data.map((p) => (
             <tr>
-              <td>{p.PID}</td>
-              <td>{p.Fname}</td>
-              <td>{p.Lname}</td>
-              <td>{p.Age}</td>
+              <td>{p.Count}</td>
             </tr>
           ))}
         </tbody>
@@ -51,6 +34,21 @@ function DateDestination() {
     e.preventDefault();
     // const passengers = await getPassengersByDestination(startDate, endDate, destination);
     // console.log("Passengers travelling to", destination, ":", passengers);
+    const data = {
+      startDate: startDate,
+      endDate: endDate,
+      destination:destination
+    };
+    try {
+      const response = await axios.post("/date_destination", data);
+      // Handle the response from the backend as needed
+      datas=response.data.count
+      console.log([datas])
+      // Set active to true to display the result
+      setActive(true);
+    } catch (error) {
+      console.error("Error while making the request:", error);
+    }
   };
   return (
     <div className="bg-info m-5 p-2">
@@ -93,7 +91,7 @@ function DateDestination() {
         {active && (
           <div>
             <div className="cards FlightCardMap">
-              {<DateDestinationCard data={data} />}
+              {<DateDestinationCard data={datas} />}
             </div>
           </div>
         )}
