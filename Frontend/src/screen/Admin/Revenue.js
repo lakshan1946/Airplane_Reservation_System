@@ -1,42 +1,29 @@
 import React from "react";
 import { useState } from "react";
+import axios from "axios";
 
-const data = [
-  {
-    Model: "123",
-    Fname: "Lakshan",
-    Lname: "Madhusanka",
-    Age: "5",
-  },
-  {
-    PID: "456",
-    Fname: "dulitha",
-    Lname: "herath",
-    Age: "7",
-  },
-];
+let datas;
 
 function TotalRevenueCard({ data }) {
   return (
-    <div className="card-body">
-      <table className="">
-        <tbody>
-          <tr>
-            <th>Passport ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Age</th>
-          </tr>
-          {data.map((p) => (
+    <div className="card-body admintable">
+      <div className="admintablesub">
+        <table className="admint ">
+          <tbody>
             <tr>
-              <td>{p.PID}</td>
-              <td>{p.Fname}</td>
-              <td>{p.Lname}</td>
-              <td>{p.Age}</td>
+              <th className="adminth">Model</th>
+              <th className="adminth">Revenue</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+            {data &&
+              data.map((p) => (
+                <tr>
+                  <td className="admincol">{p.model}</td>
+                  <td className="admincol">{p.Revenue}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -49,32 +36,60 @@ function Revenue() {
     e.preventDefault();
     // const passengers = await getPassengersByDestination(startDate, endDate, destination);
     // console.log("Passengers travelling to", destination, ":", passengers);
+    const data = {
+      model: aircraftType,
+    };
+    try {
+      const response = await axios.post("/revenue", data);
+      // Handle the response from the backend as needed
+      datas = response.data.message;
+      console.log(datas);
+      // Set active to true to display the result
+      setActive(true);
+    } catch (error) {
+      console.error("Error while making the request:", error);
+    }
   };
   return (
-    <div className="bg-info m-5 p-2">
-      <div className="m-5">
-        <form onSubmit={handleRevenueSubmit} className="mb-3">
-          <div className="form-group">
-            <label htmlFor="origin">Aircraft type</label>
-            <input
-              type="text"
-              className="form-control gray-background"
-              id="origin"
-              value={aircraftType}
-              onChange={(e) => setAircraftType(e.target.value)}
-            />
-          </div>
-          <button type="submit" className="btn btn-primary" onClick={setActive}>
-            Get Total revenue by Aircraft type
-          </button>
-        </form>
-        {active && (
-          <div>
-            <div className="cards FlightCardMap">
-              {<TotalRevenueCard data={data} />}
+    <div className="backgroundAdmin">
+      <h1 className="adminTitle">Total revenue</h1>
+      <div id="adminCont">
+        <div className="admincomp">
+          <form onSubmit={handleRevenueSubmit} className="mb-3">
+            <div className="form-group">
+              <label htmlFor="origin" className="adminselect">
+                Aircraft type
+              </label>
+              <select
+                className="form-select"
+                id="specificSizeSelect"
+                required
+                value={aircraftType}
+                onChange={(e) => setAircraftType(e.target.value)}
+              >
+                <option value="">Select Aircraft type</option>
+                <option value="Airbus A380">Airbus A380</option>
+                <option value="Boeing 737">Boeing 737</option>
+                <option value="Boeing 757">Boeing 757</option>
+              </select>
             </div>
-          </div>
-        )}
+            <p></p>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              onClick={setActive}
+            >
+              Get Total revenue by Aircraft type
+            </button>
+          </form>
+          {active && (
+            <div>
+              <div className="cards FlightCardMap">
+                {<TotalRevenueCard data={datas} />}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

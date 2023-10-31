@@ -1,42 +1,35 @@
 import React from "react";
 import { useState } from "react";
+import axios from "axios";
 
-const data = [
-  {
-    PID: "123",
-    Fname: "Lakshan",
-    Lname: "Madhusanka",
-    Age: "5",
-  },
-  {
-    PID: "456",
-    Fname: "dulitha",
-    Lname: "herath",
-    Age: "7",
-  },
-];
+let datas;
 
 function AgePassengerCard({ data }) {
   return (
-    <div className="card-body">
-      <table className="">
-        <tbody>
-          <tr>
-            <th>Passport ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Age</th>
-          </tr>
-          {data.map((p) => (
-            <tr>
-              <td>{p.PID}</td>
-              <td>{p.Fname}</td>
-              <td>{p.Lname}</td>
-              <td>{p.Age}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="card-body admintable">
+      <div className="admintablesub">
+        <table className="admint ">
+          <tbody>
+            <thead>
+              <tr>
+                <th className="adminth">Passport ID</th>
+                <th className="adminth">First Name</th>
+                <th className="adminth">Last Name</th>
+                <th className="adminth">Age</th>
+              </tr>
+            </thead>
+            {data &&
+              data.map((p) => (
+                <tr>
+                  <td className="admincol">{p.Passport_ID}</td>
+                  <td className="admincol">{p.First_Name}</td>
+                  <td className="admincol">{p.Last_Name}</td>
+                  <td className="admincol">{p.Age}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -48,28 +41,49 @@ function AllPasenger() {
 
   const handleFlightNoSubmit = async (e) => {
     e.preventDefault();
-    // const passengers = await getPassengersByFlight(flightNo);
-    // console.log("Passengers below 18:", passengers.below18);
-    // console.log("Passengers above 18:", passengers.above18);
+
+    // Create a data object with flightNo and age
+    const data = {
+      flightNo: flightNo,
+      age: age,
+    };
+    console.log(age);
+
+    // Make a POST request to your backend API with the data
+    try {
+      const response = await axios.post("/age_constraint", data);
+      // Handle the response from the backend as needed
+      datas = response.data.message;
+      console.log(datas);
+      // Set active to true to display the result
+      setActive(true);
+    } catch (error) {
+      console.error("Error while making the request:", error);
+    }
   };
+
   return (
-    <div className="background">
-      <div className="bg-info m-4 p-2">
-        <div className="m-5">
-          <form onSubmit={handleFlightNoSubmit} className="mb-3">
+    <div className="backgroundAdmin">
+      <h1 className="adminTitle">View Passengers by age</h1>
+      <div id="adminCont">
+        <div className="admincomp">
+          <form onSubmit={handleFlightNoSubmit} className="">
             <div className="form-group">
-              <label htmlFor="flightNo">Flight No:</label>
+              <label htmlFor="flightNo" className="adminselect">
+                Flight No:
+              </label>
               <input
                 type="text"
-                className="form-control gray-background"
+                required
+                className="form-control"
+                placeholder="Enter Flight no"
                 id="flightNo"
                 value={flightNo}
                 onChange={(e) => setFlightNo(e.target.value)}
               />
             </div>
-
             <div className="col">
-              <label className="nameInfo">Gender</label>
+              <label className="nameInfo adminselect">Gender:</label>
               <select
                 className="form-select"
                 id="specificSizeSelect"
@@ -78,7 +92,7 @@ function AllPasenger() {
                 onChange={(e) => setAge(e.target.value)}
               >
                 <option value="">Select age</option>
-                <option value="below">All</option>
+                <option value="All">All</option>
                 <option value="above">Above 18</option>
                 <option value="below">Below 18</option>
               </select>
@@ -94,7 +108,7 @@ function AllPasenger() {
           {active && (
             <div>
               <div className="cards FlightCardMap">
-                {<AgePassengerCard data={data} />}
+                {<AgePassengerCard data={datas} />}
               </div>
             </div>
           )}

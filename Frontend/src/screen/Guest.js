@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Guest() {
   const navigate = useNavigate();
@@ -63,13 +64,33 @@ function Guest() {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      setTimeout(() => {
-        setGuestEnterSuccess(true);
-      }, 1000);
-    }
+      const userData = {
+        firstName: name.firstName,
+        lastName: name.lastName,
+        dateOfBirth,
+        gender,
+        country: address.country,
+        line: address.line,
+        email: email.email,
+        phone,
+        passportID: account.passportID,
+      };
+      console.log(userData);
 
-    // If no errors, you can proceed to submit the form to your backend
-    //navigateToBooking();
+      // If no errors, you can proceed to submit the form to your backend
+      //navigateToBooking();
+      axios
+        .post("/guest", userData)
+        .then((response) => {
+          setTimeout(() => {
+            setGuestEnterSuccess(true);
+          }, 1000);
+        })
+        .catch((error) => {
+          console.error(error);
+          // Handle registration error here
+        });
+    }
   };
 
   const navigateToBooking = () => {

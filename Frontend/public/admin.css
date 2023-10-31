@@ -1,0 +1,75 @@
+.backgroundAdmin {
+    font-family: sans-serif;
+    margin: 0;
+    background-image: url("images/a.jpg");
+    /* Replace 'your-image-file.jpg' with the actual file name and path */
+    background-size: cover;
+    /* Ensures the image covers the entire background */
+    background-repeat: no-repeat;
+    /* Prevents image repetition */
+    background-attachment: fixed;
+    /* Fixes the background image, so it doesn't scroll with the content */
+    background-position: center center;
+    /* Centers the image horizontally and vertically */
+}
+
+
+.admincomp {
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.7);
+    width: max-content;
+    flex-direction: column;
+    border-radius: 10px;
+    margin-bottom: 7%;
+}
+
+#adminCont {
+    display: flex;
+    justify-content: center;
+}
+
+.adminTitle {
+    text-align: center;
+    font-weight: bolder;
+    font-size: 3.5rem;
+    padding: 75px;
+    color: #DFCCFB;
+    font-family: 'Indie Flower', cursive;
+}
+
+.admint {
+    padding: 10px;
+}
+
+.admincol {
+    padding-right: 10px;
+    color: white;
+    font-weight: bolder;
+}
+
+.adminth {
+    padding-right: 10px;
+    color: white;
+}
+
+.admintable {
+    background-color: black;
+    margin: 40px auto;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.admintablesub {
+    padding: 10px;
+
+}
+
+.adminselect {
+    font-weight: bolder;
+    padding: 15px 0 10px 0;
+}
+
+#admincount {
+    text-align: center;
+}

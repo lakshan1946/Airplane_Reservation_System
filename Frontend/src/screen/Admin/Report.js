@@ -1,9 +1,4 @@
-import React, { useState } from "react";
-import AllPassenger from "./AllPassengers";
-import DateDestination from "./DateDestination";
-import DateType from "./DateType";
-import PastFlight from "./PastFlight";
-import Revenue from "./Revenue";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 function Report() {
   const navigate = useNavigate();
@@ -44,7 +39,9 @@ function Report() {
             </tr>
           </tbody>
         </table>
-        <img src="/images/admin.jpg" alt="admin" id="imgAdmin"></img>
+        <div className="imgAdmin1">
+          <img src="/images/admin.jpg" alt="admin" id="imgAdmin"></img>
+        </div>
       </div>
       <div id="reportButton">
         <h1>Search Report</h1>

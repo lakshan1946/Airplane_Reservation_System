@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LoginValidation from "./LoginValidation";
+import axios from "axios";
 
-const authenticateUser = (username, password) => {
-  // Check if the provided username and password are '123' and '456' respectively
-  return username === "123" && password === "456";
-};
 const adminUSer = (username, password) => {
   // Check if the provided username and password are '123' and '456' respectively
   return username === "Lakshan" && password === "123456";
 };
 
-function Login({ setUserIsGuess, userIsGuess }) {
+function Login() {
   const [values, setValues] = useState({
     username: "",
     password: "",
@@ -33,16 +30,19 @@ function Login({ setUserIsGuess, userIsGuess }) {
     const { username, password } = values;
 
     // Check if the provided username and password are correct
-    if (authenticateUser(username, password)) {
-      // If correct, navigate to the Booking page
-      navigateToRegUserProfile(username);
-      console.log(event.target.values);
-    } else if (adminUSer(username, password)) {
+    if (adminUSer(username, password)) {
       navigateToReport();
     } else {
-      // If incorrect, set an error message
+      axios
+        .post("/login", { values })
+        .then((response) => {
+          navigateToRegUserProfile(username);
+        })
+        .catch((error) => {
+          setErrors(LoginValidation(values));
+        });
+
       setErrors(LoginValidation(values));
-      //setErrors({ invalidCredentials: "Invalid username or password" });
     }
   };
 

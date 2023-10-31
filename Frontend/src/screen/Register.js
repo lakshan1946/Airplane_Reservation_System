@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Register() {
   const [registerSuccess, setRegisterSuccess] = useState(false);
@@ -77,9 +78,34 @@ function Register() {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      setTimeout(() => {
-        setRegisterSuccess(true);
-      }, 1000);
+      const userData = {
+        firstName: name.firstName,
+        lastName: name.lastName,
+        dateOfBirth,
+        gender,
+        country: address.country,
+        city: address.city,
+        line1: address.line1,
+        line2: address.line2,
+        email: email.email,
+        phone,
+        passportID: account.passportID,
+        username: account.username,
+        password: account.password,
+      };
+
+      // Send a POST request to your backend API for user registration
+      axios
+        .post("/register", userData)
+        .then((response) => {
+          setTimeout(() => {
+            setRegisterSuccess(true);
+          }, 1000);
+        })
+        .catch((error) => {
+          console.error(error);
+          // Handle registration error here
+        });
     }
 
     // If no errors, you can proceed to submit the form to your backend
