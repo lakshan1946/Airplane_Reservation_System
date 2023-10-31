@@ -22,7 +22,7 @@ class Flight {
         element.Departure_Date_Time = ymdhms(new Date(element.Departure_Date_Time))
         element.Arrival_Date_Time = ymdhms(new Date(element.Arrival_Date_Time))
         });
-        return flights[0];
+        return flights;
     }
 
     static async getFlightSchedule() {

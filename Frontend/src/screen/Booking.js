@@ -51,14 +51,11 @@ const Booking = () => {
   const [departureDate, setDepartureDate] = useState("");
   const [active, setActive] = useState(false);
 
-  // State to store search results
-  const [searchResults, setSearchResults] = useState([]);
-
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await setActive(false)
-    await flight.splice(0, flight.length)
+    setActive(false)
+    flight.splice(0, flight.length)
     // Perform flight search logic here
     // You can make API calls to retrieve flight data
     // For this example, let's assume we have a predefined list of flights
@@ -71,14 +68,13 @@ const Booking = () => {
 
     await axios.post('/booking', flightdata)
       .then(res => {
-        flight.push(res.data);
+        flight.push(...res.data);
       })
       .catch(err => {
         console.error(err)
       })
     
     setActive(true);
-    setSearchResults(flight);
   };
   
   // Function to handle origin selection

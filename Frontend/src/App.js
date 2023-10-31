@@ -26,8 +26,8 @@ function App() {
           <Route path="/HomeScreen" element={<HomeScreen />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="/Booking" element={<Booking />}></Route>
-          <Route path="/Seatselection" element={<SeatSelection />}></Route>
-          <Route path="/Seatselection/:flightId" element={<SeatSelection />}></Route>
+          {/* <Route path="/Seatselection" element={<SeatSelection />}></Route> */}
+          <Route path="/Seatselection/:flightid" element={<SeatSelection />}></Route>
           <Route path="/Payment" element={<Payment />}></Route>
           <Route path="/Report" element={<Report />}></Route>
           <Route path="/AllPassengers" element={<AllPassenger />} />
