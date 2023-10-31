@@ -263,6 +263,14 @@ CREATE TABLE Booking (
 
 
 
+-- 		**************************************************************************************************
+-- 		****************************************** Indexing **********************************************
+-- 		**************************************************************************************************
+
+CREATE INDEX mem_status ON Registered_User(Membership_Status);
+CREATE INDEX reserve ON Reserve(Flight_ID);
+
+
 
 -- 		**************************************************************************************************
 -- 		****************************************** Procedures ********************************************
@@ -568,13 +576,14 @@ CREATE PROCEDURE Reserve(
     IN Passport_ID VARCHAR(15),
     IN Flight_ID INT,
     IN Seat_No INT,
-    IN Class ENUM('Economy', 'Business', 'Platinum'),
+    IN User_Type ENUM('Registered','Guest'),
     OUT O_price FLOAT,
     OUT O_price_w_d FLOAT,
     OUT Reserve_ID INT,
     OUT O_Passenger_Type ENUM('Guest','Normal','Frequent','Gold')
 )
 BEGIN
+	DECLARE class ENUM('Platinum','Business','Economy');
     DECLARE basic_price FLOAT;
     DECLARE class_factor FLOAT;
     DECLARE price FLOAT;
@@ -597,38 +606,31 @@ BEGIN
             (SELECT flight_state FROM Flight WHERE Flight.Flight_ID = Flight_ID)='Departed-Delayed' OR
             (SELECT flight_state FROM Flight WHERE Flight.Flight_ID = Flight_ID)='Landed' OR
             (SELECT flight_state FROM Flight WHERE Flight.Flight_ID = Flight_ID)='Cancelled') THEN
-        SIGNAL SQLSTATE '45005' SET MESSAGE_TEXT = 'Flight Not Available';
         SET Correct_Seat = 0;
+        SIGNAL SQLSTATE '45005' SET MESSAGE_TEXT = 'Flight Not Available';
     ELSE
 		SET Platinum = get_class_capacity(Flight_ID, 'Platinum');
         SET Business = get_class_capacity(Flight_ID, 'Business');
         SET Economy = get_class_capacity(Flight_ID, 'Economy');
         
-        IF (Class = 'Platinum') THEN
-            IF ((Seat_No > Platinum) OR (Seat_No <= 0)) THEN
-                SET Correct_Seat = 0;
-                SIGNAL SQLSTATE '45006' SET MESSAGE_TEXT = 'WRONG Seat_No';
-            END IF;
-        ELSEIF (Class = 'Business') THEN
-            IF ((Seat_No <= Platinum) OR (Seat_No > (Platinum+Business))) THEN
-                SET Correct_Seat = 0;
-                SIGNAL SQLSTATE '45007' SET MESSAGE_TEXT = 'WRONG Seat_No';
-            END IF;
-        ELSEIF (Class = 'Economy') THEN
-            IF ((Seat_No <= (Platinum+Business)) OR (Seat_No > (Platinum+Business+Economy))) THEN
-                SET Correct_Seat = 0;
-                SIGNAL SQLSTATE '45008' SET MESSAGE_TEXT = 'WRONG Seat_No';
-            END IF;
+        IF (0 < Seat_No AND Seat_No <= Platinum) THEN
+			SET class = 'Platinum';
+        ELSEIF (Platinum < Seat_No AND Seat_No <= (Platinum+Business)) THEN
+			SET class = 'Business';
+        ELSEIF ((Platinum+Business) < Seat_No AND Seat_No <= (Platinum+Business+Economy)) THEN
+			SET class = 'Economy';
+		ELSE
+			SIGNAL SQLSTATE '45006' SET MESSAGE_TEXT = 'WRONG Seat_No';
         END IF;
     END IF;
 
     IF (Correct_Seat = 1) THEN
         SELECT Base_Price INTO basic_price FROM Flight WHERE Flight.Flight_ID = Flight_ID LIMIT 1;
-        SELECT differ_factor INTO class_factor FROM Class_Price WHERE Class_Price.Class = Class LIMIT 1;
+        SELECT differ_factor INTO class_factor FROM Class_Price WHERE Class_Price.Class = class LIMIT 1;
 
         SET price = basic_price * class_factor;
-        IF (SELECT User_Type FROM User WHERE User.Passport_ID = Passport_ID LIMIT 1) = 'Registered' THEN
-            
+        IF (User_Type = 'Registered') THEN
+        
             SELECT Membership_status INTO Passenger_Type
             FROM Registered_User
             WHERE Registered_User.Passport_ID = Passport_ID;
@@ -644,7 +646,7 @@ BEGIN
             SET Passenger_Type = 'Guest';
         END IF;
 		INSERT INTO Reserve (Passport_ID, Flight_ID, Seat_No, Class, Passenger_Type)
-        VALUES (Passport_ID, Flight_ID, Seat_No, Class, Passenger_Type);
+        VALUES (Passport_ID, Flight_ID, Seat_No, class, Passenger_Type);
         -- Get the Reserve_ID for the newly inserted reservation
         SET Reserve_ID = LAST_INSERT_ID();
         SET O_price = price;
@@ -669,21 +671,18 @@ CREATE PROCEDURE Book(
     IN Price_W_D FLOAT,
     IN PAID BOOL
 )
-BEGIN
-    DECLARE class ENUM('Economy', 'Business', 'Platinum');
-    
+BEGIN    
     IF (PAID = 1) THEN
-		SELECT Flight_ID, Passport_ID, Passenger_Type INTO @flight_id, @passport, @passengertype
+		SELECT Flight_ID, Passport_ID, Class, Passenger_Type INTO @flight_id, @passport, @class, @passengertype
         FROM Reserve r
         WHERE r.Reserve_ID = Reserve_ID;
         
-        SELECT @flight_id,@passport;
-        
         -- Update No of Bookings
-        UPDATE Registered_USER
-		SET No_of_bookings = No_of_bookings + 1
-		WHERE Registered_USER.Passport_ID = @passport;
-        
+        IF (@passengertype='Normal' OR @passengertype='Frequent' OR @passengertype='Gold') THEN
+			UPDATE Registered_USER
+			SET No_of_bookings = No_of_bookings + 1
+			WHERE Registered_USER.Passport_ID = @passport;
+        END IF;
         -- Update Revenue
         UPDATE Airplane_Model am
         SET Revenue = Revenue + Price_W_D
@@ -694,17 +693,17 @@ BEGIN
                            WHERE f.Flight_ID = @flight_id);
         
         -- Update Flight Seat Availability
-        IF (class='Platinum') THEN
+        IF (@class='Platinum') THEN
 			UPDATE Flight f
-			SET f.available_platinum = f.available_platinum + 1
+			SET f.available_platinum = f.available_platinum - 1
             WHERE f.Flight_ID = @flight_id;
-		ELSEIF (class='Business') THEN
+		ELSEIF (@class='Business') THEN
 			UPDATE Flight f
-			SET f.available_business = f.available_Business + 1
+			SET f.available_business = f.available_Business - 1
             WHERE f.Flight_ID = @flight_id;
 		ELSE
 			UPDATE Flight f
-			SET f.available_economy = f.available_economy + 1
+			SET f.available_economy = f.available_economy - 1
             WHERE f.Flight_ID = @flight_id;
 		END IF;
         
@@ -868,10 +867,9 @@ DELIMITER $$
 CREATE PROCEDURE FUNCTION_2(
 	IN Start_Date  DATE,
     IN End_Date DATE,
-    IN Destination VARCHAR(3),
-    OUT Count INT )
+    IN Destination VARCHAR(3) )
 BEGIN
-    SELECT COUNT(Passport_ID) INTO Count
+    SELECT COUNT(Passport_ID) AS Count
     FROM Passengers_With_Destination p
     WHERE (p.Departure_Date_Time BETWEEN Start_Date AND End_Date)
     AND p.destination = Destination;
@@ -884,32 +882,17 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE FUNCTION_3(
 	IN Start_Date DATE,
-	IN End_Date DATE,
-	OUT by_Guest INT,
-	OUT by_Normal INT,
-	OUT by_Frequent INT,
-	OUT by_Gold INT )
+	IN End_Date DATE )
 BEGIN
-	DECLARE sum_Guest INT;
-	DECLARE sum_Normal INT;
-	DECLARE sum_Frequent INT;
-	DECLARE sum_Gold INT;
-	
 	SELECT
-		SUM(CASE WHEN b.Passenger_Type = 'Guest' THEN 1 ELSE 0 END),
-		SUM(CASE WHEN b.Passenger_Type = 'Normal' THEN 1 ELSE 0 END),
-		SUM(CASE WHEN b.Passenger_Type = 'Frequent' THEN 1 ELSE 0 END),
-		SUM(CASE WHEN b.Passenger_Type = 'Gold' THEN 1 ELSE 0 END)
-	INTO sum_Guest, sum_Normal, sum_Frequent, sum_Gold
+		SUM(CASE WHEN b.Passenger_Type = 'Guest' THEN 1 ELSE 0 END) AS sum_Guest,
+		SUM(CASE WHEN b.Passenger_Type = 'Normal' THEN 1 ELSE 0 END) AS sum_Normal,
+		SUM(CASE WHEN b.Passenger_Type = 'Frequent' THEN 1 ELSE 0 END) AS sum_Frequent,
+		SUM(CASE WHEN b.Passenger_Type = 'Gold' THEN 1 ELSE 0 END) AS sum_Gold
 	FROM Booking b
 	INNER JOIN Reserve USING(Reserve_ID)
 	INNER JOIN Flight f USING(Flight_ID)
 	WHERE (f.Departure_Date_Time BETWEEN Start_Date AND End_Date);
-
-	SET by_Guest = sum_Guest;
-	SET by_Normal = sum_Normal;
-	SET by_Frequent = sum_Frequent;
-	SET by_Gold = sum_Gold;
 END;
 $$
 DELIMITER ;
@@ -925,10 +908,10 @@ BEGIN
 	SELECT 
         Flight_ID, 
         flight_state,
-        (get_seat_capacity(Flight_ID,'Platinum')-f.available_platinum) AS Platinum_Count,
-        (get_seat_capacity(Flight_ID,'Business')-f.available_business) AS Business_Count,
-        (get_seat_capacity(Flight_ID,'Economy')-f.available_economy) AS Economy_Count
-    FROM f Flight
+        (get_class_capacity(Flight_ID,'Platinum')-f.available_platinum) AS Platinum_Count,
+        (get_class_capacity(Flight_ID,'Business')-f.available_business) AS Business_Count,
+        (get_class_capacity(Flight_ID,'Economy')-f.available_economy) AS Economy_Count
+    FROM Flight f
     WHERE f.origin = I_Origin AND f.destination = I_Destination;
 END
 $$
