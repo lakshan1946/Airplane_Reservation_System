@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom"
 
 function Payment() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
@@ -15,6 +16,9 @@ function Payment() {
     expiry: "",
     cvv: "",
   });
+
+  const params = useParams()
+  const rid = params.reserveid
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

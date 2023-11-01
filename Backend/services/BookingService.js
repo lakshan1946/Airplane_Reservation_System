@@ -74,6 +74,33 @@ class BookingService {
         }
         return [Passport_ID[0].Passport_ID, usertype];
     }
+
+    static async find_reservationdetails(Reserve_ID, callback) {
+        const usertype = await this.find_usertype(Reserve_ID);
+        
+        try {
+            if (usertype == "G") {
+                const [result] = await Book.get_guestreservationdetails(Reserve_ID);
+                return callback.json(result);
+            } else {
+                const [result] = await Book.get_reservationdetails(Reserve_ID);
+                return callback.json(result);
+            }
+        } catch (err) {
+            console.error(err)
+            return callback.json(err)
+        }
+    }
+
+    static async find_usertype(Reserve_ID) {
+        const type = await Book.get_usertype(Reserve_ID);
+        const ptype = type[0].Passenger_Type;
+        if (ptype == "Guest") {
+            return "G";
+        } else {
+            return "R";
+        }        
+    }
 }
 
 export default BookingService;
