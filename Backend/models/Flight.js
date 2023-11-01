@@ -54,10 +54,9 @@ class Flight {
         const [row] = await pool.query(
             `
             select 
-            Flight_ID, fl.Flight_Name, ap.Plane_ID, ap.model, Platinum_capacity, Business_capacity, Economy_capacity 
+            Flight_ID, fl.Flight_Name, ap.Plane_ID, ap.model
 	        from flight fl
             inner join airplane ap on fl.Plane_ID = ap.Plane_ID
-            inner join airplane_model apm on ap.model = apm.model
             where Flight_ID  = ?`,
                 [Flight_ID]
         );

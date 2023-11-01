@@ -36,7 +36,8 @@ DROP PROCEDURE IF EXISTS User_Register;
 DROP PROCEDURE IF EXISTS Add_Visiting_User;
 DROP PROCEDURE IF EXISTS Reserve;
 DROP PROCEDURE IF EXISTS Book;
-
+DROP PROCEDURE IF EXISTS Get_Reservation;
+DROP PROCEDURE IF EXISTS Unpaids;
 
 -- DROP VIEWS
 DROP VIEW IF EXISTS Passenger;
@@ -47,6 +48,11 @@ DROP VIEW IF EXISTS Passengers_With_Destination;
 DROP TRIGGER IF EXISTS FLIGHT_CHECK_BEFORE_INSERT;
 DROP TRIGGER IF EXISTS FLIGHT_UPDATE_AFTER_INSERT;
 DROP TRIGGER IF EXISTS Update_Membership_Status;
+DROP TRIGGER IF EXISTS Remove_Reservations_Bookings;
+
+
+DROP EVENT IF EXISTS NonPaidReservationsEvent;
+DROP EVENT IF EXISTS UpdateFlights;
 
 
 -- DROP REQUIRED FUNCTION SET
@@ -57,6 +63,7 @@ DROP PROCEDURE IF EXISTS FUNCTION_4;
 DROP PROCEDURE IF EXISTS FUNCTION_5;
 
 
+SET GLOBAL event_scheduler = ON;
 
 
 -- 		*********************************************************************************************
@@ -244,6 +251,9 @@ CREATE TABLE Reserve (
   Seat_No INT NOT NULL,
   Class ENUM('Economy','Business','Platinum'),
   Passenger_Type ENUM('Guest','Normal','Frequent','Gold'),
+  Price FLOAT,
+  Final_Price FLOAT,
+  Reserved TIMESTAMP DEFAULT NOW() NOT NULL,
   PRIMARY KEY (Reserve_ID),
   FOREIGN KEY (Flight_ID) REFERENCES Flight(Flight_ID) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (passport_ID) REFERENCES User(Passport_ID) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -256,6 +266,7 @@ CREATE TABLE Booking (
   Price FLOAT,
   Price_With_Discount FLOAT NOT NULL,
   Passenger_Type ENUM ('Guest','Normal','Frequent','Gold'),
+  Booked TIMESTAMP DEFAULT NOW() NOT NULL,
   PRIMARY KEY (Booking_ID),
   FOREIGN KEY (Reserve_ID) REFERENCES Reserve(Reserve_ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -267,9 +278,8 @@ CREATE TABLE Booking (
 -- 		****************************************** Indexing **********************************************
 -- 		**************************************************************************************************
 
-CREATE INDEX mem_status ON Registered_User(Membership_Status);
-CREATE INDEX reserve ON Reserve(Flight_ID);
-
+CREATE INDEX by_mem_status ON Registered_User(Membership_Status);
+CREATE INDEX by_flight ON Reserve(Flight_ID,Class);
 
 
 -- 		**************************************************************************************************
@@ -285,6 +295,7 @@ CREATE PROCEDURE Login(
     IN I_Passcode VARCHAR(25))
 BEGIN
 	DECLARE the_passcode VARCHAR(25);
+    START TRANSACTION;
     SET the_passcode = NULL;
 	SELECT Passcode INTO the_passcode
 	FROM Registered_User r
@@ -299,10 +310,11 @@ BEGIN
 	ELSE
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'INCORRECT PASSWORD';
 	END IF;
+    COMMIT;
 END;
 $$
 DELIMITER ;
-		
+
 		
 
 ----------------------------------------------------------------------
@@ -348,31 +360,21 @@ CREATE PROCEDURE get_flight_seats(
     IN i_Class ENUM('Economy', 'Business', 'Platinum'))
 BEGIN
 	DECLARE cur_seat INT DEFAULT 1;
-    DECLARE min_capacity INT;
-    DECLARE max_capacity INT;
+    DECLARE capacity INT;
     CALL Flight_Update();
     CREATE TEMPORARY TABLE IF NOT EXISTS temp_seats (
         Seat_No INT,
         Availability INT
     );
     -- Get the maximum capacity for the selected class
-    IF (i_Class = 'Platinum') THEN
-		SET min_capacity = 1;
-        SET max_capacity = get_class_capacity(i_Flight_ID, i_Class);
-	ELSEIF (i_Class = 'Business') THEN
-		SET min_capacity = get_class_capacity(i_Flight_ID, 'Platinum')+1;
-        SET max_capacity = get_class_capacity(i_Flight_ID, 'Platinum')+get_class_capacity(i_Flight_ID, i_Class);
-	ELSE
-		SET min_capacity = get_class_capacity(i_Flight_ID, 'Business')+1;
-        SET max_capacity = get_class_capacity(i_Flight_ID, 'Business')+get_class_capacity(i_Flight_ID, i_Class);
-    END IF;
+    SET capacity = get_class_capacity(i_Flight_ID,i_Class);
     -- Insert seat availability information
-    SET cur_seat = min_capacity;
+    SET cur_seat = 1;
     WHILE cur_seat <= max_capacity DO
         INSERT INTO temp_seats (Seat_No, Availability)
         SELECT cur_seat,
                CASE
-                   WHEN cur_seat IN (SELECT Seat_No FROM Reserve WHERE Flight_ID = i_Flight_ID) THEN 0
+                   WHEN cur_seat IN (SELECT Seat_No FROM Reserve WHERE Flight_ID = i_Flight_ID AND Class = i_Class) THEN 0
                    ELSE 1
                END;
         SET cur_seat = cur_seat + 1;
@@ -515,7 +517,7 @@ CREATE PROCEDURE User_Register(
 )
 BEGIN
     DECLARE user_exists INT;
-    
+    START TRANSACTION;
     SELECT 1 INTO user_exists FROM Registered_User WHERE Registered_User.Passport_ID = Passport_ID;
     
     IF user_exists IS NOT NULL THEN
@@ -525,6 +527,7 @@ BEGIN
         INSERT INTO Registered_User (Passport_ID, UserName, Passcode, First_Name, Last_Name, Phone_No, gender, email, Date_of_Birth, Address_Line_01, Address_Line_02, City, Country)
         VALUES (Passport_ID, UserName, Passcode, First_Name, Last_Name, Phone_No, gender, email, Date_of_Birth, Address_Line_01, Address_Line_02, City, Country);
     END IF;
+    COMMIT;
 END $$
 DELIMITER ;
 
@@ -545,7 +548,8 @@ CREATE PROCEDURE Add_Visiting_User (
 	IN gender ENUM('Male', 'Female', 'Other')
 )
 BEGIN
-    DECLARE user_exists INT;    
+    DECLARE user_exists INT;
+    START TRANSACTION;
     SELECT 1 INTO user_exists FROM User WHERE User.Passport_ID = Passport_ID;
     
     IF user_exists IS NULL THEN
@@ -564,6 +568,7 @@ BEGIN
 )
 	VALUES
     (Passport_ID,First_Name,Last_Name,Phone_No,Date_of_Birth,Address,Country,email,gender);
+    COMMIT;
 END $$
 DELIMITER;
 
@@ -577,31 +582,39 @@ CREATE PROCEDURE Reserve(
     IN Passport_ID VARCHAR(15),
     IN Flight_ID INT,
     IN Seat_No INT,
-    IN User_Type ENUM('Registered','Guest'),
-    OUT O_price FLOAT,
-    OUT O_price_w_d FLOAT,
-    OUT Reserve_ID INT,
-    OUT O_Passenger_Type ENUM('Guest','Normal','Frequent','Gold')
+    IN Class ENUM('Platinum','Business','Economy'),
+    IN User_Type ENUM('Registered','Guest')
 )
 BEGIN
-	DECLARE class ENUM('Platinum','Business','Economy');
     DECLARE basic_price FLOAT;
     DECLARE class_factor FLOAT;
     DECLARE price FLOAT;
     DECLARE discount_1 FLOAT;
     DECLARE final_price FLOAT;
     DECLARE Correct_Seat BOOL;
-    DECLARE Platinum INT;
-    DECLARE Business INT;
-    DECLARE Economy INT;
+    DECLARE capacity INT;
     DECLARE Passenger_Type ENUM('Guest','Normal','Frequent','Gold');
+    DECLARE Reserve_ID INT;
+    DECLARE O_Time DATETIME;
     
-    SET Correct_Seat = 1;
-    
+    SET capacity = get_class_capacity(Flight_ID,Class);
+        
+	IF (Class = 'Platinum') THEN
+		IF ((Seat_No > capacity) OR (Seat_No <= 0)) THEN
+			SIGNAL SQLSTATE '45006' SET MESSAGE_TEXT = 'WRONG Seat_No';
+		END IF;
+	ELSEIF (Class = 'Business') THEN
+		IF ((Seat_No <= 0) OR (Seat_No > capacity)) THEN
+			SIGNAL SQLSTATE '45007' SET MESSAGE_TEXT = 'WRONG Seat_No';
+		END IF;
+	ELSE
+		IF ((Seat_No <= 0) OR (Seat_No > capacity)) THEN
+			SIGNAL SQLSTATE '45008' SET MESSAGE_TEXT = 'WRONG Seat_No';
+		END IF;
+	END IF;
     -- Check if a reservation for the given Seat_No and Flight_ID already exists
     CALL Flight_Update();
-    IF EXISTS (SELECT 1 FROM Reserve WHERE Reserve.Flight_ID = Flight_ID AND Reserve.Seat_No = Seat_No) THEN
-        SET Correct_Seat = 0;
+    IF EXISTS (SELECT 1 FROM Reserve WHERE Reserve.Flight_ID = Flight_ID AND Reserve.Seat_No = Seat_No AND Reserve.Class = Class) THEN
         SIGNAL SQLSTATE '45004' SET MESSAGE_TEXT = 'This Seat Reserved';
     ELSEIF ((SELECT flight_state FROM Flight WHERE Flight.Flight_ID = Flight_ID)='Departed-On-Time' OR
             (SELECT flight_state FROM Flight WHERE Flight.Flight_ID = Flight_ID)='Departed-Delayed' OR
@@ -609,54 +622,35 @@ BEGIN
             (SELECT flight_state FROM Flight WHERE Flight.Flight_ID = Flight_ID)='Cancelled') THEN
         SET Correct_Seat = 0;
         SIGNAL SQLSTATE '45005' SET MESSAGE_TEXT = 'Flight Not Available';
-    ELSE
-		SET Platinum = get_class_capacity(Flight_ID, 'Platinum');
-        SET Business = get_class_capacity(Flight_ID, 'Business');
-        SET Economy = get_class_capacity(Flight_ID, 'Economy');
-        
-        IF (0 < Seat_No AND Seat_No <= Platinum) THEN
-			SET class = 'Platinum';
-        ELSEIF (Platinum < Seat_No AND Seat_No <= (Platinum+Business)) THEN
-			SET class = 'Business';
-        ELSEIF ((Platinum+Business) < Seat_No AND Seat_No <= (Platinum+Business+Economy)) THEN
-			SET class = 'Economy';
-		ELSE
-			SIGNAL SQLSTATE '45006' SET MESSAGE_TEXT = 'WRONG Seat_No';
-        END IF;
     END IF;
 
-    IF (Correct_Seat = 1) THEN
-        SELECT Base_Price INTO basic_price FROM Flight WHERE Flight.Flight_ID = Flight_ID LIMIT 1;
-        SELECT differ_factor INTO class_factor FROM Class_Price WHERE Class_Price.Class = class LIMIT 1;
+    SELECT Base_Price INTO basic_price FROM Flight WHERE Flight.Flight_ID = Flight_ID LIMIT 1;
+	SELECT differ_factor INTO class_factor FROM Class_Price WHERE Class_Price.Class = Class LIMIT 1;
 
-        SET price = basic_price * class_factor;
-        IF (User_Type = 'Registered') THEN
+	SET price = basic_price * class_factor;
+	IF (User_Type = 'Registered') THEN
         
-            SELECT Membership_status INTO Passenger_Type
-            FROM Registered_User
-            WHERE Registered_User.Passport_ID = Passport_ID;
+		SELECT Membership_status INTO Passenger_Type
+		FROM Registered_User
+		WHERE Registered_User.Passport_ID = Passport_ID;
             
-            SELECT Discount
-            INTO discount_1
-            FROM Discount
-            WHERE Membership = Passenger_Type;
+		SELECT Discount
+		INTO discount_1
+		FROM Discount
+		WHERE Membership = Passenger_Type;
             
-            SET final_price = price - price * discount_1 / 100;
-        ELSE
-            SET final_price = price;
-            SET Passenger_Type = 'Guest';
-        END IF;
-		INSERT INTO Reserve (Passport_ID, Flight_ID, Seat_No, Class, Passenger_Type)
-        VALUES (Passport_ID, Flight_ID, Seat_No, class, Passenger_Type);
-        -- Get the Reserve_ID for the newly inserted reservation
-        SET Reserve_ID = LAST_INSERT_ID();
-        SET O_price = price;
-        SET O_price_w_d = final_price;
-        SET O_Passenger_Type = Passenger_Type;
-    END IF;
+		SET final_price = price - price * discount_1 / 100;
+	ELSE
+		SET final_price = price;
+		SET Passenger_Type = 'Guest';
+	END IF;
+	INSERT INTO Reserve (Passport_ID, Flight_ID, Seat_No, Class, Passenger_Type, Price, Final_Price)
+	VALUES (Passport_ID, Flight_ID, Seat_No, class, Passenger_Type, price, final_price);
+	-- Get the Reserve_ID for the newly inserted reservation
+	SET Reserve_ID = LAST_INSERT_ID();
+	SELECT Reserve_ID;
 END;
 $$
-
 DELIMITER ;
 
 
@@ -668,13 +662,18 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE Book(
 	IN Reserve_ID INT,
-    IN Price FLOAT,
-    IN Price_W_D FLOAT,
     IN PAID BOOL
 )
-BEGIN    
+BEGIN
+	DECLARE Booking_ID INT;
+    START TRANSACTION;
     IF (PAID = 1) THEN
-		SELECT Flight_ID, Passport_ID, Class, Passenger_Type INTO @flight_id, @passport, @class, @passengertype
+		IF EXISTS (SELECT 1 FROM Booking WHERE Booking.Reserve_ID = Reserve_ID) THEN
+			SIGNAL SQLSTATE '45011'
+			SET MESSAGE_TEXT = 'Booking Available FOR This Reservation Allready.';
+	END IF;
+    
+		SELECT Flight_ID, Passport_ID, Class, Passenger_Type, Price, Final_Price INTO @flight_id, @passport, @class, @passengertype, @price, @finalprice
         FROM Reserve r
         WHERE r.Reserve_ID = Reserve_ID;
         
@@ -686,7 +685,7 @@ BEGIN
         END IF;
         -- Update Revenue
         UPDATE Airplane_Model am
-        SET Revenue = Revenue + Price_W_D
+        SET Revenue = Revenue + @finalprice
         WHERE am.model IN (SELECT model
 						   FROM Airplane a
                            INNER JOIN Flight f
@@ -709,15 +708,67 @@ BEGIN
 		END IF;
         
         INSERT INTO Booking (Reserve_ID, Price, Price_With_Discount, Passenger_Type)
-        VALUES (Reserve_ID, Price, Price_W_D, @passengertype);
+        VALUES (Reserve_ID, @price, @finalprice, @passengertype);
+        
+        SET Booking_ID = LAST_INSERT_ID();
+        SELECT Booking_ID;
 	ELSE
 		DELETE FROM Reserve
         WHERE Reserve.Reserve_ID = Reserve_ID;
 	END IF;
+    COMMIT;
 END;
 $$
 DELIMITER ;
 
+
+
+
+------------------------------------------------------------------
+-------------------- GET RESERVATION DETAILS ---------------------
+------------------------------------------------------------------
+DELIMITER $$
+CREATE PROCEDURE Get_Reservation(
+	IN Reserve_ID INT
+)
+BEGIN
+	SELECT Passport_ID, Reserve_ID, Price, Final_Price
+    FROM Reserve
+    WHERE Reserve.Reserve_ID = Reserve_ID;
+END;
+$$
+DELIMITER ;
+
+
+
+
+------------------------------------------------------------------
+----------------- DELETE UNPAID RESERVEATIONS --------------------
+------------------------------------------------------------------
+DELIMITER $$
+CREATE PROCEDURE Unpaids()
+BEGIN
+    DECLARE reserve_id INT;
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE cur CURSOR FOR
+        SELECT r.Reserve_ID
+        FROM Reserve r
+        LEFT JOIN Booking b ON r.Reserve_ID = b.Reserve_ID
+        WHERE b.Reserve_ID IS NULL AND TIMESTAMPDIFF(MINUTE, r.Reserved, NOW()) >= 15;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+    OPEN cur;
+    reservation_loop: LOOP
+        FETCH cur INTO reserve_id;
+        IF done THEN
+            LEAVE reservation_loop;
+        END IF;
+        -- Schedule the Book procedure with PAID = 0 for the selected reservation
+        CALL Book(reserve_id, 0);
+    END LOOP;
+    CLOSE cur;
+END;
+$$
+DELIMITER ;
 
 
 
@@ -806,9 +857,9 @@ DELIMITER ;
 
 
 
---------------------------------------------------------------------
------ UPDATE MEMBERSHIP STATES WHEN No_of_booking HAS CHANNGED.-----
---------------------------------------------------------------------
+----------------------------------------------------------------------
+----- UPDATE MEMBERSHIP STATES WHEN No_of_booking HAS CHANNGED. ------
+----------------------------------------------------------------------
 DELIMITER $$
 CREATE TRIGGER Update_Membership_Status
 BEFORE UPDATE ON Registered_User
@@ -826,10 +877,56 @@ $$
 DELIMITER ;
 
 
+--------------------------------------------------------------------
+----- CLEAR RESERVES AND BOOKINGS AFTER DEPARTURED. ----------------
+--------------------------------------------------------------------
+DELIMITER $$
+CREATE TRIGGER Remove_Reservations_Bookings
+AFTER UPDATE ON Flight
+FOR EACH ROW
+BEGIN
+    IF NEW.flight_state = 'Departed-On-Time' OR NEW.flight_state = 'Departed-Delayed' OR NEW.flight_state = 'Landed' THEN
+        DELETE FROM Reserve
+        WHERE Flight_ID = NEW.Flight_ID;
+    END IF;
+END;
+$$
+DELIMITER ;
 
 
 
 
+
+-- 		******************************************************************************
+-- 		******************************* EVENTS ***************************************
+-- 		******************************************************************************
+
+--------------------------------------------------------------------
+-------------- CALL Unpaids EVERY 5 MINUTES. ------------------
+--------------------------------------------------------------------
+DELIMITER $$
+CREATE EVENT NonPaidReservationsEvent
+ON SCHEDULE EVERY 5 MINUTE
+DO
+BEGIN
+    CALL Unpaids();
+END;
+$$
+DELIMITER ;
+
+
+--------------------------------------------------------------------
+-------------- CALL Flight_Update EVERY 5 MINUTES. -----------------
+--------------------------------------------------------------------
+DELIMITER $$
+CREATE EVENT UpdateFlights
+ON SCHEDULE EVERY 5 MINUTE
+DO
+BEGIN
+    CALL Flight_Update();
+END;
+$$
+DELIMITER ;
 
 
 
@@ -843,19 +940,25 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE FUNCTION_1(
 	IN Flight_ID  INT,
-    IN Below_18 BOOL)
+    IN Below_18 ENUM('Below','Above','All')
+)
 BEGIN
-    IF (Below_18 = 1) THEN
+    IF (Below_18 = 'Below') THEN
         SELECT Passport_ID,First_Name,Last_Name,Age
         FROM Passenger
         WHERE Passenger.Flight_ID = Flight_ID
         AND Passenger.Age < 18
         ORDER BY Age ASC;
-	ELSE
+	ELSEIF (Below_18 = 'Above') THEN
         SELECT Passport_ID,First_Name,Last_Name,Age
         FROM Passenger
         WHERE Passenger.Flight_ID = Flight_ID
         AND Passenger.Age >= 18
+        ORDER BY Age ASC;
+	ELSE
+        SELECT Passport_ID,First_Name,Last_Name,Age
+        FROM Passenger
+        WHERE Passenger.Flight_ID = Flight_ID
         ORDER BY Age ASC;
 	END IF;
 END;

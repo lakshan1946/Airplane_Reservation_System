@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import { useNavigate} from "react-router-dom";
+import { useNavigate, useParams} from "react-router-dom";
 import axios from 'axios';
 
 const flight = [];
 
 function BookingCard({ flight }) {
   const navigate = useNavigate();
+  const params = useParams()
 
-  const navigatetoseatselection = (FlightID) => {
-    navigate(`/seatselection/${FlightID}`)
+  const uname = params.username
+
+  const navigatetoseatselection = (FlightID, UserName) => {
+    navigate(`/seatselection/${FlightID}/${UserName}`)
   }
 
   return (
@@ -32,7 +35,7 @@ function BookingCard({ flight }) {
                 <div>
                   <button 
                     className="btn btn-primary"
-                    onClick={() => navigatetoseatselection(p.Flight_ID)}                  
+                    onClick={() => navigatetoseatselection(p.Flight_ID, uname)}                  
                   >Book</button>
                 </div>
               </td>
@@ -173,9 +176,7 @@ const Booking = () => {
             <button
               type="submit"
               className="btn btn-primary btn-lg submitBtn"
-              onClick={ handleSubmit
-                // () => setActive(true)
-              }
+              onClick={handleSubmit}
             >
               Let's go!
             </button>

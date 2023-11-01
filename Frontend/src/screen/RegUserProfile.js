@@ -5,13 +5,10 @@ import { useNavigate } from "react-router-dom";
 function RegUserProfile() {
   const params = useParams();
   const navigate = useNavigate();
-  //const userDetails = useUserDetails(params.username);
 
-  console.log(params.username);
+  const uname = params.username;
+  const name = "r".concat(uname);
 
-  const navigateToBooking = (username) => {
-    navigate("/Booking");
-  };
   return (
     <div className="background">
       <h1 className="RegUserHead">Welcome to B Airline</h1>
@@ -71,7 +68,7 @@ function RegUserProfile() {
             <button
               type="button"
               className="btn btn-dark btn-lg"
-              onClick={navigateToBooking}
+              onClick={(e) => navigate(`/booking/${name}`)}
             >
               Book a Flight
             </button>
