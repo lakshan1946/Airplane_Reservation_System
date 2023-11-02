@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../component/Navbar";
 
 const airplaneModels = [
   {
@@ -113,6 +114,7 @@ function SeatSelection() {
 
   return (
     <div className="seatSelectionContainer background p-3">
+      <Navbar />
       <h1 className="seatHeading">Seat Selection</h1>
       <div className="selectionControls">
         <label className="subP">

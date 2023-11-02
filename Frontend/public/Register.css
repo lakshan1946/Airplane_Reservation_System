@@ -1,0 +1,66 @@
+.information {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+#regAll {
+    margin: 5% 30%;
+}
+
+.information {
+    margin-bottom: 50px;
+    border-radius: 10px;
+}
+
+.subInfo {
+    margin-bottom: 50px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.regHeading {
+    font-weight: bold;
+    padding-bottom: 15px;
+}
+
+.col {
+    padding-bottom: 20px;
+}
+
+.nameInfo {
+    padding-bottom: 10px;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.submitBtn1 {
+    justify-content: center;
+    display: flex;
+    padding-top: 10px;
+}
+
+.HeadReg {
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-weight: bold;
+}
+
+p.HeadReg {
+    color: #F8DE22;
+    font-family: 'Playpen Sans', cursive;
+}
+
+.success-message {
+    color: #900C3F;
+    font-size: 20px;
+    text-align: center;
+}
+
+.successCont {
+    padding: 20px;
+}
+
+.submitBtn2 {
+    position: relative;
+    left: 190px;
+    margin-top: 20px;
+}

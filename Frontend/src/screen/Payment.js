@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Navbar from "../component/Navbar";
 
 function Payment() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
@@ -117,6 +118,7 @@ function Payment() {
 
   return (
     <div className="container background" id="scon">
+      <Navbar />
       <div className="paymentText">
         <h2>Confirm Booking and pay</h2>
         <span>
@@ -125,7 +127,6 @@ function Payment() {
           booking.
         </span>
       </div>
-
       <div class="container ">
         <div className="row">
           <div className="col-md-4">

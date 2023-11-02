@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Navbar from "../component/Navbar";
 
 const flight = [
   {
@@ -95,6 +96,7 @@ const Booking = () => {
 
   return (
     <div className="container-fluid background p-3">
+      <Navbar />
       <div className="d-flex justify-content-center align-items-center ">
         <div className="container-fluid">
           <h1 className="text-center searchHead">Find a Flight</h1>

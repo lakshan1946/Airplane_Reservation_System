@@ -13,6 +13,79 @@
     /* Centers the image horizontally and vertically */
 }
 
+/*report*/
+
+.backgroundAdminbg {
+    font-family: sans-serif;
+    margin: 0;
+    background-image: url("images/adming.jpg");
+    /* Replace 'your-image-file.jpg' with the actual file name and path */
+    background-size: cover;
+    /* Ensures the image covers the entire background */
+    background-repeat: no-repeat;
+    /* Prevents image repetition */
+    background-attachment: fixed;
+    /* Fixes the background image, so it doesn't scroll with the content */
+    background-position: center center;
+    /* Centers the image horizontally and vertically */
+}
+
+#reportHome {
+    display: flex;
+    padding: 50px;
+
+}
+
+#reportProfile {
+    margin: 0px 20px;
+    padding-top: 38px;
+    padding-right: 35px;
+    border-radius: 20px;
+
+}
+
+.reportH {
+    color: #C3ACD0;
+    font-weight: bold;
+
+}
+
+.reportH1 {
+    font-weight: bold;
+}
+
+.reportTD {
+    color: #7D7463;
+}
+
+.reportTH {
+    color: white;
+    font-weight: bold;
+    padding-right: 20px;
+}
+
+#reportButton {
+    background-color: rgba(255, 255, 255, 0.5);
+    margin: 10px 20px;
+    padding: 30px;
+    border-radius: 20px;
+
+}
+
+.btnAdmin {
+    padding: 10px !important;
+    margin: 10px !important;
+}
+
+#imgAdmin {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-top: 50px;
+}
+
+/*Component */
 
 .admincomp {
     padding: 15px;

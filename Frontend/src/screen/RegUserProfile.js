@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../component/Navbar";
 import axios from "axios";
 
 function RegUserProfile() {
@@ -32,7 +33,8 @@ function RegUserProfile() {
   };
 
   return (
-    <div className="background">
+    <div className="backgroundRU">
+      <Navbar />
       <h1 className="RegUserHead">Welcome to B Airline</h1>
 
       <div className="cont">

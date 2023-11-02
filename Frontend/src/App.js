@@ -1,5 +1,4 @@
 import Login from "./screen/Login/Login";
-import Navbar from "./component/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomeScreen from "./screen/HomeScreen";
 import Footer from "./component/Footer";
@@ -19,7 +18,6 @@ import Guest from "./screen/Guest";
 function App() {
   return (
     <div>
-      <Navbar />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />}></Route>
