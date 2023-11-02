@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import Navbar from "../../component/Navbar";
 
 let datas;
 
@@ -10,15 +11,10 @@ function TotalRevenueCard({ data }) {
       <div className="admintablesub">
         <table className="admint ">
           <tbody>
-            <tr>
-              <th className="adminth">Model</th>
-              <th className="adminth">Revenue</th>
-            </tr>
             {data &&
               data.map((p) => (
                 <tr>
-                  <td className="admincol">{p.model}</td>
-                  <td className="admincol">{p.Revenue}</td>
+                  <td className="admincol">{p.Revenue} $</td>
                 </tr>
               ))}
           </tbody>
@@ -52,6 +48,7 @@ function Revenue() {
   };
   return (
     <div className="backgroundAdmin">
+      <Navbar />
       <h1 className="adminTitle">Total revenue</h1>
       <div id="adminCont">
         <div className="admincomp">

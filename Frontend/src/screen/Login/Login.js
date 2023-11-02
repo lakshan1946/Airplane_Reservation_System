@@ -30,6 +30,50 @@ function Login() {
     titleTwo: "Where flying is not just a journey",
     titleThree: "It's an experience that soars above the ordinary",
   });
+
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   //setErrors(LoginValidation(values));
+  //   const { username, password } = values;
+
+  //   try {
+  //     const response = await fetch('/api/login', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ username, password })
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error('Login failed');
+  //     }
+
+  //     const data = await response.json();
+
+  //     // Store the token in local storage
+  //     localStorage.setItem('token', data.token);
+
+  //     // Navigate to the home screen
+  //     navigate('/HomeScreen');
+  //   } catch (error) {
+  //     console.error('Failed to login', error);
+  //   }
+  //   // Check if the provided username and password are correct
+  //   if (adminUSer(username, password)) {
+  //     navigateToReport();
+  //   } else {
+  //     axios
+  //       .post("/login", { values })
+  //       .then((response) => {
+  //         navigateToRegUserProfile(username);
+  //       })
+  //       .catch((error) => {
+  //         setErrors(LoginValidation(values));
+  //       });
+
+  //     setErrors(LoginValidation(values));
+  //   }
+
+  // };
   const handleSubmit = (event) => {
     event.preventDefault();
     //setErrors(LoginValidation(values));
@@ -85,7 +129,11 @@ function Login() {
                 autoStart: true,
                 loop: true,
                 delay: 40,
-                strings: ["I'm lakshn", "I.m scdsf", "sdfvsfvsf"],
+                strings: [
+                  "Register now! with B Airways",
+                  "Enjoy exclusive discounts!",
+                  "Explore the world with us!",
+                ],
               }}
             />
           </div>

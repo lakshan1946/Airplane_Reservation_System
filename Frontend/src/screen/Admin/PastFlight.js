@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import Navbar from "../../component/Navbar";
 
 let datas;
 
@@ -60,6 +61,7 @@ function PastFlight() {
   };
   return (
     <div className="backgroundAdmin">
+      <Navbar />
       <h1 className="adminTitle">View of past details</h1>
       <div id="adminCont">
         <div className="admincomp">

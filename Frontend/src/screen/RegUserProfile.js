@@ -10,6 +10,8 @@ function RegUserProfile() {
 
   // State to store the user data from the backend
   const [userData, setUserData] = useState({});
+  const uname = params.username;
+  const name = "r".concat(uname);
 
   useEffect(() => {
     // Create an async function to fetch data
@@ -92,7 +94,7 @@ function RegUserProfile() {
             <button
               type="button"
               className="btn btn-dark btn-lg"
-              onClick={navigateToBooking}
+              onClick={(e) => navigate(`/booking/${name}`)}
             >
               Book a Flight
             </button>

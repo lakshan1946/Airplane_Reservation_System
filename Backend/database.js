@@ -1,5 +1,6 @@
 import mysql from "mysql2";
 import dotenv from "dotenv";
+import bcrypt, { hash } from "bcrypt";
 dotenv.config();
 
 const db = mysql.createConnection({
@@ -17,11 +18,12 @@ db.connect((err) => {
   }
 });
 let temp = "";
-export const loginUser = (req, res) => {
+export const loginUser = async (req, res) => {
   // API endpoint to check username and password and get Passport_ID
   const { values } = req.body; // Destructure the "values" object
   const { username, password } = values; // Destructure "username" and "password" from "values"
-
+  console.log(values);
+  console.log("ef");
   if (!username || !password) {
     // Check if the username or password is missing
     return res
@@ -30,23 +32,36 @@ export const loginUser = (req, res) => {
     // The following line will never be executed because the function has already returned
   }
   // Query to check the username and password
-  const sql =
-    "SELECT Passport_ID FROM Registered_User WHERE UserName = ? AND Passcode = ?";
-  const vals = [username, password];
-  db.query(sql, vals, (err, results) => {
+  const sql = "SELECT * FROM Registered_User WHERE UserName = ?";
+  const vals = [username];
+  db.query(sql, vals, async (err, results) => {
     if (err) {
       console.error("Error querying the database:", err);
       res.status(500).json({ message: "Error querying the database" });
     } else if (results.length === 0) {
       // Alert when username and password do not match
-      console.log("username and password do not match");
+      console.log("username doesn't exist");
     } else {
       const passportID = results[0].Passport_ID;
+      console.log(results[0].Passcode);
       temp = passportID;
-      return res.json({
-        success: true,
-        message: "User registered successfully",
-      });
+      const isValid = await bcrypt.compare(
+        values.password,
+        results[0].Passcode
+      );
+      console.log(isValid);
+      if (isValid) {
+        console.log("username and password match");
+        return res.json({
+          success: true,
+          message: "User registered successfully",
+        });
+      } else if (results[0].Passcode === values.password) {
+        return res.json({
+          success: true,
+          message: "User registered successfully",
+        });
+      }
     }
   });
 };
@@ -54,7 +69,7 @@ export const loginUser = (req, res) => {
 export const regprofileuser = (req, res) => {
   console.log("Has");
   const sql =
-    "SELECT `Passport_ID`, `UserName`, `First_Name`, `Last_Name`, `Phone_No`, `email`, `gender`, `Address_Line_01`, `Address_Line_02`, `City`, `Country`, `No_of_bookings`, `Membership_status` FROM `registered_user` WHERE `Passport_ID` = ?";
+    "SELECT Passport_ID, UserName, First_Name, Last_Name, Phone_No, email, gender, Address_Line_01, Address_Line_02, City, Country, No_of_bookings, Membership_status FROM registered_user WHERE Passport_ID = ?";
   const val = [temp];
   console.log(temp);
   db.query(sql, val, (err, results) => {
@@ -105,26 +120,52 @@ export const guestUser = (userData, callback) => {
   }
 };
 
-export const registerUser = (userData, callback) => {
+export const registerUser = async (userData, callback) => {
+  const data = userData.body;
+  const hashdata = await bcrypt.hash(data.password, 10);
+  console.log(hashdata);
+  console.log(data);
+  try {
+    await db.execute(
+      "CALL User_Register(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [
+        data.passportID,
+        data.username,
+        hashdata,
+        data.firstName,
+        data.lastName,
+        data.phone,
+        data.gender,
+        data.email,
+        data.dateOfBirth,
+        data.line1,
+        data.line2,
+        data.city,
+        data.country,
+      ]
+    );
+
+    // Registration was successful, so return a success response
+    return callback.json({
+      success: true,
+      message: "User registered successfully",
+    });
+  } catch (err) {
+    console.error("Error registering user:", err);
+    // Check if the callback is a function before calling it
+    if (typeof callback === "function") {
+      callback(err, null);
+    } else {
+      console.error("Callback is not a function.");
+    }
+  }
+};
+
+export const delay_ = async (userData, callback) => {
   const data = userData.body;
   console.log(data);
-
   try {
-    db.execute("CALL User_Register(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
-      data.passportID,
-      data.username,
-      data.password,
-      data.firstName,
-      data.lastName,
-      data.phone,
-      data.gender,
-      data.email,
-      data.dateOfBirth,
-      data.line1,
-      data.line2,
-      data.city,
-      data.country,
-    ]);
+    await db.execute("CALL Flight_Delay(?, ?)", [data.flightNo, data.time]);
 
     // Registration was successful, so return a success response
     return callback.json({
@@ -147,16 +188,8 @@ export const age_constr = (userData, callback) => {
 
   // Assign below_18 based on the condition
 
-  let below_18;
-
-  if (data.age === "below") {
-    below_18 = 1;
-  } else {
-    below_18 = 0;
-  }
-
   const sql = "CALL FUNCTION_1(?, ?)";
-  const val = [data.flightNo, below_18];
+  const val = [data.flightNo, data.age];
   // Corrected variable name
   db.query(sql, val, (err, results) => {
     if (err) {

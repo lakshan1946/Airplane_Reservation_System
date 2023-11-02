@@ -1,22 +1,23 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import Navbar from "../../component/Navbar";
+import { Nav } from "react-bootstrap";
 // Import Axios for making HTTP requests
 
 let datas;
 
 function DateDestinationCard({ data }) {
   return (
-    <div className="card-body">
+    <div className="card-body admintable">
       <table className="">
         <tbody>
-          <tr>
-            <th>Count</th>
-          </tr>
+          <tr></tr>
           {data &&
             data.map((p) => (
               <tr>
-                <td>{p.Count}</td>
+                <th className="adminth">Count</th>
+                <td className="adminth">{p.Count}</td>
               </tr>
             ))}
         </tbody>
@@ -53,6 +54,7 @@ function DateDestination() {
   };
   return (
     <div className="backgroundAdmin">
+      <Navbar />
       <h1 className="adminTitle">View Passengers by destination</h1>
       <div id="adminCont">
         <div className="admincomp">

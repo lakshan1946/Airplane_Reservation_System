@@ -1,21 +1,21 @@
-body{
+body {
 
     background-color: #eee;
 }
 
-.container{
+.container {
 
     height: auto;
-    
+
 
 }
 
-#scon{
-    max-width: 100%!important;
+#scon {
+    max-width: 100% !important;
 }
 
-.card{
-    border:none;
+.card {
+    border: none;
 }
 
 .form-control {
@@ -73,12 +73,12 @@ input::-webkit-inner-spin-button {
     font-size: 12px
 }
 
-.card-blue{
+.card-blue {
 
     background-color: #492bc4;
 }
 
-.hightlight{
+.hightlight {
 
     background-color: #5737d9;
     padding: 10px;
@@ -87,12 +87,12 @@ input::-webkit-inner-spin-button {
     font-size: 14px;
 }
 
-.yellow{
+.yellow {
 
-    color: #fdcc49; 
+    color: #fdcc49;
 }
 
-.decoration{
+.decoration {
 
     text-decoration: none;
     font-size: 14px;
@@ -101,27 +101,36 @@ input::-webkit-inner-spin-button {
 .btn-success {
     color: #fff;
     background-color: #492bc4;
-    border-color:#492bc4;
+    border-color: #492bc4;
 }
 
 .btn-success:hover {
     color: #fff;
-    background-color:#492bc4;
+    background-color: #492bc4;
     border-color: #492bc4;
 }
 
 
-.decoration:hover{
+.decoration:hover {
 
     text-decoration: none;
-    color: #fdcc49; 
+    color: #fdcc49;
 }
 
-.x{
+.x {
     margin: 0px;
 }
 
-.paymentText{
-    margin:0 !important;
+.paymentText {
+    margin: 25px 85px 30px;
     padding: 10px;
+    color: white;
+}
+
+.paymentText h1 {
+    font-weight: bolder;
+}
+
+.abc {
+    height: 375px;
 }

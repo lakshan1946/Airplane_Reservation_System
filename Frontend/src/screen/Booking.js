@@ -6,6 +6,7 @@ import axios from "axios";
 const flight = [];
 
 function BookingCard({ flight }) {
+  console.log(flight);
   const navigate = useNavigate();
   const params = useParams();
 
@@ -15,36 +16,40 @@ function BookingCard({ flight }) {
     navigate(`/seatselection/${FlightID}/${UserName}`);
   };
   return (
-    <div id="con" className="card-body">
-      <table className="FlightCardT">
-        <tbody>
-          <tr>
-            <th className="FlightCardTh">Flight No</th>
-            <th className="FlightCardTh">Model</th>
-            <th className="FlightCardTh">Departure time</th>
-            <th className="FlightCardTh">Arrival time</th>
-            <th className="FlightCardTh">Booking</th>
-          </tr>
-          {flight.map((p) => (
+    <div id="con" className="FlightCardT">
+      <div className="flT">
+        <table className="">
+          <tbody>
             <tr>
-              <td className="FlightCardTd">{p.FlightNo}</td>
-              <td className="FlightCardTd">{p.model}</td>
-              <td className="FlightCardTd">{p.Dtime}</td>
-              <td className="FlightCardTd">{p.Atime}</td>
-              <td className="FlightCardTd">
-                <div>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => navigatetoseatselection(p.Flight_ID, uname)}
-                  >
-                    Book
-                  </button>
-                </div>
-              </td>
+              <th className="FlightCardTh">Flight No</th>
+              <th className="FlightCardTh">Model</th>
+              <th className="FlightCardTh">Departure Datetime</th>
+              <th className="FlightCardTh">Arrival Datetime</th>
+              <th className="FlightCardTh1">Booking</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+            {flight.map((p) => (
+              <tr>
+                <td className="FlightCardTd">{p.Flight_Name}</td>
+                <td className="FlightCardTd">{p.Model}</td>
+                <td className="FlightCardTd">{p.Departure_Date_Time}</td>
+                <td className="FlightCardTd">{p.Arrival_Date_Time}</td>
+                <td className="FlightCardTd1">
+                  <div>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() =>
+                        navigatetoseatselection(p.Flight_ID, uname)
+                      }
+                    >
+                      Book
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -78,7 +83,6 @@ const Booking = () => {
       .catch((err) => {
         console.error(err);
       });
-
     setActive(true);
   };
 
@@ -174,18 +178,20 @@ const Booking = () => {
                 </div>
               </div>
             </div>
-            <button
-              type="submit"
-              className="btn btn-primary btn-lg submitBtn"
-              onClick={handleSubmit}
-            >
-              Let's go!
-            </button>
+            <div className="submitBtn">
+              <button
+                type="submit"
+                className="btn btn-primary btn-lg "
+                onClick={handleSubmit}
+              >
+                Let's go!
+              </button>
+            </div>
           </form>
         </div>
       </div>
       <div className="row next-line text-center">
-        <h2 className="availableFlight">Available Flights</h2>
+        <h1 className="availableFlight">Available Flights</h1>
         <ul id="flight-results"></ul>
       </div>
 

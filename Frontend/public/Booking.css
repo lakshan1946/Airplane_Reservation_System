@@ -1,30 +1,36 @@
 .searchHead {
     color: white;
+    padding-bottom: 40px;
+    font-weight: bold;
 }
 
 .text-center {
-    margin: 50px;
+    margin: 10px auto 15px auto;
 }
 
 #flight-search-form {
-    padding: 0 20% 5%;
+    padding: 0 20% 2%;
 }
 
 .allrow {
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 10px;
-    padding: 7%;
+    padding: 5%;
 }
 
 .availableFlight {
     text-align: center;
     color: #fff6dc;
+    padding-bottom: 20px;
+    font-weight: bold;
 }
 
 .submitBtn {
-    position: relative;
-    left: 380px;
+    justify-content: center;
+    display: flex;
+    padding-top: 20px;
+    padding-bottom: 25px;
 
 }
 
@@ -42,6 +48,22 @@
 
 }
 
-.FlightCardT {
+.flT {
     background-color: rgba(255, 255, 255, 0.5);
+    width: max-content;
+    border-radius: 20px;
+}
+
+.FlightCardT {
+
+    width: 100px;
+
+}
+
+.FlightCardTh {
+    padding-right: 50px;
+}
+
+.flT {
+    padding: 25px;
 }

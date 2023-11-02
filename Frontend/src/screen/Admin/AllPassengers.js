@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
-
+import Navbar from "../../component/Navbar";
 let datas;
 
 function AgePassengerCard({ data }) {
@@ -64,6 +64,7 @@ function AllPasenger() {
 
   return (
     <div className="backgroundAdmin">
+      <Navbar />
       <h1 className="adminTitle">View Passengers by age</h1>
       <div id="adminCont">
         <div className="admincomp">
