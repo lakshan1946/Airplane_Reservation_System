@@ -128,7 +128,7 @@ function Guest() {
     </div>
   );
   return (
-    <div className="background">
+    <div className="backgroundGu">
       <Navbar />
       <div className=" d-flex justify-content-center align-items-center vh-200 rounded-2">
         <section id="regAll">
@@ -292,12 +292,6 @@ function Guest() {
                       }
                     />
                   </div>
-                </div>
-              </div>
-
-              <div className="subInfo">
-                <h4 className="regHeading">Your account</h4>
-                <div className="row g-3">
                   <div className="col">
                     <label className="nameInfo">Passport ID</label>
                     <input

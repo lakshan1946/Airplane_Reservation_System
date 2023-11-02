@@ -1,9 +1,39 @@
+.backgroundRu {
+    font-family: sans-serif;
+    margin: 0;
+    background-image: url("images/regUser.jpg");
+    /* Replace 'your-image-file.jpg' with the actual file name and path */
+    background-size: cover;
+    /* Ensures the image covers the entire background */
+    background-repeat: no-repeat;
+    /* Prevents image repetition */
+    background-attachment: fixed;
+    /* Fixes the background image, so it doesn't scroll with the content */
+    background-position: center center;
+    /* Centers the image horizontally and vertically */
+}
+
+.backgroundGu {
+    font-family: sans-serif;
+    margin: 0;
+    background-image: url("images/GuestUser.jpg");
+    /* Replace 'your-image-file.jpg' with the actual file name and path */
+    background-size: cover;
+    /* Ensures the image covers the entire background */
+    background-repeat: no-repeat;
+    /* Prevents image repetition */
+    background-attachment: fixed;
+    /* Fixes the background image, so it doesn't scroll with the content */
+    background-position: center center;
+    /* Centers the image horizontally and vertically */
+}
+
 .information {
     background-color: rgba(255, 255, 255, 0.5);
 }
 
 #regAll {
-    margin: 5% 30%;
+    margin: 0 30%;
 }
 
 .information {
@@ -12,21 +42,21 @@
 }
 
 .subInfo {
-    margin-bottom: 50px;
+    margin-bottom: 10px;
     font-family: 'Roboto', sans-serif;
 }
 
 .regHeading {
     font-weight: bold;
-    padding-bottom: 15px;
+
 }
 
 .col {
-    padding-bottom: 20px;
+    padding-bottom: 10px;
 }
 
 .nameInfo {
-    padding-bottom: 10px;
+    padding-bottom: 5px;
     font-weight: bold;
     font-family: 'Montserrat', sans-serif;
 }
@@ -40,12 +70,12 @@
 .HeadReg {
     color: white;
     text-align: center;
-    padding: 20px;
+    padding: 5px;
     font-weight: bold;
 }
 
 p.HeadReg {
-    color: #F8DE22;
+    color: #B3A492;
     font-family: 'Playpen Sans', cursive;
 }
 

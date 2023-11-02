@@ -148,7 +148,7 @@ function Register() {
   );
 
   return (
-    <div className="background">
+    <div className="backgroundRu">
       <Navbar />
       <div className=" d-flex justify-content-center align-items-center vh-150 rounded-2">
         <section id="regAll">

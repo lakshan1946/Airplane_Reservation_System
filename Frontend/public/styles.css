@@ -33,6 +33,7 @@
   background-color: rgb(239, 239, 239);
 }
 
+
 /* Footer */
 
 .py-5 {
@@ -83,4 +84,42 @@
   justify-content: center;
 
 
+}
+
+/*login */
+
+.Loginbtn {
+  display: flex;
+  justify-content: center;
+}
+
+.loginregbtn {
+  padding-right: 10px;
+}
+
+.logincomp {
+  padding-bottom: 50px;
+}
+
+.home {
+  padding: 20px 0px 50px 200px;
+}
+
+.title {
+  color: white;
+  font-weight: bold;
+}
+
+.titleTwo {
+  color: white;
+}
+
+.titleThree {
+  color: yellow;
+}
+
+.text {
+  color: white;
+  font-size: 2rem;
+  padding-top: 10px;
 }

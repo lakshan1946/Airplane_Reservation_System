@@ -11,6 +11,7 @@ import { date_desti } from "./database.js";
 import { dateType } from "./database.js";
 import { pastFlight } from "./database.js";
 import { revenue_ } from "./database.js";
+import seatselectionRouter from "./routes/seatselection.js";
 
 const app = express();
 app.use(cors());
@@ -19,6 +20,15 @@ const port = process.env.PORT || 5000;
 
 app.use(bodyParser.json());
 
+//-----------------------------
+app.use(bodyParser.json());
+
+app.route("/booking").post(async (req, res) => {
+  await BookingService.get_flights(req, res);
+});
+
+app.use("/seatselection", seatselectionRouter);
+//-------------------------------
 // Define your routes and handlers here
 app.post("/login", (req, res, next) => {
   loginUser(req, res);

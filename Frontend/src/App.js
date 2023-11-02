@@ -14,7 +14,7 @@ import PastFlight from "./screen/Admin/PastFlight";
 import Revenue from "./screen/Admin/Revenue";
 import RegUserProfile from "./screen/RegUserProfile";
 import Guest from "./screen/Guest";
-
+import Delay from "./screen/Admin/Delay";
 function App() {
   return (
     <div>
@@ -32,6 +32,7 @@ function App() {
           <Route path="/DateType" element={<DateType />} />
           <Route path="/PastFlight" element={<PastFlight />} />
           <Route path="/Revenue" element={<Revenue />} />
+          <Route path="/Delay" element={<Delay />} />
           <Route
             path="/RegUserProfile/:username"
             element={<RegUserProfile />}

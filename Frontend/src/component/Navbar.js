@@ -27,13 +27,13 @@ function Navbar(props) {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item">
-              <a
+              <Link
                 className="navfont nav-link active"
                 aria-current="page"
-                href="#"
+                to="/"
               >
                 Home
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
               <a className="navfont nav-link" href="#">

@@ -1,29 +1,19 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../component/Navbar";
+import axios from "axios";
 
-const flight = [
-  {
-    FlightNo: "BA101",
-    model: "Airbus-A380",
-    Dtime: "08:00",
-    Atime: "10.00",
-  },
-  {
-    FlightNo: "BA101",
-    model: "Boeing-737",
-    Dtime: "13:00",
-    Atime: "15.00",
-  },
-  {
-    FlightNo: "BA101",
-    model: "Boeing-737",
-    Dtime: "17:00",
-    Atime: "20.00",
-  },
-];
+const flight = [];
 
 function BookingCard({ flight }) {
+  const navigate = useNavigate();
+  const params = useParams();
+
+  const uname = params.username;
+
+  const navigatetoseatselection = (FlightID, UserName) => {
+    navigate(`/seatselection/${FlightID}/${UserName}`);
+  };
   return (
     <div id="con" className="card-body">
       <table className="FlightCardT">
@@ -43,7 +33,12 @@ function BookingCard({ flight }) {
               <td className="FlightCardTd">{p.Atime}</td>
               <td className="FlightCardTd">
                 <div>
-                  <button className="btn btn-primary">Book</button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => navigatetoseatselection(p.Flight_ID, uname)}
+                  >
+                    Book
+                  </button>
                 </div>
               </td>
             </tr>
@@ -57,31 +52,34 @@ const Booking = () => {
   // State to manage input values
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
-  const navigate = useNavigate();
+  const [departureDate, setDepartureDate] = useState("");
   const [active, setActive] = useState(false);
-  const params = useParams();
-  console.log(params.username);
-  // State to store search results
-  const [searchResults, setSearchResults] = useState([]);
 
   // Function to handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setActive(false);
+    flight.splice(0, flight.length);
     // Perform flight search logic here
     // You can make API calls to retrieve flight data
     // For this example, let's assume we have a predefined list of flights
 
-    const flights = [
-      { origin: "CGK", destination: "BKK", flightNumber: "BA101" },
-      { origin: "BIA", destination: "DEL", flightNumber: "BA202" },
-      // Add more flight data here
-    ];
+    const flightdata = {
+      origin,
+      destination,
+      dDate: departureDate,
+    };
 
-    const filteredFlights = flights.filter(
-      (flight) => flight.origin === origin && flight.destination === destination
-    );
+    await axios
+      .post("/booking", flightdata)
+      .then((res) => {
+        flight.push(...res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
 
-    setSearchResults(filteredFlights);
+    setActive(true);
   };
 
   // Function to handle origin selection
@@ -93,7 +91,10 @@ const Booking = () => {
   const handleDestinationChange = (e) => {
     setDestination(e.target.value);
   };
-
+  // Function to handle departure date selection
+  const handleDepartureDateChange = (e) => {
+    setDepartureDate(e.target.value);
+  };
   return (
     <div className="container-fluid background p-3">
       <Navbar />
@@ -167,6 +168,8 @@ const Booking = () => {
                     id="departure-date"
                     name="departure-date"
                     required
+                    value={departureDate}
+                    onChange={handleDepartureDateChange}
                   />
                 </div>
               </div>
@@ -174,7 +177,7 @@ const Booking = () => {
             <button
               type="submit"
               className="btn btn-primary btn-lg submitBtn"
-              onClick={() => setActive(true)}
+              onClick={handleSubmit}
             >
               Let's go!
             </button>

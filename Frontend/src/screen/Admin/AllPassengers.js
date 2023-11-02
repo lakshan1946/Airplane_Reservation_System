@@ -83,7 +83,7 @@ function AllPasenger() {
               />
             </div>
             <div className="col">
-              <label className="nameInfo adminselect">Gender:</label>
+              <label className="nameInfo adminselect">Age range:</label>
               <select
                 className="form-select"
                 id="specificSizeSelect"

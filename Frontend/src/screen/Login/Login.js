@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import LoginValidation from "./LoginValidation";
 import axios from "axios";
 import Navbar from "../../component/Navbar";
+import Typewriter from "typewriter-effect";
+
 const adminUSer = (username, password) => {
   // Check if the provided username and password are '123' and '456' respectively
   return username === "Lakshan" && password === "123456";
@@ -23,7 +25,11 @@ function Login() {
       [event.target.name]: event.target.value,
     }));
   };
-
+  const [state] = useState({
+    title: "Welcome to B Airways",
+    titleTwo: "Where flying is not just a journey",
+    titleThree: "It's an experience that soars above the ordinary",
+  });
   const handleSubmit = (event) => {
     event.preventDefault();
     //setErrors(LoginValidation(values));
@@ -53,12 +59,39 @@ function Login() {
   const navigateToReport = () => {
     navigate("/Report");
   };
+  const navigateToRegister = () => {
+    navigate("/Register");
+  };
+  const navigateToGuest = () => {
+    navigate("/Guest");
+  };
   return (
     <div className="background">
       <div>
         <Navbar />
       </div>
-      <div className="d-flex justify-content-center align-items-center vh-100 rounded-2">
+      <div className="home">
+        <div className="home-intro">
+          <h1>
+            <div className="title">{state.title}</div>
+          </h1>
+          <h2>
+            <div className="titleTwo">{state.titleTwo}</div>
+            <div className="titleThree">{state.titleThree}</div>
+          </h2>
+          <div className="text">
+            <Typewriter
+              options={{
+                autoStart: true,
+                loop: true,
+                delay: 40,
+                strings: ["I'm lakshn", "I.m scdsf", "sdfvsfvsf"],
+              }}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="d-flex justify-content-center align-items-center rounded-2 logincomp">
         <div className="signup p-3 rounded w-25">
           <h2>Sign-in</h2>
           <form action="post" onSubmit={handleSubmit}>
@@ -107,22 +140,26 @@ function Login() {
               Login
             </button>
             <p></p>
-            <Link
-              to="/register"
-              className="btn btn-default border w-100 bg-light text-decoration-none"
-            >
-              Create Account
-            </Link>
-            <p></p>
-            <p className="text-center">
-              <strong>OR</strong>
-            </p>
-            <Link
-              to="/Guest"
-              className="btn btn-default border w-100 bg-light text-decoration-none"
-            >
-              Visit as a guest
-            </Link>
+            <div className="Loginbtn">
+              <div className="loginregbtn">
+                <button
+                  type="button"
+                  className="btn btn-dark  "
+                  onClick={navigateToRegister}
+                >
+                  Register
+                </button>
+              </div>
+              <div>
+                <button
+                  type="button"
+                  className="btn btn-outline-dark  loginguestbtn"
+                  onClick={navigateToGuest}
+                >
+                  Visit as a guest
+                </button>
+              </div>
+            </div>
           </form>
         </div>
       </div>

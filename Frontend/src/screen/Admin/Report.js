@@ -18,7 +18,9 @@ function Report() {
   const navigateToDateDestination = () => {
     navigate("/DateDestination");
   };
-
+  const navigateToDelay = () => {
+    navigate("/Delay");
+  };
   return (
     <div id="reportHome" className="backgroundAdminbg">
       <div id="reportProfile">
@@ -80,6 +82,10 @@ function Report() {
             onClick={navigateToRevenue}
           >
             Get total revenue
+          </button>
+          <button type="button" onClick={navigateToDelay}>
+            {" "}
+            add delay
           </button>
         </div>
       </div>
