@@ -1,5 +1,6 @@
 import mysql from 'mysql2';
 import dotenv from "dotenv";
+import bcrypt, { hash } from 'bcrypt';
 dotenv.config();
 
 const db = mysql.createConnection({
@@ -17,7 +18,7 @@ db.connect((err) => {
   }
 });
 let temp="";
-export const loginUser = (req, res) => {
+export const loginUser = async (req, res) => {
     // API endpoint to check username and password and get Passport_ID
     const { values } = req.body; // Destructure the "values" object
     const { username, password } = values; // Destructure "username" and "password" from "values"
@@ -28,19 +29,22 @@ export const loginUser = (req, res) => {
     // The following line will never be executed because the function has already returned
     }
     // Query to check the username and password
-    const sql = 'SELECT Passport_ID FROM Registered_User WHERE UserName = ? AND Passcode = ?';
-    const vals = [username, password];
-    db.query(sql, vals, (err, results) => {
+    const sql = 'SELECT * FROM Registered_User WHERE UserName = ?';
+    const vals = [username];
+    db.query(sql, vals, async (err, results) => {
       if (err) {
         console.error('Error querying the database:', err);
         res.status(500).json({ message: 'Error querying the database' });
       } else if (results.length === 0) {
         // Alert when username and password do not match
-        console.log("username and password do not match")
+        console.log("username doesn't exist")
       } else {
         const passportID = results[0].Passport_ID;
         temp=passportID;
-        return res.json({ success: true, message: 'User registered successfully' });
+        const isValid=await bcrypt.compare(values.password,results[0].Passcode)
+        if(isValid){
+          return res.json({ success: true, message: 'User registered successfully' });
+        }
       }
     }); 
   };
@@ -101,15 +105,14 @@ export const loginUser = (req, res) => {
 };
 
 
-  export const registerUser =  (userData, callback) => {
+  export const registerUser =  async (userData, callback) => {
     const data = userData.body;
-    console.log(data);
-  
+    const  hashdata = await bcrypt.hash(data.password,10);
     try {
-       db.execute('CALL User_Register(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+       await db.execute('CALL User_Register(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
         data.passportID,
         data.username,
-        data.password,
+        hashdata,
         data.firstName,
         data.lastName,
         data.phone,
