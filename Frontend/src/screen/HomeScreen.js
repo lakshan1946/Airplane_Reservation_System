@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+import Navbar from "../component/Navbar";
 
 const HomeScreen = () => {
   //About us
   return (
-    <div>
-      <div className="bg-info">
-        <div className="p-5">
+    <div className="background">
+      <Navbar />
+      <div className="homecomp">
+        <div className="">
           <h2>About Us</h2>
           <p>
             Welcome to B Airways, where flying is not just a journey. it's an
@@ -23,54 +25,52 @@ const HomeScreen = () => {
         </div>
       </div>
 
-      <div className="cards">
-        <div className="container">
-          <div className="row">
-            <div className="col-sm-12 col-md-4 mb-3">
-              <div className="card" style={{ width: "18rem" }}>
-                <img
-                  src="/images/plane.jpeg"
-                  className="card-img-top"
-                  alt="..."
-                />
-                <div className="card-body">
-                  <p className="card-text">
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </p>
-                </div>
+      <div className="Homecont">
+        <div className="Homecontsub">
+          <div className="">
+            <div className="card" style={{ width: "18rem" }}>
+              <img
+                src="/images/plane.jpeg"
+                className="card-img-top"
+                alt="..."
+              />
+              <div className="card-body">
+                <p className="card-text">
+                  Some quick example text to build on the card title and make up
+                  the bulk of the card's content.
+                </p>
               </div>
             </div>
+          </div>
 
-            <div className="col-sm-12 col-md-4 mb-3">
-              <div className="card" style={{ width: "18rem" }}>
-                <img
-                  src="/images/plane2.jpg"
-                  className="card-img-top"
-                  alt="..."
-                />
-                <div className="card-body">
-                  <p className="card-text">
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </p>
-                </div>
+          <div className="">
+            <div className="card" style={{ width: "18rem" }}>
+              <img
+                src="/images/plane2.jpg"
+                className="card-img-top"
+                alt="..."
+              />
+              <div className="card-body">
+                <p className="card-text">
+                  Some quick example text to build on the card title and make up
+                  the bulk of the card's content.
+                </p>
               </div>
             </div>
+          </div>
 
-            <div className="col-sm-12 col-md-4 mb-3">
-              <div className="card" style={{ width: "18rem" }}>
-                <img
-                  src="/images/plane3.jpg"
-                  className="card-img-top"
-                  alt="..."
-                />
-                <div className="card-body">
-                  <p className="card-text">
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </p>
-                </div>
+          <div className="">
+            <div className="card" style={{ width: "18rem" }}>
+              <img
+                src="/images/plane3.jpg"
+                className="card-img-top"
+                alt="..."
+              />
+              <div className="card-body">
+                <p className="card-text">
+                  Some quick example text to build on the card title and make up
+                  the bulk of the card's content.
+                </p>
               </div>
             </div>
           </div>

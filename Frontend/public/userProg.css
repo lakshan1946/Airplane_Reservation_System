@@ -1,0 +1,64 @@
+.backgroundRU {
+    font-family: sans-serif;
+    margin: 0;
+    background-image: url("images/user.jpg");
+    /* Replace 'your-image-file.jpg' with the actual file name and path */
+    background-size: cover;
+    /* Ensures the image covers the entire background */
+    background-repeat: no-repeat;
+    /* Prevents image repetition */
+    background-attachment: fixed;
+    /* Fixes the background image, so it doesn't scroll with the content */
+    background-position: center center;
+    /* Centers the image horizontally and vertically */
+}
+
+.RegUserHead {
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-weight: bold;
+}
+
+.RegUserContent {
+    background-color: rgba(255, 255, 255, 0.7);
+    justify-content: center;
+    width: fit-content;
+    border-radius: 20px;
+    margin: 50px;
+}
+
+h3.RegUserSubHead {
+    color: #352F44;
+    text-align: center;
+    padding: 30px 0;
+    font-weight: bold;
+
+}
+
+.RegUserData {
+    padding: 7px 20px;
+}
+
+.RegUserTable {
+    justify-content: center;
+}
+
+.selected {
+    background-color: yellow;
+    /* Change the background color to your desired color */
+    /* Add more styles as needed */
+}
+
+.cont {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+}
+
+.btnCont {
+    justify-content: center;
+    display: flex;
+    padding: 20px;
+}

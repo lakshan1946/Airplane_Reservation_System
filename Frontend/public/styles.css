@@ -33,6 +33,7 @@
   background-color: rgb(239, 239, 239);
 }
 
+
 /* Footer */
 
 .py-5 {
@@ -54,126 +55,6 @@
   background-color: #001524;
 }
 
-/* Register */
-
-.information {
-  background-color: rgba(255, 255, 255, 0.5);
-}
-
-#regAll {
-  margin: 5% 30%;
-}
-
-.information {
-  margin-bottom: 50px;
-  border-radius: 10px;
-}
-
-.subInfo {
-  margin-bottom: 50px;
-  font-family: 'Roboto', sans-serif;
-}
-
-.regHeading {
-  font-weight: bold;
-  padding-bottom: 15px;
-}
-
-.col {
-  padding-bottom: 20px;
-}
-
-.nameInfo {
-  padding-bottom: 10px;
-  font-weight: bold;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.submitBtn1 {
-  justify-content: center;
-  display: flex;
-  padding-top: 10px;
-}
-
-.HeadReg {
-  color: white;
-  text-align: center;
-  padding: 20px;
-  font-weight: bold;
-}
-
-p.HeadReg {
-  color: #F8DE22;
-  font-family: 'Playpen Sans', cursive;
-}
-
-.success-message {
-  color: #900C3F;
-  font-size: 20px;
-  text-align: center;
-}
-
-.successCont {
-  padding: 20px;
-}
-
-.submitBtn2 {
-  position: relative;
-  left: 190px;
-  margin-top: 20px;
-}
-
-
-/* Booking */
-
-.searchHead {
-  color: white;
-}
-
-.text-center {
-  margin: 50px;
-}
-
-#flight-search-form {
-  padding: 0 20% 5%;
-}
-
-.allrow {
-  margin-bottom: 50px;
-  background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 10px;
-  padding: 7%;
-}
-
-.availableFlight {
-  text-align: center;
-  color: #fff6dc;
-}
-
-.submitBtn {
-  position: relative;
-  left: 380px;
-
-}
-
-.FlightCardMap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 50px;
-}
-
-#con {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-
-}
-
-.FlightCardT {
-  background-color: rgba(255, 255, 255, 0.5);
-}
-
 /*payment*/
 
 .paymentText {
@@ -184,101 +65,61 @@ p.HeadReg {
   background-color: rgba(255, 255, 255, 0.7) !important;
 }
 
-/*Report*/
+/* Home Screen */
 
-#reportHome {
+.homecomp {
   display: flex;
-  padding: 50px;
   justify-content: center;
-}
-
-#reportProfile {
-  background-color: rgba(255, 255, 255, 0.7);
-  margin: 0px 20px;
-  padding: 30px;
-  border-radius: 20px;
-
-}
-
-#reportButton {
-  background-color: rgba(255, 255, 255, 0.7);
-  margin: 10px 20px;
-  padding: 30px;
-  border-radius: 20px;
-
-}
-
-.btnAdmin {
-  padding: 10px !important;
-  margin: 10px !important;
-}
-
-#imgAdmin {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-top: 50px;
-
-}
-
-.admincomp {
-
-  justify-content: center !important;
-  width: 50%;
-  padding: 70px;
-  background-color: rgba(255, 255, 255, 0.7);
-}
-
-/*Register user profile */
-
-.RegUserHead {
   color: white;
   text-align: center;
+  padding: 10px 30% 20px;
+}
+
+.Homecontsub {
+
+  display: flex;
+  gap: 20px;
   padding: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+
+
+}
+
+/*login */
+
+.Loginbtn {
+  display: flex;
+  justify-content: center;
+}
+
+.loginregbtn {
+  padding-right: 10px;
+}
+
+.logincomp {
+  padding-bottom: 50px;
+}
+
+.home {
+  padding: 20px 0px 50px 200px;
+}
+
+.title {
+  color: white;
   font-weight: bold;
 }
 
-.RegUserContent {
-  background-color: rgba(255, 255, 255, 0.7);
-  justify-content: center;
-  padding: 10px;
-  width: fit-content;
-  border-radius: 20px;
-  margin: 50px;
+.titleTwo {
+  color: white;
 }
 
-h3.RegUserSubHead {
-  color: #352F44;
-  text-align: center;
-  padding: 30px 0;
-  font-weight: bold;
-
+.titleThree {
+  color: yellow;
 }
 
-.RegUserData {
-  padding: 7px 20px;
-}
-
-.RegUserTable {
-  justify-content: center;
-}
-
-.selected {
-  background-color: yellow;
-  /* Change the background color to your desired color */
-  /* Add more styles as needed */
-}
-
-.cont {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-
-}
-
-.btnCont {
-  justify-content: center;
-  display: flex;
-  padding: 20px;
+.text {
+  color: white;
+  font-size: 2rem;
+  padding-top: 10px;
 }

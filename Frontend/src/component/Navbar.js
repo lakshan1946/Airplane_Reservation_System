@@ -1,10 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Navbar(props) {
   // bg-body-tertiary
   return (
     <nav
-      className="blackNavbar navbar navbar-expand-lg "
+      className="blackNavbar navbar navbar-expand-lg bg-transparent"
       data-bs-theme="dark"
       style={{ backgroundColor: "#001524" }}
     >
@@ -26,23 +27,23 @@ function Navbar(props) {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item">
-              <a
+              <Link
                 className="navfont nav-link active"
                 aria-current="page"
-                href="#"
+                to="/"
               >
                 Home
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
               <a className="navfont nav-link" href="#">
-                Features
+                Book Flight
               </a>
             </li>
             <li className="nav-item">
-              <a className="navfont nav-link" href="#">
-                Pricing
-              </a>
+              <Link className="navfont nav-link" to="/HomeScreen">
+                About us
+              </Link>
             </li>
           </ul>
         </div>

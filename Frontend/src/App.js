@@ -1,5 +1,4 @@
 import Login from "./screen/Login/Login";
-import Navbar from "./component/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomeScreen from "./screen/HomeScreen";
 import Footer from "./component/Footer";
@@ -15,11 +14,10 @@ import PastFlight from "./screen/Admin/PastFlight";
 import Revenue from "./screen/Admin/Revenue";
 import RegUserProfile from "./screen/RegUserProfile";
 import Guest from "./screen/Guest";
-
+import Delay from "./screen/Admin/Delay";
 function App() {
   return (
     <div>
-      <Navbar />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />}></Route>
@@ -34,6 +32,7 @@ function App() {
           <Route path="/DateType" element={<DateType />} />
           <Route path="/PastFlight" element={<PastFlight />} />
           <Route path="/Revenue" element={<Revenue />} />
+          <Route path="/Delay" element={<Delay />} />
           <Route
             path="/RegUserProfile/:username"
             element={<RegUserProfile />}

@@ -1,23 +1,80 @@
-// Import required modules
 import express from "express";
-import cors from "cors";
 import bodyParser from "body-parser";
-import { getFlightSchedule } from "./database.js"; // Importing a function from another file
+import cors from "cors";
 
-// Create an Express application
+import { loginUser } from "./database.js"; // Adjust the path as needed
+import { registerUser } from "./database.js"; // Adjust the path as needed
+import { regprofileuser } from "./database.js";
+import { guestUser } from "./database.js";
+import { age_constr } from "./database.js";
+import { date_desti } from "./database.js";
+import { dateType } from "./database.js";
+import { pastFlight } from "./database.js";
+import { revenue_ } from "./database.js";
+import seatselectionRouter from "./routes/seatselection.js";
+
 const app = express();
-app.use(cors()); // Enable CORS (Cross-Origin Resource Sharing) for all routes
-app.use(bodyParser.json()); // Parse incoming JSON requests
+app.use(cors());
 
-// Define a route for the root endpoint "/"
-app.get("/", async function (req, res) {
-  // Call the getFlightSchedule function asynchronously and wait for the result
-  const result = await getFlightSchedule();
-  // Send the result as a JSON response
-  res.json(result);
+const port = process.env.PORT || 5000;
+
+app.use(bodyParser.json());
+
+//-----------------------------
+app.use(bodyParser.json());
+
+app.route("/booking").post(async (req, res) => {
+  await BookingService.get_flights(req, res);
 });
 
-// Start the server and listen on port 5000
-app.listen(5000, function () {
-  console.log("Server is running on port 5000"); // Log a message when the server starts
+app.use("/seatselection", seatselectionRouter);
+//-------------------------------
+// Define your routes and handlers here
+app.post("/login", (req, res, next) => {
+  loginUser(req, res);
+});
+
+app.post("/past_flight", (req, res) => {
+  pastFlight(req, res);
+});
+
+app.post("/register", (req, res) => {
+  registerUser(req, res);
+});
+
+app.post("/booking", (req, res) => {
+  registerUser(req, res);
+});
+
+app.post("/reguserprofile", (req, res) => {
+  regprofileuser(req, res);
+});
+
+app.post("/age_constraint", (req, res) => {
+  age_constr(req, res);
+});
+
+app.post("/date_destination", (req, res) => {
+  date_desti(req, res);
+});
+
+app.post("/guest", (req, res) => {
+  guestUser(req, res);
+});
+app.post("/date_type", (req, res) => {
+  dateType(req, res);
+});
+
+app.post("/revenue", (req, res) => {
+  revenue_(req, res);
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: "Internal Server Error" });
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });

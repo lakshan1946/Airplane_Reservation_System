@@ -1,20 +1,9 @@
 import React from "react";
 import { useState } from "react";
+import axios from "axios";
+// Import Axios for making HTTP requests
 
-const data = [
-  {
-    PID: "123",
-    Fname: "Lakshan",
-    Lname: "Madhusanka",
-    Age: "5",
-  },
-  {
-    PID: "456",
-    Fname: "dulitha",
-    Lname: "herath",
-    Age: "7",
-  },
-];
+let datas;
 
 function DateDestinationCard({ data }) {
   return (
@@ -22,19 +11,14 @@ function DateDestinationCard({ data }) {
       <table className="">
         <tbody>
           <tr>
-            <th>Passport ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Age</th>
+            <th>Count</th>
           </tr>
-          {data.map((p) => (
-            <tr>
-              <td>{p.PID}</td>
-              <td>{p.Fname}</td>
-              <td>{p.Lname}</td>
-              <td>{p.Age}</td>
-            </tr>
-          ))}
+          {data &&
+            data.map((p) => (
+              <tr>
+                <td>{p.Count}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>
@@ -51,52 +35,95 @@ function DateDestination() {
     e.preventDefault();
     // const passengers = await getPassengersByDestination(startDate, endDate, destination);
     // console.log("Passengers travelling to", destination, ":", passengers);
+    const data = {
+      startDate: startDate,
+      endDate: endDate,
+      destination: destination,
+    };
+    try {
+      const response = await axios.post("/date_destination", data);
+      // Handle the response from the backend as needed
+      datas = response.data.count;
+      console.log([datas]);
+      // Set active to true to display the result
+      setActive(true);
+    } catch (error) {
+      console.error("Error while making the request:", error);
+    }
   };
   return (
-    <div className="bg-info m-5 p-2">
-      <div className="m-5">
-        <form onSubmit={handleDestinationSubmit} className="mb-3">
-          <div className="form-group">
-            <label htmlFor="startDate">Start Date:</label>
-            <input
-              type="date"
-              className="form-control gray-background"
-              id="startDate"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="endDate">End Date:</label>
-            <input
-              type="date"
-              className="form-control gray-background"
-              id="endDate"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="destination">Destination:</label>
-            <input
-              type="text"
-              className="form-control gray-background"
-              id="destination"
-              value={destination}
-              onChange={(e) => setDestination(e.target.value)}
-            />
-          </div>
-          <button type="submit" className="btn btn-primary" onClick={setActive}>
-            Get Passengers by Destination
-          </button>
-        </form>
-        {active && (
-          <div>
-            <div className="cards FlightCardMap">
-              {<DateDestinationCard data={data} />}
+    <div className="backgroundAdmin">
+      <h1 className="adminTitle">View Passengers by destination</h1>
+      <div id="adminCont">
+        <div className="admincomp">
+          <form onSubmit={handleDestinationSubmit} className="mb-3">
+            <div className="form-group ">
+              <label htmlFor="startDate" className="adminselect">
+                Start Date:
+              </label>
+              <input
+                type="date"
+                className="form-control gray-background"
+                id="startDate"
+                required
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
             </div>
-          </div>
-        )}
+            <div className="form-group">
+              <label htmlFor="endDate" className="adminselect">
+                End Date:
+              </label>
+              <input
+                type="date"
+                required
+                className="form-control gray-background"
+                id="endDate"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="destination" className="adminselect">
+                Destination:
+              </label>
+              <select
+                className="form-select"
+                id="specificSizeSelect"
+                required
+                value={destination}
+                onChange={(e) => setDestination(e.target.value)}
+              >
+                <option value="">Select destination</option>
+                <option value="CGK">CGK(Indonesia)</option>
+                <option value="DPS">DPS(Indonesia)</option>
+                <option value="BIA">BIA(Sri Lanka)</option>
+                <option value="HRI">HRI(Sri Lanka)</option>
+                <option value="DEL">DEL(India)</option>
+                <option value="BOM">BOM(India)</option>
+                <option value="MAA">MAA(India)</option>
+                <option value="BKK">BKK(Thailand)</option>
+                <option value="DMK">DMK(Thailand)</option>
+                <option value="SIN">SIN(Singapore)</option>
+              </select>
+            </div>
+            <p></p>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              onClick={setActive}
+            >
+              Get Passengers by Destination
+            </button>
+          </form>
+          {active && (
+            <div>
+              <div className="cards FlightCardMap">
+                {<DateDestinationCard data={datas} />}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

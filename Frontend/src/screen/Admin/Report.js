@@ -1,9 +1,4 @@
-import React, { useState } from "react";
-import AllPassenger from "./AllPassengers";
-import DateDestination from "./DateDestination";
-import DateType from "./DateType";
-import PastFlight from "./PastFlight";
-import Revenue from "./Revenue";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 function Report() {
   const navigate = useNavigate();
@@ -23,35 +18,35 @@ function Report() {
   const navigateToDateDestination = () => {
     navigate("/DateDestination");
   };
-
+  const navigateToDelay = () => {
+    navigate("/Delay");
+  };
   return (
-    <div id="reportHome" className="background">
+    <div id="reportHome" className="backgroundAdminbg">
       <div id="reportProfile">
-        <h1>Admin Profile</h1>
+        <h1 className="reportH">Admin Profile</h1>
         <table>
           <tbody>
             <tr>
-              <th>Username</th>
-              <td>123</td>
+              <th className="reportTH">First name</th>
+              <td className="reportTD">Lakshan</td>
             </tr>
             <tr>
-              <th>First name</th>
-              <td>Lakshan</td>
-            </tr>
-            <tr>
-              <th>Last name</th>
-              <td>Madhusanka</td>
+              <th className="reportTH">Last name</th>
+              <td className="reportTD">Madhusanka</td>
             </tr>
           </tbody>
         </table>
-        <img src="/images/admin.jpg" alt="admin" id="imgAdmin"></img>
+        <div className="imgAdmin1">
+          <img src="/images/admin.jpg" alt="admin" id="imgAdmin"></img>
+        </div>
       </div>
       <div id="reportButton">
-        <h1>Search Report</h1>
+        <h1 className="reportH1">Search Report</h1>
         <div>
           <button
             type="button"
-            className="btn btn-primary btnAdmin"
+            className="btn btn-outline-dark btnAdmin"
             onClick={navigateToAllpassenger}
           >
             Get Passengers by Age
@@ -59,7 +54,7 @@ function Report() {
           <br></br>
           <button
             type="button"
-            className="btn btn-primary btnAdmin"
+            className="btn btn-outline-dark btnAdmin"
             onClick={navigateToDateDestination}
           >
             Get Passengers by Destination
@@ -67,7 +62,7 @@ function Report() {
           <br></br>
           <button
             type="button"
-            className="btn btn-primary btnAdmin"
+            className="btn btn-outline-dark btnAdmin"
             onClick={navigateToDateType}
           >
             Get Booking by passenger type
@@ -75,7 +70,7 @@ function Report() {
           <br></br>
           <button
             type="button"
-            className="btn btn-primary btnAdmin"
+            className="btn btn-outline-dark btnAdmin"
             onClick={navigateToPastFlight}
           >
             Get past details
@@ -83,10 +78,14 @@ function Report() {
           <br></br>
           <button
             type="button"
-            className="btn btn-primary btnAdmin"
+            className="btn btn-outline-dark btnAdmin"
             onClick={navigateToRevenue}
           >
             Get total revenue
+          </button>
+          <button type="button" onClick={navigateToDelay}>
+            {" "}
+            add delay
           </button>
         </div>
       </div>
