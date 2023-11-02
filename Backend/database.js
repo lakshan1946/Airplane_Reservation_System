@@ -144,16 +144,10 @@ export const loginUser = async (req, res) => {
   
     // Assign below_18 based on the condition
 
-    let below_18;
-
-    if (data.age === 'below') {
-      below_18 = 1;
-    } else {
-      below_18 = 0;
-    }
+  
     
     const sql = 'CALL FUNCTION_1(?, ?)';
-    const val = [data.flightNo, below_18];
+    const val = [data.flightNo, data.age];
  // Corrected variable name
     db.query(sql, val, (err, results) => {
       if (err) {
