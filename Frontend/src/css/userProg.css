@@ -1,7 +1,7 @@
 .backgroundRU {
     font-family: sans-serif;
     margin: 0;
-    background-image: url("images/user.jpg");
+    background-image: url("../../public/images/user.jpg");
     /* Replace 'your-image-file.jpg' with the actual file name and path */
     background-size: cover;
     /* Ensures the image covers the entire background */
@@ -61,4 +61,25 @@ h3.RegUserSubHead {
     justify-content: center;
     display: flex;
     padding: 20px;
+}
+
+/* Footer */
+
+.py-5 {
+    padding: 30%;
+    background-color: #001524;
+    color: white;
+}
+
+.nav-item {
+    color: #d0d4ca;
+    font-size: 14px;
+}
+
+.nav-item:hover {
+    color: #80b3ff;
+}
+
+.owner {
+    background-color: #001524;
 }

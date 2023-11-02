@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import "../css/seat.css";
+import Navbar from "../component/Navbar";
 
 const airplaneModels = [
   {
@@ -161,7 +163,13 @@ const SeatSelection = () => {
   const selectedSeats = selectedAirplane.classes[selectedClass];
 
   return (
-    <div className="seatSelectionContainer background p-3">
+    <div
+      className="seatSelectionContainer backgroundS p-3"
+      style={{
+        minHeight: "100vh",
+      }}
+    >
+      <Navbar />
       <h1 className="seatHeading">Seat Selection</h1>
       <div className="selectionControls">
         <br></br>

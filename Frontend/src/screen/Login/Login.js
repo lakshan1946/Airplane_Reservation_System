@@ -4,6 +4,7 @@ import LoginValidation from "./LoginValidation";
 import axios from "axios";
 import Navbar from "../../component/Navbar";
 import Typewriter from "typewriter-effect";
+import "../../css/login.css";
 
 const adminUSer = (username, password) => {
   // Check if the provided username and password are '123' and '456' respectively
@@ -110,7 +111,7 @@ function Login() {
     navigate("/Guest");
   };
   return (
-    <div className="background">
+    <div className="backgroundL">
       <div>
         <Navbar />
       </div>

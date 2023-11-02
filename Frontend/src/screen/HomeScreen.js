@@ -30,14 +30,16 @@ const HomeScreen = () => {
           <div className="">
             <div className="card" style={{ width: "18rem" }}>
               <img
-                src="/images/plane.jpeg"
+                src="/images/Airbus-A380.jpg"
                 className="card-img-top"
                 alt="..."
               />
               <div className="card-body">
+                <h2>Airbus-A380</h2>
                 <p className="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                  Platinum Capcity: 12 <br />
+                  Gold Capcity: 88 <br />
+                  Normal Capcity: 420 <br />
                 </p>
               </div>
             </div>
@@ -46,14 +48,16 @@ const HomeScreen = () => {
           <div className="">
             <div className="card" style={{ width: "18rem" }}>
               <img
-                src="/images/plane2.jpg"
+                src="/images/Boeing-737.jpg"
                 className="card-img-top"
                 alt="..."
               />
               <div className="card-body">
+                <h2>Boeing-737</h2>
                 <p className="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                  Platinum Capcity: 8 <br />
+                  Gold Capcity: 28 <br />
+                  Normal Capcity: 90 <br />
                 </p>
               </div>
             </div>
@@ -62,14 +66,16 @@ const HomeScreen = () => {
           <div className="">
             <div className="card" style={{ width: "18rem" }}>
               <img
-                src="/images/plane3.jpg"
+                src="/images/Boeing-757.jpg"
                 className="card-img-top"
                 alt="..."
               />
               <div className="card-body">
+                <h2>Boeing-757</h2>
                 <p className="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                  Platinum Capcity: 10 <br />
+                  Gold Capcity: 40 <br />
+                  Normal Capcity: 150 <br />
                 </p>
               </div>
             </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../component/Navbar";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import "../css/pay.css";
 
 function Payment() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
@@ -141,12 +142,12 @@ function Payment() {
   };
 
   return (
-    <div className="container background" id="scon">
+    <div className="container backgroundP" id="scon">
+      <Navbar />
       {flightDetails === null ? ( // Check if flightDetails is null
         <div>Loading flight details...</div>
       ) : (
-        <div className="container background" id="scon">
-          <Navbar />
+        <div className="container backgroundP" id="scon">
           <div className="paymentText">
             <h1>Confirm Booking and pay</h1>
             <span>

@@ -1,0 +1,14 @@
+.backgroundP {
+    font-family: sans-serif;
+    margin: 0;
+    background-image: url("../../public/images/payment.jpg");
+    /* Replace 'your-image-file.jpg' with the actual file name and path */
+    background-size: cover;
+    /* Ensures the image covers the entire background */
+    background-repeat: no-repeat;
+    /* Prevents image repetition */
+    background-attachment: fixed;
+    /* Fixes the background image, so it doesn't scroll with the content */
+    background-position: center center;
+    /* Centers the image horizontally and vertically */
+}

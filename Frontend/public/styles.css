@@ -82,8 +82,18 @@
   padding: 20px;
   flex-wrap: wrap;
   justify-content: center;
+}
 
+.card-img-top {
+  width: 100%;
+  height: auto;
+}
 
+@media (min-width: 768px) {
+  .card-img-top {
+    height: 200px;
+    width: 200px;
+  }
 }
 
 /*login */

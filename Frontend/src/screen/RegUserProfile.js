@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../component/Navbar";
 import axios from "axios";
+import "../css/userProg.css";
 
 function RegUserProfile() {
   const params = useParams();

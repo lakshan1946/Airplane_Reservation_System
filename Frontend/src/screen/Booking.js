@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../component/Navbar";
 import axios from "axios";
+import "../css/Booking.css";
 
 const flight = [];
 
@@ -100,7 +101,7 @@ const Booking = () => {
     setDepartureDate(e.target.value);
   };
   return (
-    <div className="container-fluid background p-3">
+    <div className="container-fluid backgroundB p-3">
       <Navbar />
       <div className="d-flex justify-content-center align-items-center ">
         <div className="container-fluid">
