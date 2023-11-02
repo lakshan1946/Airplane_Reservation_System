@@ -76,6 +76,7 @@ class BookingService {
     }
 
     static async find_reservationdetails(Reserve_ID, callback) {
+        console.log("sasa" , Reserve_ID);
         const usertype = await this.find_usertype(Reserve_ID);
         
         try {

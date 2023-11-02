@@ -19,6 +19,9 @@ app
     await BookingService.get_flights(req, res);
   });
 
+import payementRouter from "./routes/payment.js";
+app.use("/payment", payementRouter);
+
 import seatselectionRouter from "./routes/seatselection.js";
 app.use("/seatselection", seatselectionRouter);
 
