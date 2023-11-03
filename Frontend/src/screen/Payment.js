@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../component/Navbar";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import "../css/pay.css";
 
 function Payment() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
-
+  const [flightDetails, setflightDetails] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     cardNumber: "",
@@ -16,7 +19,29 @@ function Payment() {
     expiry: "",
     cvv: "",
   });
+  const params = useParams();
+  const rid = params.reserveid || null;
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const fdata = await axios.get(`/payment/${rid}/u`);
+        console.log(rid);
+        console.log("clicked");
+        setflightDetails(fdata.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    if (rid) {
+      fetchData();
+    }
+    console.log("flightDetails");
+  }, [rid]);
+
+  useEffect(() => {
+    console.log("sasass", flightDetails);
+  }, [flightDetails]);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -117,167 +142,182 @@ function Payment() {
   };
 
   return (
-    <div className="container background" id="scon">
+    <div className="container backgroundP" id="scon">
       <Navbar />
-      <div className="paymentText">
-        <h2>Confirm Booking and pay</h2>
-        <span>
-          Congratulations! Your flight booking is confirmed. Please proceed to
-          make the payment to enjoy all the features and benefits of your
-          booking.
-        </span>
-      </div>
-      <div class="container ">
-        <div className="row">
-          <div className="col-md-4">
-            <div className="card card-blue p-3 text-black mb-3">
-              <div className="card-header">
-                <h3>Your flight details</h3>
-              </div>
-              <div className="card-body">
-                <dl className="row">
-                  <dt className="col-sm-6">Flight ID</dt>
-                  <dd className="col-sm-5">1</dd>
-                  <dt className="col-sm-6">Origin</dt>
-                  <dd className="col-sm-5">CGK</dd>
-                  <dt className="col-sm-6">Destination</dt>
-                  <dd className="col-sm-5">BIA</dd>
-                  <dt className="col-sm-6">Departure date and time</dt>
-                  <dd className="col-sm-5">2023-10-15 08:00:00</dd>
-                  <dt className="col-sm-6">Arrival date and time</dt>
-                  <dd className="col-sm-5">2023-10-18 09:00:00</dd>
-                </dl>
-              </div>
-            </div>
+      {flightDetails === null ? ( // Check if flightDetails is null
+        <div>Loading flight details...</div>
+      ) : (
+        <div className="container backgroundP" id="scon">
+          <div className="paymentText">
+            <h1>Confirm Booking and pay</h1>
+            <span>
+              Congratulations! Your flight booking is confirmed. Please proceed
+              to make the payment to enjoy all the features and benefits of your
+              booking.
+            </span>
           </div>
-          <div className="col-md-4">
-            <div className="card card-blue p-3 text-black mb-3">
-              <div className="card-header">
-                <h3>Passenger Information</h3>
-              </div>
-              <div className="card-body">
-                <dl className="row">
-                  <dt className="col-sm-6">Name</dt>
-                  <dd className="col-sm-5">kamal</dd>
-                  <dt className="col-sm-6">No of passengers</dt>
-                  <dd className="col-sm-5">3</dd>
-                  <dt className="col-sm-6">Destination</dt>
-                  <dd className="col-sm-5">BIA</dd>
-                  <dt className="col-sm-6">Departure date and time</dt>
-                  <dd className="col-sm-5">2023-10-15 08:00:00</dd>
-                  <dt className="col-sm-6">Arrival date and time</dt>
-                  <dd className="col-sm-5">2023-10-18 09:00:00</dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div className="card card-blue p-3 text-black mb-3">
-              <div className="card-header">
-                <h3>Payment details</h3>
-              </div>
-              <div className="card-body">
-                <dl className="row">
-                  <dt className="col-sm-6">Total prize</dt>
-                  <dd className="col-sm-5">kamal</dd>
-                  <dt className="col-sm-6">Discount</dt>
-                  <dd className="col-sm-5">456752</dd>
-                  <dt className="col-sm-6">No of passengers</dt>
-                  <dd className="col-sm-5">3</dd>
-                  <dt className="col-sm-6">Membership status</dt>
-                  <dd className="col-sm-5">Gold</dd>
-                  <dt className="col-sm-6">Departure date and time</dt>
-                  <dd className="col-sm-5">2023-10-15 08:00:00</dd>
-                  <p></p>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="row">
-          <div
-            className="col-md-8"
-            style={{ display: "flex", width: "100%", justifyContent: "center" }}
-          >
-            <div className="card p-3">
-              <h6 className="text-uppercase">Payment details</h6>
-              <form onSubmit={handleSubmit}>
-                <div className="inputbox mt-3">
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Name on card"
-                    className="form-control"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                  />
-
-                  <div className="text-danger">{errors.name}</div>
+          <div class="container ">
+            <div className="row">
+              <div className="col-md-6">
+                <div
+                  className="card card-blue p-3 text-black mb-3 abc"
+                  style={{ height: "375px" }}
+                >
+                  <div className="card-header">
+                    <h3>Flight details</h3>
+                  </div>
+                  <div className="card-body">
+                    <dl className="row">
+                      <dt className="col-sm-6">Flight Name</dt>
+                      <dd className="col-sm-5">{flightDetails.Flight_Name}</dd>
+                      <dt className="col-sm-6">Airplane</dt>
+                      <dd className="col-sm-5">{flightDetails.Airplane}</dd>
+                      <dt className="col-sm-6">Origin</dt>
+                      <dd className="col-sm-5">{`${flightDetails.origin} - ${flightDetails.origin_airport}`}</dd>
+                      <dt className="col-sm-6">Destination</dt>
+                      <dd className="col-sm-5">{`${flightDetails.destination} - ${flightDetails.destination_airport}`}</dd>
+                      <dt className="col-sm-6">Departure date and time</dt>
+                      <dd className="col-sm-5">
+                        {flightDetails.Departure_Date_Time}
+                      </dd>
+                      <dt className="col-sm-6">Arrival date and time</dt>
+                      <dd className="col-sm-5">
+                        {flightDetails.Arrival_Date_Time}
+                      </dd>
+                    </dl>
+                  </div>
                 </div>
+              </div>
 
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="inputbox mt-3 mr-2">
+              <div className="col-md-6">
+                <div
+                  className="card card-blue p-3 text-black mb-3 abc"
+                  style={{ height: "375px" }}
+                >
+                  <div className="card-header">
+                    <h3>Booking details</h3>
+                  </div>
+                  <div className="card-body">
+                    <dl className="row">
+                      <dt className="col-sm-6">First Name</dt>
+                      <dd className="col-sm-5">{flightDetails.First_Name}</dd>
+                      <dt className="col-sm-6">Last Name</dt>
+                      <dd className="col-sm-5">{flightDetails.Last_Name}</dd>
+                      <dt className="col-sm-6">Passport No.</dt>
+                      <dd className="col-sm-5">{flightDetails.Passport_ID}</dd>
+                      <dt className="col-sm-6">Seat ID</dt>
+                      <dd className="col-sm-5">{flightDetails.Seat_No}</dd>
+                      <dt className="col-sm-6">Class</dt>
+                      <dd className="col-sm-5">{flightDetails.Class}</dd>
+                      <dt className="col-sm-6">Reservation Number</dt>
+                      <dd className="col-sm-5">{flightDetails.Reserve_ID}</dd>
+                      <dt className="col-sm-6">Price</dt>
+                      <dd className="col-sm-5">{flightDetails.Price}</dd>
+                      <dt className="col-sm-6">Final Price</dt>
+                      <dd className="col-sm-5">{flightDetails.Final_Price}</dd>
+                      <p></p>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div
+                className="col-md-8"
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "center",
+                }}
+              >
+                <div className="card p-3" style={{ marginTop: "35px" }}>
+                  <h6 className="text-uppercase">Payment details</h6>
+                  <form onSubmit={handleSubmit}>
+                    <div className="inputbox mt-3">
                       <input
                         type="text"
-                        name="cardNumber"
-                        placeholder="Card number"
+                        name="name"
+                        placeholder="Name on card"
                         className="form-control"
-                        value={formData.cardNumber}
+                        value={formData.name}
                         onChange={handleInputChange}
                       />
 
-                      <div className="text-danger">{errors.cardNumber}</div>
+                      <div className="text-danger">{errors.name}</div>
                     </div>
-                  </div>
 
-                  <div className="col-md-6">
-                    <div className="d-flex flex-row">
-                      <div className="inputbox mt-3 mr-2">
-                        <input
-                          type="text"
-                          name="expiry"
-                          placeholder="MM/YY"
-                          className="form-control"
-                          value={formData.expiry}
-                          onChange={handleInputChange}
-                        />
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="inputbox mt-3 mr-2">
+                          <input
+                            type="text"
+                            name="cardNumber"
+                            placeholder="Card number"
+                            className="form-control"
+                            value={formData.cardNumber}
+                            onChange={handleInputChange}
+                          />
 
-                        <div className="text-danger">{errors.expiry}</div>
+                          <div className="text-danger">{errors.cardNumber}</div>
+                        </div>
                       </div>
 
-                      <div className="inputbox mt-3 mr-2">
-                        <input
-                          type="number"
-                          id="cvv"
-                          name="cvv"
-                          placeholder="CVV"
-                          className="form-control"
-                          value={formData.cvv}
-                          onChange={handleInputChange}
-                        />
+                      <div className="col-md-6">
+                        <div className="d-flex flex-row">
+                          <div className="inputbox mt-3 mr-2">
+                            <input
+                              type="text"
+                              name="expiry"
+                              placeholder="MM/YY"
+                              className="form-control"
+                              value={formData.expiry}
+                              onChange={handleInputChange}
+                            />
 
-                        <div className="text-danger">{errors.cvv}</div>
+                            <div className="text-danger">{errors.expiry}</div>
+                          </div>
+
+                          <div className="inputbox mt-3 mr-2">
+                            <input
+                              type="number"
+                              id="cvv"
+                              name="cvv"
+                              placeholder="CVV"
+                              className="form-control"
+                              value={formData.cvv}
+                              onChange={handleInputChange}
+                            />
+
+                            <div className="text-danger">{errors.cvv}</div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
+
+                    <button className="btn btn-success px-3" type="submit">
+                      Pay now
+                    </button>
+                  </form>
                 </div>
-
-                <button className="btn btn-success px-3" type="submit">
-                  Pay now
-                </button>
-              </form>
+              </div>
+              <div className="col">
+                {paymentSuccess && (
+                  <div
+                    className="success-message"
+                    style={{
+                      paddingTop: "20px",
+                      fontWeight: "bold",
+                      color: "white",
+                    }}
+                  >
+                    <h3> Payment Successful! Thank you for your purchase.</h3>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-          <div className="col">
-            {paymentSuccess && (
-              <div className="success-message">
-                Payment Successful! Thank you for your purchase.
-              </div>
-            )}
-          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

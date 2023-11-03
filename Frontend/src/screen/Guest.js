@@ -133,9 +133,10 @@ function Guest() {
       <div className=" d-flex justify-content-center align-items-center vh-200 rounded-2">
         <section id="regAll">
           <div>
-            <h1 className="HeadReg">Your Information</h1>
+            <h1 className="HeadReg">Information form</h1>
             <p className="HeadReg">
-              Please fill the above information to continue.
+              Before proceed with booking flights We need some information from
+              you Please fill the form below
             </p>
           </div>
 
@@ -327,15 +328,18 @@ function Guest() {
                   {guestEnterSuccess && (
                     <div className="successCont">
                       <div className="success-message">
-                        <h3>Thanks you</h3>
-                        <h1>click to continue</h1>
+                        <h1>
+                          Thank you for signing as a guest user.Register as a
+                          user to get exclusive offers!
+                        </h1>
+                        <h3 id="pl">proceed to booking a flight</h3>
                       </div>
                       <div className="submitBtn1">
                         <button
                           className="btn btn-dark btn-lg "
                           onClick={navigateToBooking}
                         >
-                          click here
+                          Book flights
                         </button>
                       </div>
                     </div>

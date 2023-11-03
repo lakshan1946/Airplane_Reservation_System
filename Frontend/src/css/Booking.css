@@ -1,0 +1,84 @@
+.backgroundB {
+    font-family: sans-serif;
+    margin: 0;
+    background-image: url("../../public/images/booking.jpg");
+    /* Replace 'your-image-file.jpg' with the actual file name and path */
+    background-size: cover;
+    /* Ensures the image covers the entire background */
+    background-repeat: no-repeat;
+    /* Prevents image repetition */
+    background-attachment: fixed;
+    /* Fixes the background image, so it doesn't scroll with the content */
+    background-position: center center;
+    /* Centers the image horizontally and vertically */
+}
+
+.searchHead {
+    color: white;
+    padding-bottom: 40px;
+    font-weight: bold;
+}
+
+.text-center {
+    margin: 10px auto 15px auto;
+}
+
+#flight-search-form {
+    padding: 0 20% 2%;
+}
+
+.allrow {
+    margin-bottom: 30px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    padding: 5%;
+}
+
+.availableFlight {
+    text-align: center;
+    color: #fff6dc;
+    padding-bottom: 20px;
+    font-weight: bold;
+}
+
+.submitBtn {
+    justify-content: center;
+    display: flex;
+    padding-top: 20px;
+    padding-bottom: 25px;
+
+}
+
+.FlightCardMap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+}
+
+#con {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+
+}
+
+.flT {
+    background-color: rgba(255, 255, 255, 0.5);
+    width: max-content;
+    border-radius: 20px;
+}
+
+.FlightCardT {
+
+    width: 100px;
+
+}
+
+.FlightCardTh {
+    padding-right: 50px;
+}
+
+.flT {
+    padding: 25px;
+}

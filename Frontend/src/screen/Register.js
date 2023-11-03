@@ -153,7 +153,7 @@ function Register() {
       <div className=" d-flex justify-content-center align-items-center vh-150 rounded-2">
         <section id="regAll">
           <div>
-            <h1 className="HeadReg">Your Information</h1>
+            <h1 className="HeadReg">Fill in your information</h1>
 
             <p className="HeadReg">
               Become a member and enjoy exclusive promotions and endless
@@ -446,15 +446,15 @@ function Register() {
                   {registerSuccess && (
                     <div className="successCont">
                       <div className="success-message">
-                        <h3>Your registration was successful!</h3>
-                        <h1>Please login to continue.</h1>
+                        <h1>Your registration was successful!</h1>
+                        <h3 id="pl">Please login to continue.</h3>
                       </div>
                       <div className="submitBtn1">
                         <button
                           className="btn btn-dark btn-lg "
                           onClick={navigateToLogin}
                         >
-                          click here
+                          Login
                         </button>
                       </div>
                     </div>

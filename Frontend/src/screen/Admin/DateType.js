@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import Navbar from "../../component/Navbar";
 
 let datas;
 
@@ -65,6 +66,7 @@ function DateDestination() {
   };
   return (
     <div className="backgroundAdmin">
+      <Navbar />
       <h1 className="adminTitle">View booking by passenger type</h1>
       <div id="adminCont">
         <div className="admincomp">

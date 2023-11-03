@@ -15,17 +15,46 @@ import Revenue from "./screen/Admin/Revenue";
 import RegUserProfile from "./screen/RegUserProfile";
 import Guest from "./screen/Guest";
 import Delay from "./screen/Admin/Delay";
+
+// function AuthWrapper({ children }) {
+//   let navigate = useNavigate();
+//   let location = useLocation();
+
+//   useEffect(() => {
+//     const token = localStorage.getItem('token');
+//     if (!token) {
+//       navigate('/', { replace: true, state: { from: location } });
+//     }
+//   }, [navigate, location]);
+
+//   return children;
+// }
 function App() {
   return (
     <div>
       <BrowserRouter>
         <Routes>
+          {/*
+          don't change login
+           <Route
+            path="/HomeScreen"
+            element={
+              <AuthWrapper>
+                <HomeScreen />
+              </AuthWrapper>
+            }
+          /> */}
           <Route path="/" element={<Login />}></Route>
           <Route path="/HomeScreen" element={<HomeScreen />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="/Booking" element={<Booking />}></Route>
-          <Route path="/Seatselection" element={<SeatSelection />}></Route>
+          <Route path="/Booking/:username" element={<Booking />}></Route>
+          <Route
+            path="/Seatselection/:flightid/:username"
+            element={<SeatSelection />}
+          ></Route>
           <Route path="/Payment" element={<Payment />}></Route>
+          <Route path="/Payment/:reserveid" element={<Payment />}></Route>
           <Route path="/Report" element={<Report />}></Route>
           <Route path="/AllPassengers" element={<AllPassenger />} />
           <Route path="/DateDestination" element={<DateDestination />} />
