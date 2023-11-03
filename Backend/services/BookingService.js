@@ -51,6 +51,11 @@ class BookingService {
 
   static async seat_decoder(details) {
     const Arr = details.split("");
+    if (Arr.length == 4) {
+      Arr[0] = Arr[0].concat(Arr[1]);
+      Arr[1] = Arr[2];
+      Arr[2] = Arr[3];
+    }
     let Seat_No;
     let Class;
     let a = parseInt(Arr[0]) - 1;
