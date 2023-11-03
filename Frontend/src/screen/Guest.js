@@ -95,7 +95,8 @@ function Guest() {
   };
 
   const navigateToBooking = () => {
-    navigate("/Booking");
+    const up = "g".concat(account.passportID);
+    navigate(`/Booking/${up}`);
   };
 
   var InputField = ({ label, placeholder, value, onChange, type = "text" }) => (
